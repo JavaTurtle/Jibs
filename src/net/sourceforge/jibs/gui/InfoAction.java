@@ -21,12 +21,10 @@ public class InfoAction extends AbstractAction {
         this.jibsFrame = jibsFrame;
         putValue(SHORT_DESCRIPTION, desc);
         putValue(ACCELERATOR_KEY, mnemonic);
-
-        // putValue(MNEMONIC_KEY, mnemonic);
-    }
+   }
 
     public void actionPerformed(ActionEvent e) {
-        JDialog dialog = new JDialog(jibsFrame, "Parameter", true);
+        JDialog dialog = new JDialog(jibsFrame, "jIBS", true);
 
         dialog.add(new VMPanel(dialog, server));
 
