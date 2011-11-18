@@ -5,6 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -14,10 +17,14 @@ import javax.swing.JTextField;
 import net.sourceforge.jibs.server.Server;
 import net.sourceforge.jibs.util.JibsConvert;
 
+import org.apache.log4j.Logger;
+
 import com.jeta.forms.components.panel.FormPanel;
 
 @SuppressWarnings( "serial" )
 public class VMPanel extends FormPanel {
+	private static Logger logger = Logger.getLogger(VMPanel.class);
+
 	private Server server;
     private JDialog frame;
     private JTextField java_version;
@@ -32,6 +39,7 @@ public class VMPanel extends FormPanel {
     private JTextField freeMemory;
     private JTextField maxMemory;
     private JLabel aboutLabel;
+    private JLabel jibsDateBuild;
     private JButton btnOK;
 
     public VMPanel(JDialog dialog, Server server) {
@@ -39,6 +47,7 @@ public class VMPanel extends FormPanel {
         this.frame = dialog;
         this.server = server;
         aboutLabel = getLabel("aboutLabel");
+        jibsDateBuild= getLabel("jibsDateBuild");
         java_version = getTextField("version");
         java_vm = getTextField("vm");
         java_vm_version = getTextField("vmversion");
@@ -84,34 +93,42 @@ public class VMPanel extends FormPanel {
     }
 
     public void doShow() {
-        StringBuffer buffer = new StringBuffer();
+        try {
+			StringBuffer buffer = new StringBuffer();
 
-        buffer.append(server.getConfiguration().getResource("aboutVersion"));
-        aboutLabel.setText(buffer.toString());
-        aboutLabel.setForeground(Color.RED);
-        java_version.setText(System.getProperty("java.runtime.version"));
-        java_vm.setText(System.getProperty("java.vm.name"));
-        java_vm_version.setText(System.getProperty("java.vm.info"));
-        os_system.setText(System.getProperty("os.name"));
-        os_version.setText(System.getProperty("os.version"));
-        os_arch.setText(System.getProperty("os.arch"));
-        os_processors.setText(Integer.toString(Runtime.getRuntime()
-                                                      .availableProcessors()));
-        os_language.setText(System.getProperty("user.country"));
+			buffer.append(server.getConfiguration().getResource("aboutVersion"));
+			aboutLabel.setText(buffer.toString());
+			aboutLabel.setForeground(Color.RED);
+			InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("net/sourceforge/jibs/util/JibsConstants.properties");
+			Properties props = new Properties();
+			props.load(resourceAsStream);
+			jibsDateBuild.setText((String) props.get("jibsDateBuild"));
+			java_version.setText(System.getProperty("java.runtime.version"));
+			java_vm.setText(System.getProperty("java.vm.name"));
+			java_vm_version.setText(System.getProperty("java.vm.info"));
+			os_system.setText(System.getProperty("os.name"));
+			os_version.setText(System.getProperty("os.version"));
+			os_arch.setText(System.getProperty("os.arch"));
+			os_processors.setText(Integer.toString(Runtime.getRuntime()
+			                                              .availableProcessors()));
+			os_language.setText(System.getProperty("user.country"));
 
-        double mem = Runtime.getRuntime().freeMemory() / (1024.0 * 1024.0);
-        double x = JibsConvert.convdouble(mem, 3);
-        String x1 = Double.toString(x);
+			double mem = Runtime.getRuntime().freeMemory() / (1024.0 * 1024.0);
+			double x = JibsConvert.convdouble(mem, 3);
+			String x1 = Double.toString(x);
 
-        freeMemory.setText(x1 + " MB");
-        mem = Runtime.getRuntime().maxMemory() / (1024.0 * 1024.0);
-        x = JibsConvert.convdouble(mem, 3);
-        x1 = Double.toString(x);
-        maxMemory.setText(x1 + " MB");
-        mem = Runtime.getRuntime().totalMemory() / (1024.0 * 1024.0);
-        x = JibsConvert.convdouble(mem, 3);
-        x1 = Double.toString(x);
-        totMemory.setText(x1 + " MB");
+			freeMemory.setText(x1 + " MB");
+			mem = Runtime.getRuntime().maxMemory() / (1024.0 * 1024.0);
+			x = JibsConvert.convdouble(mem, 3);
+			x1 = Double.toString(x);
+			maxMemory.setText(x1 + " MB");
+			mem = Runtime.getRuntime().totalMemory() / (1024.0 * 1024.0);
+			x = JibsConvert.convdouble(mem, 3);
+			x1 = Double.toString(x);
+			totMemory.setText(x1 + " MB");
+		} catch (IOException e) {
+			logger.warn(e);
+		}
     }
 
     public void btn_OkActionPerformed(ActionEvent event) {
