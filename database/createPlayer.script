@@ -1,3 +1,4 @@
+# Script to create table and insert two demo users
 CREATE CACHED TABLE PLAYER(
 	RATING DOUBLE,
 	EXPERIENCE INTEGER,
