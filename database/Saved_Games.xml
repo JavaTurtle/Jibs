@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SavedGames">
+
+	<select id="checkSavedGame" resultType="java.lang.Integer"
+		parameterType="net.sourceforge.jibs.util.SavedGameParam">
+		SELECT COUNT(*) FROM SAVED_GAMES WHERE
+		(PLAYER_A='${player_A}' AND
+		PLAYER_B='${player_B}') OR
+		(PLAYER_A='${player_B}' AND
+		PLAYER_B='${player_A}')
+	</select>
+
+	<delete id="deleteSavedGame" parameterType="net.sourceforge.jibs.util.SavedGameParam">
+		DELETE FROM
+		SAVED_GAMES WHERE (PLAYER_A='${player_A}' AND
+		PLAYER_B='${player_B}') OR
+		(PLAYER_A='${player_B}' AND
+		PLAYER_B='${player_A}')
+	</delete>
+
+	<insert id="saveGame">
+		INSERT INTO
+		SAVED_GAMES(PLAYER_A,SAVED_DATE,PLAYER_B,BOARD,MATCHLENGTH,TURN,MATCHVERSION)
+		VALUES('${player_A}','${savedDate}','${player_B}','${board}',${matchlength},${turn},${matchVersion})
+	</insert>
+
+	<select id="loadSavedGame" resultType="net.sourceforge.jibs.util.SavedGameParam">
+		SELECT
+		PLAYER_A,SAVED_DATE,PLAYER_B,BOARD,MATCHLENGTH,TURN,MATCHVERSION FROM
+		SAVED_GAMES
+		WHERE (PLAYER_A='${player_A}' AND PLAYER_B='${player_B}')
+		OR
+		(PLAYER_A='${player_B}' AND PLAYER_B='${player_A}')
+	</select>
+
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<properties resource="conf/jibs.properties"></properties>
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${dbDriver}"/>				
+				<property name="url" value="${dbURL}" />
+				<property name="username" value="${dbUser}" />
+				<property name="password" value="${dbPassword}" />
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<mapper resource="database/Player.xml" />
+		<mapper resource="database/Saved_Games.xml" />
+	</mappers>
+</configuration>

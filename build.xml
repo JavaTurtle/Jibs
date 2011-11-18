@@ -1,0 +1,84 @@
+<project name="Jibs" default="all" basedir=".">
+	<!-- Define global properties. -->
+	<property name="log4j" value="./lib/log4j-1.2.12.jar" />
+	<property name="hsql" value="./lib/hsqldb.jar" /> 
+	<property name="forms" value="./lib/forms-1.0.5.jar" /> 
+	<property name="formsrt" value="./lib/formsrt.jar" /> 
+	<property name="ibatis_common" value="./lib/ibatis-common-2.jar" /> 
+	<property name="ibatis_sqlmap" value="./lib/ibatis-sqlmap-2.jar" /> 
+
+	<property name="docDir" value="javadoc" />
+	<property name="frmDir" value="frm" />
+	<property name="imageDir" value="images" />
+	<property name="srcDir" value="src" />
+	<property name="buildDir" value="build" />
+	<property name="distDir" value="lib" />
+	<property name="confDir" value="conf" />
+	
+
+	<path id="classpath">
+		<pathelement path="${forms}"/>
+		<pathelement path="${formsrt}"/>
+		<pathelement path="${log4j}"/>
+		<pathelement path="${hsql}"/>
+		<pathelement path="${buildDir}"/>
+		<pathelement path="${ibatis_common}"/>
+		<pathelement path="${ibatis_sqlmap}"/>
+	</path>
+
+	<target name="clean" description="clean output directories">
+		<delete dir="${buildDir}" />
+		<delete dir="${docDir}" />  
+	</target>
+
+	<target name="prepare" description="creates output directories">
+		<mkdir dir="${buildDir}" />
+		<mkdir dir="${docDir}" />
+		<delete file="${srcDir}/net/sourceforge/jibs/util/JibsConstants.java"/>
+		<propertyfile file="${srcDir}/net/sourceforge/jibs/util/JibsConstants.properties">
+		  <entry  key="jibsBuild" type="date" value="now" pattern="MM/dd/yyyy HH:mm:ss"/>
+		</propertyfile>
+	</target>
+
+	<target name="compile" description="compile all">
+		<javac srcdir="${srcDir}" destdir="${buildDir}" classpathref="classpath"/>
+	</target>
+
+	<target name="javadoc" description="generate javadoc for Jibs">
+		        <javadoc destdir="javadoc" 
+		        	access="public" 
+		        	use="true" 
+		        	notree="false" 
+		        	nonavbar="false" 
+		        	noindex="false" 
+		        	splitindex="true" 
+		        	author="true" 
+		        	version="true" 
+		        	nodeprecatedlist="false" 
+		        	nodeprecated="false" 
+		        	packagenames="net.sourceforge.jibs.server,net.sourceforge.jibs.util,net.sourceforge.jibs.backgammon,net.sourceforge.jibs.command,net.sourceforge.jibs.gui" 
+		        	sourcepath="src" 
+					windowtitle="Jibs"
+		        	doctitle="Jibs"
+		        	link="http://java.sun.com/j2se/1.5.0/docs/api"
+		        	classpath="$[classpath]"
+		/>
+	</target>
+		
+	<target name="jar" description="build jibs.jar" depends="compile">
+		<jar destfile="${distDir}/jibs.jar" basedir="${buildDir}" >
+			<fileset dir="${buildDir}" includes="**/*.class" />
+			<manifest>
+		    		<attribute name="Main-Class" value="net.sourceforge.jibs.server.JibsServer"/>
+					<attribute name="Class-Path" value="jibs.jar ibatis-common-2.jar ibatis-sqlmap-2.jar log4j-1.2.12.jar hsqldb.jar forms-1.0.5.jar formsrt.jar"/>
+		     </manifest>
+		</jar>
+	</target>
+
+	<target name="all" description="build all" depends="clean, prepare,compile,javadoc,jar">
+		<delete file="${distDir}/src.zip"> </delete>
+	</target>
+
+</project>
+
+

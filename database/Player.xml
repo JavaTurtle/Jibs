@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Player">
+
+<select id="readAllPlayer" resultType="net.sourceforge.jibs.server.Player">
+	SELECT NAME,RATING,EXPERIENCE,PASSWORD,EMAIL,ADMIN,LAST_LOGIN_HOST,LAST_LOGIN_DATE,LAST_LOGOUT_DATE FROM PLAYER ORDER BY RATING DESC, EXPERIENCE DESC, NAME ASC
+</select>
+
+<select id="checkPlayer" parameterType="java.lang.String" resultType="java.lang.Integer">
+	SELECT COUNT(*) FROM PLAYER WHERE NAME='${value}'
+</select>
+
+<select id="getPlayer" resultType="net.sourceforge.jibs.server.Player" >
+	SELECT RATING,EXPERIENCE,NAME,PASSWORD,EMAIL,ADMIN,LAST_LOGIN_DATE,LAST_LOGIN_HOST,LAST_LOGOUT_DATE,
+	TOGGLE,BOARDSTYLE,LINELENGTH,PAGELENGTH,REDOUBLES,SORTWHO,TIMEZONE FROM PLAYER P WHERE P.NAME='${value}'
+</select>
+
+<update id="updateLogin" parameterType="net.sourceforge.jibs.server.Player">
+	UPDATE PLAYER SET LAST_LOGIN_DATE='${last_login_date}',LAST_LOGIN_HOST='${last_login_host}',LAST_LOGOUT_DATE=null WHERE NAME='${name}'
+</update>
+
+<update id="updateLogout">
+	UPDATE PLAYER SET LAST_LOGOUT_DATE='${last_logout_date}' WHERE NAME='${name}'
+</update>
+
+<update id="updateRating">
+	UPDATE PLAYER SET RATING=${rating},EXPERIENCE=${experience} WHERE name='${name}'	
+</update>
+
+<update id="updateMail">
+	UPDATE PLAYER SET EMAIL='${email}' WHERE NAME ='${name}'
+</update>
+
+<update id="updatePassword">
+	UPDATE PLAYER SET PASSWORD='${password}' WHERE NAME='${name}'
+</update>
+
+<insert id="insertPlayer">
+	INSERT INTO 
+		PLAYER(RATING,EXPERIENCE,NAME,PASSWORD,EMAIL,ADMIN,LAST_LOGIN_DATE,LAST_LOGIN_HOST,TOGGLE,BOARDSTYLE,LINELENGTH,PAGELENGTH,REDOUBLES,SORTWHO,TIMEZONE) 
+	VALUES
+	      (${rating}, ${experience}, '${name}', '${password}', '${email}', ${admin}, '${last_login_date}', '${last_login_host}', '${toggle}', '${boardStyle}', '${lineLength}', '${pageLength}','${redoubles}','${sortwho}','${timezone}')
+</insert>
+
+</mapper>

@@ -1,0 +1,103 @@
+--------------------------------------------------------------------------------
+v0.5.4:
+jUnit-Tests started for some commands
+	
+--------------------------------------------------------------------------------
+v0.5.3:2006-11-25
+* jIBS can now be configured to run in headless mode
+--------------------------------------------------------------------------------
+v0.5.2:2006-11-19
+* useSwing parameter in configuration file to let start jIBS without using Swing
+    let jIBS start without a X11 server under Unix
+    still experimental (JibsLauncher could not restart jIBS automatically)
+--------------------------------------------------------------------------------
+v0.5.1:2006-11-1
+* verified that it runs with Linux
+--------------------------------------------------------------------------------
+v0.5.0:2006-10-29
+* java 5 needed for compiling/running
+* using persistence framework iBATIS
+* gui enhanced
+* source code does now better separate better between player X and player O
+  complete rewrite of roll,move commands to mimic FIBS behaviour
+* only one internal board representation (for playerX) needed
+	the other is created on-the-fly by BackgammonBoard::switch2O()
+* primary keys of database tables changed
+* jIBS prompts user when shutting down with players online (warnExit in config)
+--------------------------------------------------------------------------------
+v04_2_10:2005-12-03
+* double command implementation complete (crawford rule)
+* away/back command
+* experience changes according to match length
+* server disconnects after first unsucessful login 
+  when client pretents to understand CLIP protocol 
+* watch games
+* kibitz, whisper to watcher
+* password changeable
+--------------------------------------------------------------------------------
+v04_2_9:2005-10-18
+* leave command
+* unlimited matches
+* saving games now comlete
+* partially double command
+* toggle double is now correct
+--------------------------------------------------------------------------------
+v04_2_8:2005-09-24
+* first version to save the game when a client disconnect during play
+* invite expanded to resume a game
+* normal join now deletes existing saved games
+* resume join missing implementation
+* log all commands via log4j to proper identify problems
+--------------------------------------------------------------------------------
+v04_2_7:2005-06-26
+* bug fixes
+* log4j now uses a RollingFileAppender when the server runs very long
+* deleted some no longer used java files and getting rid of some public fields
+* gui beautified, so that the ranking and conosle window looks slightly better 
+* shout implemented
+* detect ambigous commands (re:reject,resign)
+--------------------------------------------------------------------------------
+v04_2_6:2005-06-19
+* bug fixes.
+--------------------------------------------------------------------------------
+v04_2_5:2005-06-11
+* Console window now limited in size when the server runs very long
+* All output in the console is also logged in a file maintained by log4j which 
+  ease adminstration
+* kibitz and tell command implemented
+--------------------------------------------------------------------------------
+v04_2_1:2005-05-21
+* bug fixes.
+--------------------------------------------------------------------------------
+v04_1_25:2005-05-11
+* Knows toggle settings and how to automove. 
+* Greedy toggle is also on but can't be turned off yet.
+--------------------------------------------------------------------------------
+v04_1_24:2005-04-20
+* bug fixes.
+--------------------------------------------------------------------------------
+v04_00_20:2005-04-16
+* jIBS structure stabilized and two player can register and play matches against 
+  each other. Rating changes appropriately and ist stored in the database.
+--------------------------------------------------------------------------------
+v04_11:2004-11-01
+* New user can register with jIBS.
+* Ending games are now detected.
+* Matches of various length can be played.
+* Rating changes correctly in the database after a match.
+* Restructuring the distribution to ease useage.
+* Rebuild via ANT-Skript.
+* Error handling of all commands needs much improvement.
+--------------------------------------------------------------------------------
+v04_04:2004-04-27
+* With it the two players (alice/alice and bob/bob) can play matches of various 
+  lengths.
+* Although ending games are detected are not properly presented. 
+--------------------------------------------------------------------------------
+start:2002-07-14
+* All sources to get you started. 
+* With these sources, you should be able to login, invite and join a game, 
+  alter your email adress and get information on some information 
+  about a given playér. 
+* There are many commands currently not implemented, e.g moving off pieces. 
+  Therefore a game will never end!
