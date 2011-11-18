@@ -312,7 +312,7 @@ public class JibsServer {
 			logException(e);
 		}
 		jibsFrame = new JFrame();
-		infoAction = new InfoAction(server, "Info", createImageIcon(
+		infoAction = new InfoAction(jibsFrame, server, "Info", createImageIcon(
 				"images/info.gif", ""), "", KeyStroke.getKeyStroke(
 				KeyEvent.VK_I, KeyEvent.ALT_MASK));
 		runAction = new RunAction(this, "Start", createImageIcon(
