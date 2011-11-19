@@ -312,19 +312,19 @@ public class JibsServer {
 			logException(e);
 		}
 		jibsFrame = new JFrame();
-		infoAction = new InfoAction(jibsFrame, server, "Info", createImageIcon(
+		infoAction = new InfoAction(jibsFrame, server, "", createImageIcon(
 				"images/info.gif", ""), "", KeyStroke.getKeyStroke(
 				KeyEvent.VK_I, KeyEvent.ALT_MASK));
-		runAction = new RunAction(this, "Start", createImageIcon(
+		runAction = new RunAction(this, "", createImageIcon(
 				"images/run.gif", ""), "", KeyStroke.getKeyStroke(
 				KeyEvent.VK_S, KeyEvent.ALT_MASK));
-		stopAction = new StopAction(this, "Stop", createImageIcon(
+		stopAction = new StopAction(this, "", createImageIcon(
 				"images/stop.gif", ""), "", KeyStroke.getKeyStroke(
 				KeyEvent.VK_H, KeyEvent.ALT_MASK));
-		exitAction = new ExitAction(this, "Exit", createImageIcon(
+		exitAction = new ExitAction(this, "", createImageIcon(
 				"images/exit.gif", ""), "", KeyStroke.getKeyStroke(
 				KeyEvent.VK_X, KeyEvent.ALT_MASK));
-		reloadAction = new ReloadAction(this, "Reload", createImageIcon(
+		reloadAction = new ReloadAction(this, "", createImageIcon(
 				"images/refresh.gif", ""), "", null);
 
 		jibsMenuBar = new JMenuBar();
