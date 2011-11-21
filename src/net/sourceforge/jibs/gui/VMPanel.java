@@ -1,6 +1,7 @@
 package net.sourceforge.jibs.gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -17,6 +18,7 @@ import javax.swing.JTextField;
 import net.sourceforge.jibs.server.Server;
 import net.sourceforge.jibs.util.JibsConvert;
 
+import org.apache.ibatis.io.Resources;
 import org.apache.log4j.Logger;
 
 import com.jeta.forms.components.panel.FormPanel;
@@ -99,9 +101,7 @@ public class VMPanel extends FormPanel {
 			buffer.append(server.getConfiguration().getResource("aboutVersion"));
 			aboutLabel.setText(buffer.toString());
 			aboutLabel.setForeground(Color.RED);
-			InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("net/sourceforge/jibs/util/JibsConstants.properties");
-			Properties props = new Properties();
-			props.load(resourceAsStream);
+			Properties props = Resources.getResourceAsProperties("net/sourceforge/jibs/util/JibsConstants.properties");
 			jibsDateBuild.setText((String) props.get("jibsDateBuild"));
 			java_version.setText(System.getProperty("java.runtime.version"));
 			java_vm.setText(System.getProperty("java.vm.name"));

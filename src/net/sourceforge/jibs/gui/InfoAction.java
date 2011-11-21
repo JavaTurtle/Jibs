@@ -1,5 +1,6 @@
 package net.sourceforge.jibs.gui;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -25,12 +26,11 @@ public class InfoAction extends AbstractAction {
 
     public void actionPerformed(ActionEvent e) {
         JDialog dialog = new JDialog(jibsFrame, "jIBS", true);
-
-        dialog.add(new VMPanel(dialog, server));
-
-        VMPanel panel = (VMPanel) dialog.getContentPane().getComponent(0);
-        panel.doShow();
+        VMPanel vmPanel = new VMPanel(dialog, server);
+        dialog.add(vmPanel);
+        vmPanel.doShow();
         dialog.pack();
+        dialog.doLayout();
         dialog.setLocationRelativeTo(jibsFrame);
         dialog.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         dialog.setVisible(true);

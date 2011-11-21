@@ -301,7 +301,8 @@ public class JibsServer {
 
 	private void initGUIComponents() {
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			UIManager
+					.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (ClassNotFoundException e) {
 			logException(e);
 		} catch (InstantiationException e) {
@@ -315,9 +316,9 @@ public class JibsServer {
 		infoAction = new InfoAction(jibsFrame, server, "", createImageIcon(
 				"images/info.gif", ""), "", KeyStroke.getKeyStroke(
 				KeyEvent.VK_I, KeyEvent.ALT_MASK));
-		runAction = new RunAction(this, "", createImageIcon(
-				"images/run.gif", ""), "", KeyStroke.getKeyStroke(
-				KeyEvent.VK_S, KeyEvent.ALT_MASK));
+		runAction = new RunAction(this, "", createImageIcon("images/run.gif",
+				""), "", KeyStroke.getKeyStroke(KeyEvent.VK_S,
+				KeyEvent.ALT_MASK));
 		stopAction = new StopAction(this, "", createImageIcon(
 				"images/stop.gif", ""), "", KeyStroke.getKeyStroke(
 				KeyEvent.VK_H, KeyEvent.ALT_MASK));

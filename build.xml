@@ -33,6 +33,15 @@
 	<target name="clean" description="clean output directories">
 		<delete dir="${buildDir}" />
 		<delete dir="${docDir}" />
+		<delete file="jibs.jar">
+		</delete>
+		<loadproperties srcFile="conf/jibs.properties">
+			<filterchain>
+				<linecontains>
+					<contains value="aboutVersion" />
+				</linecontains>
+			</filterchain>
+		</loadproperties>
 	</target>
 
 	<target name="prepare" description="creates output directories">
@@ -47,6 +56,8 @@
 		<delete file="${buildDir}/jibs.jfpr" />
 		<delete file="${buildDir}/jibs.jfrm" />
 		<delete file="${buildDir}/vmPanel.jfrm" />
+		<copydir dest="${buildDir}/images" src="images" />
+		<copyfile dest="${buildDir}/net/sourceforge/jibs/util/JibsConstants.properties" src="${srcDir}/net/sourceforge/jibs/util/JibsConstants.properties" />
 	</target>
 
 	<target name="compile" description="compile all">
@@ -58,11 +69,11 @@
 	</target>
 
 	<target name="jar" description="build jibs.jar" depends="compile">
-		<jar destfile="${distDir}/jibs.jar" basedir="${buildDir}">
-			<fileset dir="${buildDir}"/>
+		<jar destfile="jibs_${aboutVersion}.jar" basedir="${buildDir}">
+			<fileset dir="${buildDir}" />
 			<manifest>
 				<attribute name="Main-Class" value="net.sourceforge.jibs.server.JibsServer" />
-				<attribute name="Class-Path" value=". jibs.jar ${log4j} ${hsql} ${forms} ${formsrt} ${mybatis}" />
+				<attribute name="Class-Path" value=". jibs.jar ${log4jLib} ${hsqlLib} ${formsLib} ${formsrtLib} ${mybatisLib}" />
 			</manifest>
 		</jar>
 	</target>
