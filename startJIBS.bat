@@ -1,0 +1,1 @@
+java -jar jibs*.jar conf/jibs.properties

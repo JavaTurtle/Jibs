@@ -138,7 +138,7 @@ public class JibsServer {
 
 		if (jibsServer.useSwing()) {
 			jibsServer.getJibsFrame().setLocation(0, 0);
-			jibsServer.getJibsFrame().setTitle(
+			jibsServer.getJibsFrame().setTitle("jIBS_"+
 					jibsServer.getConfiguration().getResource("aboutVersion"));
 
 			URL imgURL = ClassLoader.getSystemResource("images/jibs_thumb.gif");
