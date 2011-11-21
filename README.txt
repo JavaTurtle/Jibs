@@ -1,6 +1,6 @@
                                 R E A D M E
 
-            The j(ava I(nternet B(ackgammon S(server Version 0.5.1
+            The j(ava I(nternet B(ackgammon S(server Version 0.5.5
 
 INTRODUCTION
 
@@ -38,7 +38,7 @@ Startup
 
 Shutdown
 	There is a menu point to exit the server. Keep in mind that this will
-	disconnects all online player without warning, which probably they will 
+	disconnect all online player without warning, which probably they will 
 	find "surprising" at least. So I recommend to use the shutdown command
 	instead. Only user with admin privileges can do so and you must grant users
 	these rights in the database as there is no command in FIBS defined to do 
@@ -65,10 +65,9 @@ DISTRIBUTION CONTENTS
                                  to run jIBS
          o jibs.jar            - main JAR 
          o hsqldb.jar          - HSQLDB-database JAR
-         o ibatis-common-2.jar - iBATIS Data Mapper framework
-           ibatis-sqlmap-2.jar - iBATIS Data Mapper framework
+         o mybatis-3.0.6.jar   - myBATIS
          o llog4j-1.2.12.jar   - logging framework
-         o forms-1.0.6.jar     - jgoodies Forms layout Manager
+         o forms-1.0.7.jar     - jgoodies Forms layout Manager
          o formsrt.jar         - abeille GUI runtime library
          
        o images                - sub-directory with required images
@@ -83,11 +82,12 @@ DISTRIBUTION CONTENTS
          
        o database              
          o hsqldb			   - the embedded HSQLDB database
-         	o createPlayer.script - scripts to generate the database schema
-         	o createSavedGames.script
-         	o runManager.bat      - execute the HSQLDB Manager application
-         	o runServer.bat       - execute the HSQLDB database in server mode 
-         o Player.xml			  - iBATIS mapping file 
+         o createPlayer.script - script to generate the database schema
+         o createSavedGames.script - script to generate the database schema
+         o runManager.bat      - execute the HSQLDB Manager application
+         o runServer.bat       - execute the HSQLDB database in server mode 
+         o Player.xml		   - myBATIS mapping file 
+         o Saved_Games.xml     -  myBATIS mapping file
          o Saved_Games.xml		  - iBATIS mapping file
          o SqlMapConfig.xml       - iBATIS configuration file
          
