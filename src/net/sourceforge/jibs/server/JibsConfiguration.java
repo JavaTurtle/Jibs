@@ -3,12 +3,12 @@ package net.sourceforge.jibs.server;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.apache.ibatis.io.Resources;
 import org.apache.log4j.Logger;
 
 public class JibsConfiguration {
@@ -25,8 +25,8 @@ public class JibsConfiguration {
 
 		try {
 			logger.info("Reading configuration file (" + fileName + ")");
-			InputStream resourceAsStream = ClassLoader.getSystemResourceAsStream(fileName);
-			buffer = new BufferedReader(new InputStreamReader(resourceAsStream));
+			Reader configurationReader = Resources.getResourceAsReader(fileName);
+			buffer = new BufferedReader(configurationReader);
 
 			allParameter = new HashMap<String, String>();
 

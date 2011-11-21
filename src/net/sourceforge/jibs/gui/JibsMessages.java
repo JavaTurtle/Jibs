@@ -4,11 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.apache.ibatis.io.Resources;
 import org.apache.log4j.Logger;
 
 public class JibsMessages {
@@ -19,11 +20,12 @@ public class JibsMessages {
 		BufferedReader buffer = null;
 
 		try {
+			Reader messageReader = Resources.getResourceAsReader(filename);
 			logger.info("Reading message file (" + filename + ")");
 			InputStream systemResourceAsStream = ClassLoader
 					.getSystemResourceAsStream(filename);
-			buffer = new BufferedReader(new InputStreamReader(
-					systemResourceAsStream));
+			System.out.println("Axel2:"+systemResourceAsStream);
+			buffer = new BufferedReader(messageReader);
 
 			messageMap = new HashMap<String, String>();
 

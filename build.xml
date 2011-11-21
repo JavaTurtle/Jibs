@@ -1,10 +1,16 @@
 <project name="Jibs" default="all" basedir=".">
 	<!-- Define global properties. -->
-	<property name="log4j" value="./lib/log4j-1.2.16.jar" />
-	<property name="hsql" value="./lib/hsqldb.jar" />
-	<property name="forms" value="./lib/forms-1.0.5.jar" />
-	<property name="formsrt" value="./lib/formsrt.jar" />
-	<property name="mybatis" value="./lib/mybatis-3.0.6.jar" />
+	<property name="log4j" value="log4j-1.2.16.jar" />
+	<property name="hsql" value="hsqldb.jar" />
+	<property name="forms" value="forms-1.0.5.jar" />
+	<property name="formsrt" value="formsrt.jar" />
+	<property name="mybatis" value="mybatis-3.0.6.jar" />
+
+	<property name="log4jLib" value="./lib/${log4j}" />
+	<property name="hsqlLib" value="./lib/${hsql}" />
+	<property name="formsLib" value="./lib/${forms}" />
+	<property name="formsrtLib" value="./lib/${formsrt}" />
+	<property name="mybatisLib" value="./lib/${mybatis}" />
 
 	<property name="docDir" value="javadoc" />
 	<property name="frmDir" value="frm" />
@@ -16,13 +22,12 @@
 
 
 	<path id="classpath">
-		<pathelement path="${forms}" />
-		<pathelement path="${formsrt}" />
-		<pathelement path="${log4j}" />
-		<pathelement path="${hsql}" />
+		<pathelement path="${formsLib}" />
+		<pathelement path="${formsrtLib}" />
+		<pathelement path="${log4jLib}" />
+		<pathelement path="${hsqlLib}" />
+		<pathelement path="${mybatisLib}" />
 		<pathelement path="${buildDir}" />
-		<pathelement path="${ibatis_common}" />
-		<pathelement path="${mybatis}" />
 	</path>
 
 	<target name="clean" description="clean output directories">
@@ -37,6 +42,11 @@
 		<propertyfile file="${srcDir}/net/sourceforge/jibs/util/JibsConstants.properties">
 			<entry key="jibsDateBuild" type="date" value="now" pattern="MMM dd yyyy HH:mm:ss (zz)" />
 		</propertyfile>
+		<copydir dest="${buildDir}" src="frm">
+		</copydir>
+		<delete file="${buildDir}/jibs.jfpr" />
+		<delete file="${buildDir}/jibs.jfrm" />
+		<delete file="${buildDir}/vmPanel.jfrm" />
 	</target>
 
 	<target name="compile" description="compile all">
@@ -49,10 +59,10 @@
 
 	<target name="jar" description="build jibs.jar" depends="compile">
 		<jar destfile="${distDir}/jibs.jar" basedir="${buildDir}">
-			<fileset dir="${buildDir}" includes="**/*.class" />
+			<fileset dir="${buildDir}"/>
 			<manifest>
 				<attribute name="Main-Class" value="net.sourceforge.jibs.server.JibsServer" />
-				<attribute name="Class-Path" value="jibs.jar ibatis-common-2.jar ibatis-sqlmap-2.jar log4j-1.2.12.jar hsqldb.jar forms-1.0.5.jar formsrt.jar" />
+				<attribute name="Class-Path" value=". jibs.jar ${log4j} ${hsql} ${forms} ${formsrt} ${mybatis}" />
 			</manifest>
 		</jar>
 	</target>
