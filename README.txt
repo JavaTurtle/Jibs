@@ -1,6 +1,6 @@
                                 R E A D M E
 
-            The j(ava I(nternet B(ackgammon S(server Version 0.5.5
+            The j(ava I(nternet B(ackgammon S(server Version 0.5.8
 
 INTRODUCTION
 
