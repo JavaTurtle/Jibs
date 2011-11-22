@@ -20,11 +20,12 @@ public class Version_Command implements JibsCommand {
 			StringBuilder version  = new StringBuilder();
 			JibsWriter out = player.getOutputStream();
 			version.append(server.getConfiguration().getResource("aboutVersion"));
+			version.append(" ("+System.getProperty("os.name")+")");
 			InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("net/sourceforge/jibs/util/JibsConstants.properties");
 			Properties props = new Properties();
 			props.load(resourceAsStream);
 			version.append(" "+(String) props.get("jibsDateBuild"));
-			out.println("** "+version);
+			out.println("** Version "+version);
 		} catch (IOException e) {
 			logger.warn(e);
 		}
