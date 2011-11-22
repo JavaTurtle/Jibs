@@ -286,7 +286,7 @@ public class ClientWorker implements Runnable {
 							}
 							connectPlayer(player);
 							bStopLogin = true;
-							player.clip_welcome(jibsServer, player);
+							player.clip_welcome(jibsServer);
 							player.clip_ownInfo(jibsServer);
 							player.setValid(true);
 							player.setLast_login_date(new Timestamp(new Date()

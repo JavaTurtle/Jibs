@@ -216,10 +216,9 @@ public class Player {
 		return in;
 	}
 
-	public void clip_welcome(JibsServer jibsServer, Player player) {
+	public void clip_welcome(JibsServer jibsServer) {
 		JibsMessages jibsMessages = jibsServer.getJibsMessages();
 		JibsWriter out = getOutputStream();
-
 		// output connect information
 		String strName = getName();
 		String myDateStr = "-";
@@ -240,8 +239,8 @@ public class Player {
 			Player curPlayer = (Player) entry.getValue();
 			out.println("");
 			// out.println("1 aleucht 1320159195 free-249-110.mediaworksit.net");
-			if (!curPlayer.getName().equalsIgnoreCase(player.getName())) {
-				String omsg = ClipConstants.CLIP_LOGIN + " " + player.getName()
+			if (!curPlayer.getName().equalsIgnoreCase(getName())) {
+				String omsg = ClipConstants.CLIP_LOGIN + " " + getName()
 						+ " " + msg;
 				curPlayer.getOutputStream().println(omsg);
 			}
@@ -260,7 +259,7 @@ public class Player {
 		}
 
 		out.println("");
-		if (player.canCLIP()) {
+		if (canCLIP()) {
 			StringBuffer bf = new StringBuffer();
 
 			bf.append(ClipConstants.CLIP_WELCOME + " " + strName + " "
@@ -273,7 +272,7 @@ public class Player {
 			out.println(msg);
 
 			// m_you_lastlogin=Your last login was %0 from %1.
-			obj = new Object[] { myDateStr, player.getLast_login_host() };
+			obj = new Object[] { myDateStr, getLast_login_host() };
 			msg = jibsMessages.convert("m_you_lastlogin", obj);
 			out.println(msg);
 		}
