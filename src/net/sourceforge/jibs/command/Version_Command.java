@@ -8,6 +8,7 @@ import net.sourceforge.jibs.server.Player;
 import net.sourceforge.jibs.server.Server;
 import net.sourceforge.jibs.util.JibsWriter;
 
+import org.apache.ibatis.io.Resources;
 import org.apache.log4j.Logger;
 
 public class Version_Command implements JibsCommand {
@@ -21,7 +22,7 @@ public class Version_Command implements JibsCommand {
 			JibsWriter out = player.getOutputStream();
 			version.append(server.getConfiguration().getResource("aboutVersion"));
 			version.append(" ("+System.getProperty("os.name")+")");
-			InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("net/sourceforge/jibs/util/JibsConstants.properties");
+			InputStream resourceAsStream = Resources.getResourceAsStream("net/sourceforge/jibs/util/JibsConstants.properties");
 			Properties props = new Properties();
 			props.load(resourceAsStream);
 			version.append(" "+(String) props.get("jibsDateBuild"));
