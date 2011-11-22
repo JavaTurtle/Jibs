@@ -29,8 +29,8 @@ INTRODUCTION
      
 Startup
        o You can start jIBS by invoking the script 
-            $JIBSHOME/bin/runjIBS.bat (Windows)
-            $JIBSHOME/bin/runjIBS.sh  (*nix)       	
+            $JIBSHOME/startjIBS.bat (Windows)
+            $JIBSHOME/startjIBS.sh  (*nix)       	
        
                 o Most parameters of jIBS can be changed by altering it's main 
          configuration file. This file "jibs.properties" can be found in 
@@ -66,7 +66,7 @@ DISTRIBUTION CONTENTS
          o jibs.jar            - main JAR 
          o hsqldb.jar          - HSQLDB-database JAR
          o mybatis-3.0.6.jar   - myBATIS
-         o llog4j-1.2.12.jar   - logging framework
+         o llog4j-1.2.16.jar   - logging framework
          o forms-1.0.7.jar     - jgoodies Forms layout Manager
          o formsrt.jar         - abeille GUI runtime library
          
@@ -88,20 +88,19 @@ DISTRIBUTION CONTENTS
          o runServer.bat       - execute the HSQLDB database in server mode 
          o Player.xml		   - myBATIS mapping file 
          o Saved_Games.xml     -  myBATIS mapping file
-         o Saved_Games.xml		  - iBATIS mapping file
-         o SqlMapConfig.xml       - iBATIS configuration file
+         o Saved_Games.xml	   - iBATIS mapping file
+         o SqlMapConfig.xml    - iBATIS configuration file
          
        o src                   - the entire source files of jIBS
        
        o bin
-         o runjIBS.bat         - script to start jIBS (Windows)       
-         o runjIBS.sh          - script to start jIBS (Unix)
+         o The compiled class files
 
 DATABASE
      jIBS uses a JDBC compliant database to store players, their rating and 
      interrupted game states. jIBS comes with a pre-defined HSQLDB database. If
      you ever want to setup your own database you can easily do so. jIBS uses
-     iBATIS to map Java code to SQL statements. You have to tweak this 
+     myBATIS to map Java code to SQL statements. You have to tweak this 
      configuration if you want to change the database jIBS should use.
          
 CREDITS
@@ -133,8 +132,8 @@ CREDITS
                                  small but great Java based JDBC compliant
                                  database.
 
-     o iBATIS                  - the team which makes it unnecessary to write
+     o myBATIS                 - the team which makes it unnecessary to write
                                  JDBC code.
                                  
                                           
-Copyright (c) 2006 Axel Leucht.                             All rights reserved.
+Copyright (c) 2011 Axel Leucht.                             All rights reserved.
