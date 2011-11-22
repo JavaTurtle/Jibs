@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import net.sourceforge.jibs.backgammon.JibsRandom;
@@ -302,7 +303,12 @@ public class JibsServer {
 	private void initGUIComponents() {
 		try {
 			UIManager
-					.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+			.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+			LookAndFeelInfo[] installedLookAndFeels = UIManager
+			.getInstalledLookAndFeels();
+			for (LookAndFeelInfo lookAndFeelInfo : installedLookAndFeels) {
+				System.out.println(lookAndFeelInfo.getClassName());
+			}
 		} catch (ClassNotFoundException e) {
 			logException(e);
 		} catch (InstantiationException e) {
@@ -313,19 +319,19 @@ public class JibsServer {
 			logException(e);
 		}
 		jibsFrame = new JFrame();
-		infoAction = new InfoAction(jibsFrame, server, "", createImageIcon(
+		infoAction = new InfoAction(jibsFrame, server, "Info", createImageIcon(
 				"images/info.gif", ""), "", KeyStroke.getKeyStroke(
 				KeyEvent.VK_I, KeyEvent.ALT_MASK));
-		runAction = new RunAction(this, "", createImageIcon("images/run.gif",
+		runAction = new RunAction(this, "Start", createImageIcon("images/run.gif",
 				""), "", KeyStroke.getKeyStroke(KeyEvent.VK_S,
 				KeyEvent.ALT_MASK));
-		stopAction = new StopAction(this, "", createImageIcon(
+		stopAction = new StopAction(this, "Stop", createImageIcon(
 				"images/stop.gif", ""), "", KeyStroke.getKeyStroke(
 				KeyEvent.VK_H, KeyEvent.ALT_MASK));
-		exitAction = new ExitAction(this, "", createImageIcon(
+		exitAction = new ExitAction(this, "Exit", createImageIcon(
 				"images/exit.gif", ""), "", KeyStroke.getKeyStroke(
 				KeyEvent.VK_X, KeyEvent.ALT_MASK));
-		reloadAction = new ReloadAction(this, "", createImageIcon(
+		reloadAction = new ReloadAction(this, "Reload", createImageIcon(
 				"images/refresh.gif", ""), "", null);
 
 		jibsMenuBar = new JMenuBar();
@@ -358,10 +364,15 @@ public class JibsServer {
 		jibsStatusbar = new JibsStatusBar(this);
 		jibsUserPanel = new JibsUserPanel(this);
 		jibsGUI.getBtnInfo().setAction(infoAction);
+		jibsGUI.getBtnInfo().setText("");
 		jibsGUI.getBtnExit().setAction(exitAction);
+		jibsGUI.getBtnExit().setText("");
 		jibsGUI.getBtnStart().setAction(runAction);
+		jibsGUI.getBtnStart().setText("");
 		jibsGUI.getBtnStop().setAction(stopAction);
+		jibsGUI.getBtnStop().setText("");
 		jibsGUI.getBtnReload().setAction(reloadAction);
+		jibsGUI.getBtnReload().setText("");
 
 		jInternalFrame1.setVisible(true);
 

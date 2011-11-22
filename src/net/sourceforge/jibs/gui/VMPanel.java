@@ -1,13 +1,12 @@
 package net.sourceforge.jibs.gui;
 
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -20,6 +19,8 @@ import net.sourceforge.jibs.util.JibsConvert;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.log4j.Logger;
+
+import sun.security.x509.AVA;
 
 import com.jeta.forms.components.panel.FormPanel;
 
@@ -105,6 +106,7 @@ public class VMPanel extends FormPanel {
 			jibsDateBuild.setText((String) props.get("jibsDateBuild"));
 			java_version.setText(System.getProperty("java.runtime.version"));
 			java_vm.setText(System.getProperty("java.vm.name"));
+			//java_vm.setFont(java_vm.getFont().deriveFont(Font.PLAIN, 9));
 			java_vm_version.setText(System.getProperty("java.vm.info"));
 			os_system.setText(System.getProperty("os.name"));
 			os_version.setText(System.getProperty("os.version"));
