@@ -304,8 +304,8 @@ public class Join_Command implements JibsCommand {
 		do {
 			playerXdie1Value = Die.roll(server.getJibsServer().getJibsRandom());
 			playerXdie2Value = Die.roll(server.getJibsServer().getJibsRandom());
-			playerXdie1Value = 3; // joining Player
-			playerXdie2Value = 1; // inviting Player
+			playerXdie1Value = 1; // joining Player
+			playerXdie2Value = 3; // inviting Player
 
 			// m_both_roll=%0 rolled %1, %2 rolled %3
 			obj = new Object[] { "You", playerXdie1Value, oppplayerName,

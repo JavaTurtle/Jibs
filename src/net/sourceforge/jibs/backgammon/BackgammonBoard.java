@@ -3,7 +3,6 @@ package net.sourceforge.jibs.backgammon;
 import net.sourceforge.jibs.server.JibsServer;
 import net.sourceforge.jibs.server.Player;
 import net.sourceforge.jibs.util.JibsSet;
-import net.sourceforge.jibs.util.JibsWriter;
 
 import org.apache.log4j.Logger;
 
@@ -459,28 +458,26 @@ public class BackgammonBoard {
 	 * @param j
 	 * @param k
 	 */
-	public String outBoard(JibsWriter out2, String name, int turn, int dice1,
+	public String outBoard(String name, int turn, int dice1,
 			int dice2, int j, int k) {
 		try {
 			Player player = getPlayerX();
 			JibsSet jibsSet = player.getJibsSet();
 			String strBoardStyle = (String) jibsSet.get("boardstyle");
 			int boardstyle = new Integer(strBoardStyle).intValue();
-			String x = "";
+			String outBoard = "";
 			switch (boardstyle) {
 			case 1:
 			default:
 			case 2:
-				x = outBoard_2(turn, dice1, dice2, j, k);
-				out2.print(x);
+				outBoard = outBoard_2(turn, dice1, dice2, j, k);
 				break;
 
 			case 3:
-				x = outBoard_3(name, turn, dice1, dice2, j, k);
-				out2.print(x);
+				outBoard = outBoard_3(name, turn, dice1, dice2, j, k);
 				break;
 			}
-			return x;
+			return outBoard;
 		} catch (NumberFormatException e) {
 			logger.warn(e);
 		}

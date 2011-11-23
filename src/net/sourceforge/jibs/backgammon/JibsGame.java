@@ -366,17 +366,17 @@ public class JibsGame {
 		case -1:
 			BackgammonBoard opBoard = board.switch2O();
 			opBoard.setCanMove(0);
-			String outBoard = opBoard.outBoard(out2, "You", turn, 0, 0, dice1,
+			String outBoard = opBoard.outBoard("You", turn, 0, 0, dice1,
 					dice2); // O
-			String q = "board:You:bob:2:0:0:0:-2:0:0:0:0:5:0:3:0:0:0:-5:5:0:0:0:-3:0:-5:0:0:0:0:2:0:-1:0:0:3:1:1:1:1:0:1:-1:0:25:0:0:0:0:0:0:0:0";
-			out2.println(q);
-			System.out.println(q.equals(outBoard));
+//			String q = "board:You:bob:2:0:0:0:-2:0:0:0:0:5:0:3:0:0:0:-5:5:0:0:0:-3:0:-5:0:0:0:0:2:0:-1:0:0:3:1:1:1:1:0:1:-1:0:25:0:0:0:0:0:0:0:0";
+			out2.println(outBoard);
 
 			board.getPlayerO().show2WatcherBoard(opBoard,
 					board.getPlayerO().getName(), 0, 0, dice1, dice2);
 			nrMoves = nrChances.calcPossibleMovesX(turn, dice1, dice2);
 			board.setCanMove(nrMoves);
-			board.outBoard(out1, "You", turn, dice1, dice2, 0, 0); // X
+			outBoard = board.outBoard("You", turn, dice1, dice2, 0, 0); // X
+			out1.println(outBoard);
 			board.getPlayerX().show2WatcherBoard(board,
 					board.getPlayerX().getName(), dice1, dice2, 0, 0);
 
@@ -406,12 +406,14 @@ public class JibsGame {
 		case 1:
 			nrMoves = nrChances.calcPossibleMovesO(turn, dice1, dice2);
 			board.setCanMove(0);
-			board.outBoard(out1, "You", turn, 0, 0, dice1, dice2); // X
+			outBoard = board.outBoard("You", turn, 0, 0, dice1, dice2); // X
+			out1.println(outBoard);
 			board.getPlayerX().show2WatcherBoard(board,
 					board.getPlayerX().getName(), 0, 0, dice1, dice2);
 			board.setCanMove(nrMoves);
 			opBoard = board.switch2O();
-			opBoard.outBoard(out2, "You", turn, dice1, dice2, 0, 0); // O
+			outBoard = opBoard.outBoard("You", turn, dice1, dice2, 0, 0); // O
+			out2.println(outBoard);
 			board.getPlayerO().show2WatcherBoard(opBoard,
 					board.getPlayerO().getName(), dice1, dice2, 0, 0);
 
@@ -446,8 +448,8 @@ public class JibsGame {
 
 		if (player.checkToggle("automove")) {
 			if (col.size() == 1) {
-				Iterator iter = col.iterator();
-				PossibleMove posMove = (PossibleMove) iter.next();
+				Iterator<PossibleMove> iter = col.iterator();
+				PossibleMove posMove = iter.next();
 				String movString = posMove.conv2MoveString();
 
 				// m_only_move=The only possible move is %0.
@@ -795,8 +797,10 @@ public class JibsGame {
 		}
 
 		BackgammonBoard opBoard = board.switch2O();
-		opBoard.outBoard(out1, "You", 0, 0, 0, 0, 0);
-		board.outBoard(out2, "You", 0, 0, 0, 0, 0);
+		String outBoard = opBoard.outBoard("You", 0, 0, 0, 0, 0);
+		out1.println(outBoard);
+		outBoard = board.outBoard("You", 0, 0, 0, 0, 0);
+		out2.println(outBoard);
 
 		if ((gamePoints < board.getMatchlength())) {
 			// match hasn't ended yet, start another game
@@ -937,10 +941,12 @@ public class JibsGame {
 			break;
 		}
 
-		board.outBoard(out1, "You", 0, 0, 0, 0, 0);
+		String outBoard = board.outBoard("You", 0, 0, 0, 0, 0);
+		out1.println(outBoard);
 
 		BackgammonBoard opBoard = board.switch2O();
-		opBoard.outBoard(out2, "You", 0, 0, 0, 0, 0);
+		outBoard = opBoard.outBoard("You", 0, 0, 0, 0, 0);
+		out2.println(outBoard);
 
 		if (gamePoints < board.getMatchlength()) {
 			// match hasn't ended yet, start another game

@@ -612,7 +612,8 @@ public class Player {
 
 				if (curPlayer != null) {
 					JibsWriter out = curPlayer.getOutputStream();
-					board.outBoard(out, name, board.getTurn(), i, j, k, l);
+					String outBoard = board.outBoard(name, board.getTurn(), i, j, k, l);
+					out.println(outBoard);
 				}
 			}
 		}

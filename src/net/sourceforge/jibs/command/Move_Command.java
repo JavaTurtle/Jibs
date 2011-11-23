@@ -40,7 +40,8 @@ public class Move_Command implements JibsCommand {
 					movedBoard = move.placeMoveO(strArgs);
 					game.setBackgammonBoard(movedBoard);
 					opBoard = movedBoard.switch2O();
-					opBoard.outBoard(out2, "You", -turn, 0, 0, 0, 0);
+					String outBoard = opBoard.outBoard("You", -turn, 0, 0, 0, 0);
+					out2.println(outBoard);
 					player2.show2WatcherBoard(opBoard, player2.getName(), 0, 0,
 							0, 0);
 
@@ -50,7 +51,8 @@ public class Move_Command implements JibsCommand {
 					out1.println(msg);
 					player1.show2WatcherMove(msg);
 					player2.show2WatcherMove(msg);
-					movedBoard.outBoard(out1, "You", -turn, 0, 0, 0, 0);
+					outBoard = movedBoard.outBoard("You", -turn, 0, 0, 0, 0);
+					out1.println(outBoard);
 					player1.show2WatcherBoard(movedBoard, player1.getName(), 0,
 							0, 0, 0);
 				}
@@ -63,7 +65,8 @@ public class Move_Command implements JibsCommand {
 				if (move.checkMove(player1, strArgs, bgBoard.getCanMove())) {
 					movedBoard = move.placeMoveX(strArgs);
 					game.setBackgammonBoard(movedBoard);
-					movedBoard.outBoard(out1, "You", -turn, 0, 0, 0, 0);
+					String outBoard = movedBoard.outBoard("You", -turn, 0, 0, 0, 0);
+					out1.println(outBoard);
 					player1.show2WatcherBoard(movedBoard, player1.getName(), 0,
 							0, 0, 0);
 
@@ -74,7 +77,8 @@ public class Move_Command implements JibsCommand {
 					player1.show2WatcherMove(msg);
 					player2.show2WatcherMove(msg);
 					opBoard = movedBoard.switch2O();
-					opBoard.outBoard(out2, "You", -turn, 0, 0, 0, 0);
+					outBoard = opBoard.outBoard("You", -turn, 0, 0, 0, 0);
+					out2.println(outBoard);
 					player1.show2WatcherBoard(opBoard, player1.getName(), 0, 0,
 							0, 0);
 				}
