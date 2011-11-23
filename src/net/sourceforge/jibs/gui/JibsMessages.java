@@ -24,7 +24,7 @@ public class JibsMessages {
 			logger.info("Reading message file (" + filename + ")");
 			InputStream systemResourceAsStream = ClassLoader
 					.getSystemResourceAsStream(filename);
-			System.out.println("Axel2:"+systemResourceAsStream);
+			System.out.println("Axel2:" + systemResourceAsStream);
 			buffer = new BufferedReader(messageReader);
 
 			messageMap = new HashMap<String, String>();

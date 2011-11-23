@@ -1,7 +1,7 @@
 package command;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
@@ -31,10 +31,12 @@ public class UnknownCommand {
 	private Server server;
 	private ClientWorker clientWorker;
 	private SqlSessionFactory sqlMapper;
+
 	@Before
 	public void setup() {
 		testServer = JibsFactory.createTestServer("conf/jibs.properties");
-		testClient = JibsFactory.createTestClient("conf/jibs.properties", testServer.server);
+		testClient = JibsFactory.createTestClient("conf/jibs.properties",
+				testServer.server);
 		byteArrayOutputStream = testClient.byteArrayOutputStream;
 		jibsWriter = testClient.jibsWriter;
 		server = testServer.server;
@@ -44,8 +46,10 @@ public class UnknownCommand {
 
 	@Test
 	public void unknownCommand() {
-		String login1 = "login clientHugo 1008 "+TestProperties.getKey("dbUser1.name")+" "+ TestProperties.getKey("dbUser1.password");
-		Player player = Login_Command.login(sqlMapper,login1);
+		String login1 = "login clientHugo 1008 "
+				+ TestProperties.getKey("dbUser1.name") + " "
+				+ TestProperties.getKey("dbUser1.password");
+		Player player = Login_Command.login(sqlMapper, login1);
 		assertNotNull(player);
 		assertTrue(player.is_valid());
 		player.setOutputStream(jibsWriter);
@@ -55,6 +59,5 @@ public class UnknownCommand {
 		String result = byteArrayOutputStream.toString();
 		assertEquals("** Unknown command: 'badCmd'\r\n", result);
 	}
-
 
 }

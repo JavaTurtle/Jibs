@@ -63,8 +63,10 @@ public class JibsGame {
 		game.getBackgammonBoard().setMatchVersion(
 				new JibsMatch(resumeData.getMatchVersion()));
 
-		game.getBackgammonBoard().setPlayerXdie1Value(Die.roll(jibsServer.getJibsRandom()));
-		game.getBackgammonBoard().setPlayerXdie2Value(Die.roll(jibsServer.getJibsRandom()));
+		game.getBackgammonBoard().setPlayerXdie1Value(
+				Die.roll(jibsServer.getJibsRandom()));
+		game.getBackgammonBoard().setPlayerXdie2Value(
+				Die.roll(jibsServer.getJibsRandom()));
 
 		StringTokenizer tokenizer = new StringTokenizer(resumeData.getBoard(),
 				":");
@@ -353,8 +355,8 @@ public class JibsGame {
 
 	public int calcPossibleMoves(JibsGame game, Player player,
 			boolean isFirstMove, int turn, MoveChances nrChances,
-			JibsWriter out1, JibsWriter out2, BackgammonBoard board,
-			int dice1, int dice2) {
+			JibsWriter out1, JibsWriter out2, BackgammonBoard board, int dice1,
+			int dice2) {
 		Object[] obj = null;
 		String msg = null;
 		int nrMoves = 0;
@@ -362,12 +364,13 @@ public class JibsGame {
 
 		switch (turn) {
 		case -1:
-
 			BackgammonBoard opBoard = board.switch2O();
 			opBoard.setCanMove(0);
-			opBoard.outBoard(out2, "You", turn, 0, 0, dice1, dice2); // O
-																		// out2.println("board:You:aleucht:2:0:0:0:-2:0:0:0:0:5:0:3:0:0:0:-5:5:0:0:0:-3:0:-5:0:0:0:0:2:0:-1:0:0:5:3:1:1:1:0:1:-1:0:25:0:0:0:0:0:0:0:0");
-																		// out2.println("board:You:aleucht:2:0:1:0:-2:0:0:0:0:5:0:3:0:0:0:-5:5:0:0:0:-3:0:-5:0:0:0:0:2:0:-1:0:0:5:3:1:1:0:0:1:-1:0:25:0:0:0:0:0:0:0:0");
+			String outBoard = opBoard.outBoard(out2, "You", turn, 0, 0, dice1,
+					dice2); // O
+			String q = "board:You:bob:2:0:0:0:-2:0:0:0:0:5:0:3:0:0:0:-5:5:0:0:0:-3:0:-5:0:0:0:0:2:0:-1:0:0:3:1:1:1:1:0:1:-1:0:25:0:0:0:0:0:0:0:0";
+			out2.println(q);
+			System.out.println(q.equals(outBoard));
 
 			board.getPlayerO().show2WatcherBoard(opBoard,
 					board.getPlayerO().getName(), 0, 0, dice1, dice2);
@@ -848,12 +851,14 @@ public class JibsGame {
 			newRating = ratingA - d;
 			newExperience = expA + board.getMatchlength();
 
-			ClientWorker.changeRating(jibsServer.getSqlSessionFactory(), board.getPlayerX(), newRating, newExperience);
+			ClientWorker.changeRating(jibsServer.getSqlSessionFactory(),
+					board.getPlayerX(), newRating, newExperience);
 
 			newRating = ratingB + d;
 			newExperience = expB + board.getMatchlength();
 
-			ClientWorker.changeRating(jibsServer.getSqlSessionFactory(), board.getPlayerO(), newRating, newExperience);
+			ClientWorker.changeRating(jibsServer.getSqlSessionFactory(),
+					board.getPlayerO(), newRating, newExperience);
 			out1.println(winMsg);
 			out2.println(looseMsg);
 			new GameEnder(jibsServer, board.getPlayerX(), board.getPlayerO())
@@ -989,11 +994,13 @@ public class JibsGame {
 
 			newRating = ratingA + d;
 			newExperience = expA + board.getMatchlength();
-			ClientWorker.changeRating(jibsServer.getSqlSessionFactory(), board.getPlayerX(), newRating, newExperience);
+			ClientWorker.changeRating(jibsServer.getSqlSessionFactory(),
+					board.getPlayerX(), newRating, newExperience);
 
 			newRating = ratingB - d;
 			newExperience = expB + board.getMatchlength();
-			ClientWorker.changeRating(jibsServer.getSqlSessionFactory(), board.getPlayerO(), newRating, newExperience);
+			ClientWorker.changeRating(jibsServer.getSqlSessionFactory(),
+					board.getPlayerO(), newRating, newExperience);
 
 			out1.println(winMsg);
 			out2.println(looseMsg);

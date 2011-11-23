@@ -1,4 +1,5 @@
 package command;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -20,6 +21,7 @@ import util.TestProperties;
 
 public class Login {
 	private SqlSessionFactory sqlMapper;
+
 	@Before
 	public void setUp() {
 		try {
@@ -27,8 +29,7 @@ public class Login {
 					"conf/jibs.properties");
 			String sqlMapConfig = configuration.getResource("dbConfiguration");
 			Reader reader = Resources.getResourceAsReader(sqlMapConfig);
-			sqlMapper = new SqlSessionFactoryBuilder()
-					.build(reader);
+			sqlMapper = new SqlSessionFactoryBuilder().build(reader);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -36,25 +37,25 @@ public class Login {
 
 	@Test
 	public void goodLogin() {
-		String login1 = "login clientHugo 1008 "+TestProperties.getKey("dbUser1.name")+" "+ TestProperties.getKey("dbUser1.password");
+		String login1 = "login clientHugo 1008 "
+				+ TestProperties.getKey("dbUser1.name") + " "
+				+ TestProperties.getKey("dbUser1.password");
 
-		Player player = Login_Command.login(sqlMapper,login1);
+		Player player = Login_Command.login(sqlMapper, login1);
 		assertNotNull(player);
 		assertTrue(player.is_valid());
 	}
 
 	@Test
 	public void badPassword() {
-		Player player = Login_Command.login(
-				sqlMapper,
+		Player player = Login_Command.login(sqlMapper,
 				"login clientHugo 1008 aleucht badPassword");
 		assertNull(player);
 	}
 
 	@Test
 	public void badUser() {
-		Player player = Login_Command.login(
-				sqlMapper,
+		Player player = Login_Command.login(sqlMapper,
 				"login clientHugo 1008 badUser badPassword");
 		assertNull(player);
 	}

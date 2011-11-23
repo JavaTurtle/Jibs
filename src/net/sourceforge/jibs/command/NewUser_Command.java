@@ -8,7 +8,6 @@ package net.sourceforge.jibs.command;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.Writer;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.sql.Timestamp;

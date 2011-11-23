@@ -5,36 +5,36 @@ import net.sourceforge.jibs.server.JibsQuestion;
 import net.sourceforge.jibs.server.Player;
 
 public class InviteQuestion implements JibsQuestion {
-    private int matchLength;
-    private Player inviter;
-    private Player invitee;
-    private JibsMatch matchVersion;
+	private int matchLength;
+	private Player inviter;
+	private Player invitee;
+	private JibsMatch matchVersion;
 
-    public InviteQuestion(int matchLength, Player player, Player opponent,
-                          JibsMatch matchVersion) {
-        this.matchLength = matchLength;
-        this.inviter = player;
-        this.invitee = opponent;
-        this.matchVersion = matchVersion;
-    }
+	public InviteQuestion(int matchLength, Player player, Player opponent,
+			JibsMatch matchVersion) {
+		this.matchLength = matchLength;
+		this.inviter = player;
+		this.invitee = opponent;
+		this.matchVersion = matchVersion;
+	}
 
-    public Player getInviter() {
-        return inviter;
-    }
+	public Player getInviter() {
+		return inviter;
+	}
 
-    public int getMatchLength() {
-        return matchLength;
-    }
+	public int getMatchLength() {
+		return matchLength;
+	}
 
-    public Player getInvitee() {
-        return invitee;
-    }
+	public Player getInvitee() {
+		return invitee;
+	}
 
-    public JibsMatch getMatchVersion() {
-        return matchVersion;
-    }
+	public JibsMatch getMatchVersion() {
+		return matchVersion;
+	}
 
-    public void setMatchVersion(JibsMatch matchVersion) {
-        this.matchVersion = matchVersion;
-    }
+	public void setMatchVersion(JibsMatch matchVersion) {
+		this.matchVersion = matchVersion;
+	}
 }

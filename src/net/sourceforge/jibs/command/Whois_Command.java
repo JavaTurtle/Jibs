@@ -9,32 +9,32 @@ import net.sourceforge.jibs.util.JibsWriter;
  * The Whois command.
  */
 public class Whois_Command implements JibsCommand {
-    public boolean execute(Server server, Player player,
-                           String strArgs, String[] args) {
-        JibsMessages jibsMessages = server.getJibsMessages();
-        JibsWriter out = player.getOutputStream();
-        String msg = null;
-        if (args.length == 2) {
-            String name = args[1];
-    		Player whoisPlayerDB = Player.load(server.getJibsServer()
-    				.getSqlSessionFactory(), name); //
+	public boolean execute(Server server, Player player, String strArgs,
+			String[] args) {
+		JibsMessages jibsMessages = server.getJibsMessages();
+		JibsWriter out = player.getOutputStream();
+		String msg = null;
+		if (args.length == 2) {
+			String name = args[1];
+			Player whoisPlayerDB = Player.load(server.getJibsServer()
+					.getSqlSessionFactory(), name); //
 
-            if (whoisPlayerDB != null) {
-                WhoisPlayer.whois(server, out, whoisPlayerDB);
-            } else {
-                // m_noone=** There is no one called %0.
-                Object[] obj = new Object[] { name };
-                msg = jibsMessages.convert("m_noinformation", obj);
-                out.println(msg);
+			if (whoisPlayerDB != null) {
+				WhoisPlayer.whois(server, out, whoisPlayerDB);
+			} else {
+				// m_noone=** There is no one called %0.
+				Object[] obj = new Object[] { name };
+				msg = jibsMessages.convert("m_noinformation", obj);
+				out.println(msg);
 
-                return true;
-            }
-        } else {
-            // m_argument_mssing=** please give a name as an argument.
-            msg = jibsMessages.convert("m_argument_mssing");
-            out.println(msg);
-        }
+				return true;
+			}
+		} else {
+			// m_argument_mssing=** please give a name as an argument.
+			msg = jibsMessages.convert("m_argument_mssing");
+			out.println(msg);
+		}
 
-        return true;
-    }
+		return true;
+	}
 }

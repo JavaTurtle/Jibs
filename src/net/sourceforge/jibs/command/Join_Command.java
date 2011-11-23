@@ -277,7 +277,7 @@ public class Join_Command implements JibsCommand {
 		String whoinfo = Player.whoinfo(player);
 		builder.append(whoinfo);
 		out.println(builder.toString());
-		
+
 		builder = new StringBuilder();
 		builder.append(ClipConstants.CLIP_WHO_INFO + " ");
 		whoinfo = Player.whoinfo(opponent);

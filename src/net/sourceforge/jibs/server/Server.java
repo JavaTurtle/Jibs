@@ -30,193 +30,196 @@ import net.sourceforge.jibs.util.JibsWriter;
 import org.apache.log4j.Logger;
 
 public class Server implements Runnable {
-    private static final Logger logger = Logger.getLogger(Server.class);
-    private ServerSocket serverSocket;
-    private JibsMessages jibsMessages;
-    private JibsConfiguration jibsConfiguration;
-    private HashMap<String, Player> allClients;
-    private JibsServer jibsServer;
-    private boolean runs;
+	private static final Logger logger = Logger.getLogger(Server.class);
+	private ServerSocket serverSocket;
+	private JibsMessages jibsMessages;
+	private JibsConfiguration jibsConfiguration;
+	private HashMap<String, Player> allClients;
+	private JibsServer jibsServer;
+	private boolean runs;
 
-    public Server(JibsConfiguration jibsConfiguration, JibsMessages jibsMessages) {
-    	init(jibsConfiguration, jibsMessages, null, null);
-    }
-    
-    public Server(JibsConfiguration jibsConfiguration, JibsMessages jibsMessages, JibsServer server,
-                  ServerSocket listener,int portNo) {
-    	init(jibsConfiguration, jibsMessages, server, listener);
-    }
-
-	private void init(JibsConfiguration jibsConfiguration,
-			JibsMessages jibsMessages, JibsServer server, ServerSocket serverSocket) {
-		this.jibsConfiguration = jibsConfiguration;
-        this.jibsMessages = jibsMessages;
-        this.jibsServer = server;
-        this.serverSocket = serverSocket;
-        allClients = new HashMap<String, Player>();
-        runs = true;
+	public Server(JibsConfiguration jibsConfiguration, JibsMessages jibsMessages) {
+		init(jibsConfiguration, jibsMessages, null, null);
 	}
 
-    public JibsServer getJibsServer() {
-        return jibsServer;
-    }
+	public Server(JibsConfiguration jibsConfiguration,
+			JibsMessages jibsMessages, JibsServer server,
+			ServerSocket listener, int portNo) {
+		init(jibsConfiguration, jibsMessages, server, listener);
+	}
 
-    public HashMap<String, Player> getAllClients() {
-        return allClients;
-    }
+	private void init(JibsConfiguration jibsConfiguration,
+			JibsMessages jibsMessages, JibsServer server,
+			ServerSocket serverSocket) {
+		this.jibsConfiguration = jibsConfiguration;
+		this.jibsMessages = jibsMessages;
+		this.jibsServer = server;
+		this.serverSocket = serverSocket;
+		allClients = new HashMap<String, Player>();
+		runs = true;
+	}
 
-    public boolean runs() {
-        return runs;
-    }
+	public JibsServer getJibsServer() {
+		return jibsServer;
+	}
 
-    public void logo(JibsWriter out, int nrTries) {
-        BufferedReader inp = null;
+	public HashMap<String, Player> getAllClients() {
+		return allClients;
+	}
 
-        try {
-            if (nrTries == 1) {
-                String sName = jibsConfiguration.getResource("login");
-                InputStream stream = ClassLoader.getSystemResourceAsStream(sName);
-                inp = new BufferedReader(new InputStreamReader(stream));
+	public boolean runs() {
+		return runs;
+	}
 
-                String theLine = inp.readLine();
+	public void logo(JibsWriter out, int nrTries) {
+		BufferedReader inp = null;
 
-                while (theLine != null) {
-                    out.println(theLine);
-                    theLine = inp.readLine();
-                }
+		try {
+			if (nrTries == 1) {
+				String sName = jibsConfiguration.getResource("login");
+				InputStream stream = ClassLoader
+						.getSystemResourceAsStream(sName);
+				inp = new BufferedReader(new InputStreamReader(stream));
 
-                //inp.close();
+				String theLine = inp.readLine();
 
-                SimpleDateFormat formatter = new SimpleDateFormat("MMMMMMMMMM dd HH:mm:ss yyyy z",
-                                                                  Locale.US);
-                Date now = new Date();
-                String myLoginStr1 = formatter.format(now);
+				while (theLine != null) {
+					out.println(theLine);
+					theLine = inp.readLine();
+				}
 
-                DateFormat fmt = new SimpleDateFormat("MMMMMMMMMM dd HH:mm:ss yyyy z",
-                                                      Locale.US);
+				// inp.close();
 
-                fmt.setTimeZone(TimeZone.getTimeZone("UTC"));
+				SimpleDateFormat formatter = new SimpleDateFormat(
+						"MMMMMMMMMM dd HH:mm:ss yyyy z", Locale.US);
+				Date now = new Date();
+				String myLoginStr1 = formatter.format(now);
 
-                String myLoginStr2 = fmt.format(now);
+				DateFormat fmt = new SimpleDateFormat(
+						"MMMMMMMMMM dd HH:mm:ss yyyy z", Locale.US);
 
-                out.println(myLoginStr1 + "        [" + myLoginStr2 + "]");
-            }
+				fmt.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-            out.print("login: ");
-            out.flush();
-        } catch (FileNotFoundException e) {
-            jibsServer.logException(e);
-        } catch (IOException e) {
-            jibsServer.logException(e);
-        } finally {
-//            try {
-//                if (inp != null) {
-//                    inp.close();
-//                }
-//            } catch (IOException e) {
-//                jibsServer.logException(e);
-//            }
-        }
-    }
+				String myLoginStr2 = fmt.format(now);
 
-    public void run() {
-        while (runs) {
-            Socket client;
-            BufferedReader in;
-            JibsWriter out;
-            boolean bLogin = true;
+				out.println(myLoginStr1 + "        [" + myLoginStr2 + "]");
+			}
 
-            try {
-                client = serverSocket.accept();
-                client.setKeepAlive( true );
-                in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                out = new JibsWriter(client.getOutputStream());
+			out.print("login: ");
+			out.flush();
+		} catch (FileNotFoundException e) {
+			jibsServer.logException(e);
+		} catch (IOException e) {
+			jibsServer.logException(e);
+		} finally {
+			// try {
+			// if (inp != null) {
+			// inp.close();
+			// }
+			// } catch (IOException e) {
+			// jibsServer.logException(e);
+			// }
+		}
+	}
 
-                JibsShutdown jibsShutdown = jibsServer.getJibsShutdown();
+	public void run() {
+		while (runs) {
+			Socket client;
+			BufferedReader in;
+			JibsWriter out;
+			boolean bLogin = true;
 
-                if (jibsShutdown != null) {
-                    Date dt = jibsShutdown.getShutdownDate();
-                    Date now = new Date();
-                    long diff = Math.abs(now.getTime() - dt.getTime());
+			try {
+				client = serverSocket.accept();
+				client.setKeepAlive(true);
+				in = new BufferedReader(new InputStreamReader(
+						client.getInputStream()));
+				out = new JibsWriter(client.getOutputStream());
 
-                    if (diff < (10 * 60 * 1000)) {
-                        out.println("jIBS will shutdown. No login allowed.");
-                        client.close();
-                        bLogin = false;
-                    }
-                }
+				JibsShutdown jibsShutdown = jibsServer.getJibsShutdown();
 
-                if (bLogin) {
-                    ClientWorker w = new ClientWorker(jibsConfiguration, jibsMessages, this,
-                                                      client, in, out);
-                    Thread t = new Thread(w);
-                    t.start();
-                }
-            } catch (IOException e) {
-                boolean doLog = e.getMessage()
-                                 .equalsIgnoreCase("Socket is closed");
-                doLog |= e.getMessage().equalsIgnoreCase("socket closed");
+				if (jibsShutdown != null) {
+					Date dt = jibsShutdown.getShutdownDate();
+					Date now = new Date();
+					long diff = Math.abs(now.getTime() - dt.getTime());
 
-                if (!doLog) {
-                    jibsServer.logException(e);
-                }
-            }
-        }
-    }
+					if (diff < (10 * 60 * 1000)) {
+						out.println("jIBS will shutdown. No login allowed.");
+						client.close();
+						bLogin = false;
+					}
+				}
 
-    public Player getPlayer(String string) {
-        HashMap map = getAllClients();
-        Set set = map.entrySet();
-        Iterator iter = set.iterator();
+				if (bLogin) {
+					ClientWorker w = new ClientWorker(jibsConfiguration,
+							jibsMessages, this, client, in, out);
+					Thread t = new Thread(w);
+					t.start();
+				}
+			} catch (IOException e) {
+				boolean doLog = e.getMessage().equalsIgnoreCase(
+						"Socket is closed");
+				doLog |= e.getMessage().equalsIgnoreCase("socket closed");
 
-        while (iter.hasNext()) {
-            Entry entry = (Entry) iter.next();
-            Player curPlayer = (Player) entry.getValue();
+				if (!doLog) {
+					jibsServer.logException(e);
+				}
+			}
+		}
+	}
 
-            if (curPlayer.getName().equals(string)) {
-                return curPlayer;
-            }
-        }
+	public Player getPlayer(String string) {
+		HashMap map = getAllClients();
+		Set set = map.entrySet();
+		Iterator iter = set.iterator();
 
-        return null;
-    }
+		while (iter.hasNext()) {
+			Entry entry = (Entry) iter.next();
+			Player curPlayer = (Player) entry.getValue();
 
-    public Collection<Player> getAwayPlayer() {
-        HashMap map = getAllClients();
-        Set set = map.entrySet();
-        Iterator iter = set.iterator();
-        Collection<Player> list = new ArrayList<Player>();
+			if (curPlayer.getName().equals(string)) {
+				return curPlayer;
+			}
+		}
 
-        while (iter.hasNext()) {
-            Entry entry = (Entry) iter.next();
-            Player curPlayer = (Player) entry.getValue();
+		return null;
+	}
 
-            if (curPlayer.checkToggle("away")) {
-                list.add(curPlayer);
-            }
-        }
+	public Collection<Player> getAwayPlayer() {
+		HashMap map = getAllClients();
+		Set set = map.entrySet();
+		Iterator iter = set.iterator();
+		Collection<Player> list = new ArrayList<Player>();
 
-        if (list.size() > 0) {
-            return list;
-        } else {
-            return null;
-        }
-    }
+		while (iter.hasNext()) {
+			Entry entry = (Entry) iter.next();
+			Player curPlayer = (Player) entry.getValue();
 
-    public static Logger getLogger() {
-        return logger;
-    }
+			if (curPlayer.checkToggle("away")) {
+				list.add(curPlayer);
+			}
+		}
 
-    public JibsMessages getJibsMessages() {
-        return jibsMessages;
-    }
+		if (list.size() > 0) {
+			return list;
+		} else {
+			return null;
+		}
+	}
 
-    public void setJibsMessages(JibsMessages jibsMessages) {
-        this.jibsMessages = jibsMessages;
-    }
+	public static Logger getLogger() {
+		return logger;
+	}
 
+	public JibsMessages getJibsMessages() {
+		return jibsMessages;
+	}
 
-    public ServerSocket getServerSocket() {
+	public void setJibsMessages(JibsMessages jibsMessages) {
+		this.jibsMessages = jibsMessages;
+	}
+
+	public ServerSocket getServerSocket() {
 		return serverSocket;
 	}
 
@@ -225,71 +228,74 @@ public class Server implements Runnable {
 	}
 
 	public boolean isRuns() {
-        return runs;
-    }
+		return runs;
+	}
 
-    public void setRuns(boolean runs) {
-        this.runs = runs;
-    }
+	public void setRuns(boolean runs) {
+		this.runs = runs;
+	}
 
-    public void setAllClients(HashMap<String, Player> allClients) {
-        this.allClients = allClients;
-    }
+	public void setAllClients(HashMap<String, Player> allClients) {
+		this.allClients = allClients;
+	}
 
-    public void setJibsServer(JibsServer jibsServer) {
-        this.jibsServer = jibsServer;
-    }
+	public void setJibsServer(JibsServer jibsServer) {
+		this.jibsServer = jibsServer;
+	}
 
-    @SuppressWarnings("unchecked")
-    public void closeAllClients() {
-        Map<String, Player> omap = (Map) getAllClients().clone();
-        Map map = Collections.synchronizedMap(omap);
+	@SuppressWarnings("unchecked")
+	public void closeAllClients() {
+		Map<String, Player> omap = (Map) getAllClients().clone();
+		Map map = Collections.synchronizedMap(omap);
 
-        synchronized (map) {
-            Set set = map.entrySet();
-            Iterator iter = set.iterator();
-            Exit_Command exitCommand = new Exit_Command();
-            Leave_Command leaveCommand = new Leave_Command();
+		synchronized (map) {
+			Set set = map.entrySet();
+			Iterator iter = set.iterator();
+			Exit_Command exitCommand = new Exit_Command();
+			Leave_Command leaveCommand = new Leave_Command();
 
-            while (iter.hasNext()) {
-                Entry entry = (Entry) iter.next();
-                Player curPlayer = (Player) entry.getValue();
-                leaveCommand.saveGamePanic(this, curPlayer.getGame());
-                exitCommand.displayLogoff(jibsConfiguration.getResource("logout"), curPlayer.getOutputStream());
+			while (iter.hasNext()) {
+				Entry entry = (Entry) iter.next();
+				Player curPlayer = (Player) entry.getValue();
+				leaveCommand.saveGamePanic(this, curPlayer.getGame());
+				exitCommand.displayLogoff(
+						jibsConfiguration.getResource("logout"),
+						curPlayer.getOutputStream());
 
-                ClientWorker cw = curPlayer.getClientWorker();
+				ClientWorker cw = curPlayer.getClientWorker();
 
-                if (cw != null) {
-                    cw.disConnectPlayer(jibsServer.getSqlSessionFactory(), curPlayer);
-                    cw.stopWatchThread();
+				if (cw != null) {
+					cw.disConnectPlayer(jibsServer.getSqlSessionFactory(),
+							curPlayer);
+					cw.stopWatchThread();
 
-                    try {
-                        cw.getSocket().close();
-                    } catch (IOException e) {
-                        jibsServer.logException(e);
-                    }
-                }
-            }
-        }
-    }
+					try {
+						cw.getSocket().close();
+					} catch (IOException e) {
+						jibsServer.logException(e);
+					}
+				}
+			}
+		}
+	}
 
-    public Player isPlayerOnline(Player player) {
-        boolean retCode = false;
-        HashMap map = getAllClients();
-        Set set = map.entrySet();
-        Iterator iter = set.iterator();
+	public Player isPlayerOnline(Player player) {
+		boolean retCode = false;
+		HashMap map = getAllClients();
+		Set set = map.entrySet();
+		Iterator iter = set.iterator();
 
-        while (iter.hasNext()) {
-            Entry entry = (Entry) iter.next();
-            Player curPlayer = (Player) entry.getValue();
+		while (iter.hasNext()) {
+			Entry entry = (Entry) iter.next();
+			Player curPlayer = (Player) entry.getValue();
 
-            if (curPlayer.getName().equals(player.getName())) {
-                return curPlayer;
-            }
-        }
+			if (curPlayer.getName().equals(player.getName())) {
+				return curPlayer;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
 	public JibsConfiguration getConfiguration() {
 		return jibsConfiguration;
@@ -298,5 +304,5 @@ public class Server implements Runnable {
 	public void setConfiguration(JibsConfiguration jibsConfiguration) {
 		this.jibsConfiguration = jibsConfiguration;
 	}
-    
+
 }

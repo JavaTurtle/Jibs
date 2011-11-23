@@ -459,19 +459,19 @@ public class BackgammonBoard {
 	 * @param j
 	 * @param k
 	 */
-	public void outBoard(JibsWriter out2, String name, int turn, int dice1,
+	public String outBoard(JibsWriter out2, String name, int turn, int dice1,
 			int dice2, int j, int k) {
 		try {
 			Player player = getPlayerX();
 			JibsSet jibsSet = player.getJibsSet();
 			String strBoardStyle = (String) jibsSet.get("boardstyle");
 			int boardstyle = new Integer(strBoardStyle).intValue();
-
+			String x = "";
 			switch (boardstyle) {
 			case 1:
 			default:
 			case 2:
-				String x = outBoard_2(turn, dice1, dice2, j, k);
+				x = outBoard_2(turn, dice1, dice2, j, k);
 				out2.print(x);
 				break;
 
@@ -480,9 +480,11 @@ public class BackgammonBoard {
 				out2.print(x);
 				break;
 			}
+			return x;
 		} catch (NumberFormatException e) {
 			logger.warn(e);
 		}
+		return null;
 	}
 
 	/**

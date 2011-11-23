@@ -1,4 +1,5 @@
 package command;
+
 import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
@@ -37,8 +38,12 @@ public class Invite {
 
 	@Before
 	public void setup() {
-		login1 = "login clientHugo 1008 "+TestProperties.getKey("dbUser1.name")+" "+ TestProperties.getKey("dbUser1.password");
-		login2 = "login clientHugo 1008 "+TestProperties.getKey("dbUser2.name")+" "+ TestProperties.getKey("dbUser2.password");
+		login1 = "login clientHugo 1008 "
+				+ TestProperties.getKey("dbUser1.name") + " "
+				+ TestProperties.getKey("dbUser1.password");
+		login2 = "login clientHugo 1008 "
+				+ TestProperties.getKey("dbUser2.name") + " "
+				+ TestProperties.getKey("dbUser2.password");
 		testServer = JibsFactory.createTestServer("conf/jibs.properties");
 		server = testServer.server;
 		testClient1 = JibsFactory.createTestClient("conf/jibs.properties",
@@ -56,11 +61,11 @@ public class Invite {
 
 	@Test
 	public void inviteNormal() {
-		Player player1 = Login_Command.login(sqlMapper,login1);
+		Player player1 = Login_Command.login(sqlMapper, login1);
 		player1.setOutputStream(jibsWriter1);
 		player1.setClientWorker(clientWorker1);
 		clientWorker1.connectPlayer(player1);
-		Player player2 = Login_Command.login(sqlMapper,login2);
+		Player player2 = Login_Command.login(sqlMapper, login2);
 		player2.setOutputStream(jibsWriter2);
 		player2.setClientWorker(clientWorker2);
 		clientWorker1.connectPlayer(player2);
@@ -70,7 +75,9 @@ public class Invite {
 		String result = byteArrayOutputStream1.toString();
 		assertEquals("** You invited bob to a 1 point match.\r\n", result);
 		result = byteArrayOutputStream2.toString();
-		assertEquals("alice wants to play a 1 point match with you.\r\nType 'join alice' to accept.\r\n", result);
+		assertEquals(
+				"alice wants to play a 1 point match with you.\r\nType 'join alice' to accept.\r\n",
+				result);
 	}
 
 	@Test
@@ -82,7 +89,7 @@ public class Invite {
 		Player player2 = Login_Command.login(sqlMapper, login2);
 		player2.setOutputStream(jibsWriter2);
 		player2.setClientWorker(clientWorker2);
-        player2.changeToggle("ready", Boolean.FALSE);
+		player2.changeToggle("ready", Boolean.FALSE);
 		clientWorker1.connectPlayer(player2);
 		JibsCommand invite = new Invite_Command();
 		invite.execute(server, player1, "invite bob 1", new String[] {
@@ -100,7 +107,7 @@ public class Invite {
 		Player player2 = Login_Command.login(sqlMapper, login2);
 		player2.setOutputStream(jibsWriter2);
 		player2.setClientWorker(clientWorker2);
-        player2.setOpponent(player1);
+		player2.setOpponent(player1);
 		clientWorker1.connectPlayer(player2);
 		JibsCommand invite = new Invite_Command();
 		invite.execute(server, player1, "invite bob 1", new String[] {
@@ -111,20 +118,22 @@ public class Invite {
 
 	@Test
 	public void inviteBadArgument() {
-		Player player1 = Login_Command.login(sqlMapper,login1);
+		Player player1 = Login_Command.login(sqlMapper, login1);
 		player1.setOutputStream(jibsWriter1);
 		player1.setClientWorker(clientWorker1);
 		clientWorker1.connectPlayer(player1);
 		Player player2 = Login_Command.login(sqlMapper, login2);
 		player2.setOutputStream(jibsWriter2);
 		player2.setClientWorker(clientWorker2);
-        player2.changeToggle("ready", Boolean.TRUE);
+		player2.changeToggle("ready", Boolean.TRUE);
 		clientWorker1.connectPlayer(player2);
 		JibsCommand invite = new Invite_Command();
 		invite.execute(server, player1, "invite bob 1", new String[] {
 				"invite", "bob", "x" });
 		String result = byteArrayOutputStream1.toString();
-		assertEquals("** The second argument to 'invite' has to be a number or the word 'unlimited'\r\n", result);
+		assertEquals(
+				"** The second argument to 'invite' has to be a number or the word 'unlimited'\r\n",
+				result);
 	}
 
 	@Test
@@ -137,13 +146,15 @@ public class Invite {
 		Player player2 = Login_Command.login(sqlMapper, login2);
 		player2.setOutputStream(jibsWriter2);
 		player2.setClientWorker(clientWorker2);
-        player2.changeToggle("ready", Boolean.TRUE);
+		player2.changeToggle("ready", Boolean.TRUE);
 		clientWorker1.connectPlayer(player2);
 		JibsCommand invite = new Invite_Command();
-		invite.execute(server, player1, "", new String[] {
-				"invite", "bob", "10" });
+		invite.execute(server, player1, "", new String[] { "invite", "bob",
+				"10" });
 		String result = byteArrayOutputStream1.toString();
-		assertEquals("** You're not experienced enough to play a match of that length.\r\n", result);
+		assertEquals(
+				"** You're not experienced enough to play a match of that length.\r\n",
+				result);
 	}
 
 	@Test
@@ -158,8 +169,8 @@ public class Invite {
 		player2.setClientWorker(clientWorker2);
 		clientWorker1.connectPlayer(player2);
 		JibsCommand invite = new Invite_Command();
-		invite.execute(server, player1, "", new String[] {
-				"invite", "bob", "unlimited" });
+		invite.execute(server, player1, "", new String[] { "invite", "bob",
+				"unlimited" });
 		String result = byteArrayOutputStream1.toString();
 		assertEquals("** You invited bob to an unlimited match.\r\n", result);
 	}
@@ -176,8 +187,8 @@ public class Invite {
 		clientWorker1.connectPlayer(player1);
 		clientWorker1.connectPlayer(player2);
 		JibsCommand invite = new Invite_Command();
-		invite.execute(server, player1, "", new String[] {
-				"invite", "bob", "1" });
+		invite.execute(server, player1, "",
+				new String[] { "invite", "bob", "1" });
 		String result = byteArrayOutputStream1.toString();
 		assertEquals("** You are already playing.\r\n", result);
 	}
@@ -190,42 +201,46 @@ public class Invite {
 		Player player2 = Login_Command.login(sqlMapper, login2);
 		player2.setOutputStream(jibsWriter2);
 		player2.setClientWorker(clientWorker2);
-        player2.changeToggle("away", Boolean.TRUE);
-        player2.setAwayMsg("Be right back");
+		player2.changeToggle("away", Boolean.TRUE);
+		player2.setAwayMsg("Be right back");
 		clientWorker1.connectPlayer(player1);
 		clientWorker1.connectPlayer(player2);
 		JibsCommand invite = new Invite_Command();
-		invite.execute(server, player1, "", new String[] {
-				"invite", "bob", "1" });
+		invite.execute(server, player1, "",
+				new String[] { "invite", "bob", "1" });
 		String result = byteArrayOutputStream1.toString();
-		assertEquals("** You invited bob to a 1 point match.\r\nbob is away: Be right back\r\n", result);
+		assertEquals(
+				"** You invited bob to a 1 point match.\r\nbob is away: Be right back\r\n",
+				result);
 		result = byteArrayOutputStream2.toString();
-		assertEquals("alice wants to play a 1 point match with you.\r\nType 'join alice' to accept.\r\n", result);
+		assertEquals(
+				"alice wants to play a 1 point match with you.\r\nType 'join alice' to accept.\r\n",
+				result);
 	}
-	
+
 	@Test
 	public void inviteWho() {
 		Player player1 = Login_Command.login(sqlMapper, login1);
 		player1.setOutputStream(jibsWriter1);
 		player1.setClientWorker(clientWorker1);
 		JibsCommand invite = new Invite_Command();
-		invite.execute(server, player1, "invite", new String[] {
-				"invite"});
+		invite.execute(server, player1, "invite", new String[] { "invite" });
 		String result = byteArrayOutputStream1.toString();
 		assertEquals("** invite who?\r\n", result);
 	}
-	
+
 	@Test
 	public void inviteYouself() {
 		Player player1 = Login_Command.login(sqlMapper, login1);
 		player1.setOutputStream(jibsWriter1);
 		player1.setClientWorker(clientWorker1);
 		JibsCommand invite = new Invite_Command();
-		invite.execute(server, player1, "", new String[] {
-				"invite", "alice", "1" });
+		invite.execute(server, player1, "", new String[] { "invite", "alice",
+				"1" });
 		String result = byteArrayOutputStream1.toString();
 		assertEquals("** You can't invite yourself.\r\n", result);
 	}
+
 	@Test
 	public void inviteUnknownUser() {
 		Player player1 = Login_Command.login(sqlMapper, login1);

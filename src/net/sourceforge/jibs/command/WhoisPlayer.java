@@ -60,7 +60,8 @@ public class WhoisPlayer {
 				builder = new StringBuilder();
 				boolean away = whoisPlayerOnline.checkToggle("away");
 				if (away) {
-					builder.append("  "+name+" is away:"+whoisPlayerOnline.getAwayMsg());
+					builder.append("  " + name + " is away:"
+							+ whoisPlayerOnline.getAwayMsg());
 					out.println(builder.toString());
 				}
 			} else {

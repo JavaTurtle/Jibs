@@ -10,8 +10,8 @@ import net.sourceforge.jibs.util.JibsWriter;
  * The Board command.
  */
 public class Board_Command implements JibsCommand {
-	public boolean execute(Server server, Player player,
-			String strArgs, String[] args) {
+	public boolean execute(Server server, Player player, String strArgs,
+			String[] args) {
 		JibsGame game = player.getGame();
 		JibsWriter out = player.getOutputStream();
 

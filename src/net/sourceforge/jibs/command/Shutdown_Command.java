@@ -17,94 +17,98 @@ import org.apache.log4j.Logger;
  */
 public class Shutdown_Command implements JibsCommand {
 	private static Logger logger = Logger.getLogger(Shutdown_Command.class);
-   public boolean execute(Server server, Player player,
-                           String strArgs, String[] args) {
-        JibsMessages jibsMessages = server.getJibsMessages();
-        JibsWriter out = player.getOutputStream();
-        String s;
-        int minutes = 0;
-        boolean bMinutesValid = false;
-        boolean bNow = false;
-        boolean bRestart = false;
 
-        if (player.isAdmin()) {
-            if (args.length >= 1) {
-                try {
-                    minutes = Integer.valueOf(args[1]);
-                    bMinutesValid = true;
-                } catch (NumberFormatException e) {
-                    if (args[1].equalsIgnoreCase("now")) {
-                        bNow = true;
-                    }
+	public boolean execute(Server server, Player player, String strArgs,
+			String[] args) {
+		JibsMessages jibsMessages = server.getJibsMessages();
+		JibsWriter out = player.getOutputStream();
+		String s;
+		int minutes = 0;
+		boolean bMinutesValid = false;
+		boolean bNow = false;
+		boolean bRestart = false;
 
-                    if (args[1].equalsIgnoreCase("stop")) {
-                        ;
-                    }
-                }
-            }
+		if (player.isAdmin()) {
+			if (args.length >= 1) {
+				try {
+					minutes = Integer.valueOf(args[1]);
+					bMinutesValid = true;
+				} catch (NumberFormatException e) {
+					if (args[1].equalsIgnoreCase("now")) {
+						bNow = true;
+					}
 
-            if (args.length >= 3) {
-                if (args[2].equalsIgnoreCase("restart")) {
-                    bRestart = true;
-                }
-            }
+					if (args[1].equalsIgnoreCase("stop")) {
+						;
+					}
+				}
+			}
 
-            // Stop the shutdown process
-            JibsShutdown jibsShutdown = server.getJibsServer().getJibsShutdown();
+			if (args.length >= 3) {
+				if (args[2].equalsIgnoreCase("restart")) {
+					bRestart = true;
+				}
+			}
 
-            if (jibsShutdown != null) {
-                jibsShutdown.interrupt();
+			// Stop the shutdown process
+			JibsShutdown jibsShutdown = server.getJibsServer()
+					.getJibsShutdown();
 
-                try {
-                    jibsShutdown.join();
-                    out.println("Registered shutdown cancelled.");
-                } catch (InterruptedException e) {
-logger.warn(e);            }
-            }
+			if (jibsShutdown != null) {
+				jibsShutdown.interrupt();
 
-            server.getJibsServer().setJibsShutdown(null);
+				try {
+					jibsShutdown.join();
+					out.println("Registered shutdown cancelled.");
+				} catch (InterruptedException e) {
+					logger.warn(e);
+				}
+			}
 
-            if (bNow) {
-                shutdown(server.getJibsServer(), player, 0, bRestart);
-            }
+			server.getJibsServer().setJibsShutdown(null);
 
-            if (bMinutesValid) {
-                int msecs = minutes * 60 * 1000;
-                shutdown(server.getJibsServer(), player, msecs, bRestart);
-            } else {
-                // m_jibs_permissiondenied=Permission denied.
-                s = jibsMessages.convert("m_jibs_permissiondenied");
-                out.println(s);
-            }
-        }
+			if (bNow) {
+				shutdown(server.getJibsServer(), player, 0, bRestart);
+			}
 
-        return true;
-    }
+			if (bMinutesValid) {
+				int msecs = minutes * 60 * 1000;
+				shutdown(server.getJibsServer(), player, msecs, bRestart);
+			} else {
+				// m_jibs_permissiondenied=Permission denied.
+				s = jibsMessages.convert("m_jibs_permissiondenied");
+				out.println(s);
+			}
+		}
 
-    private void shutdown(JibsServer jibsServer, Player player, int msecs,
-                          boolean bRestart) {
-        JibsMessages jibsMessages = jibsServer.getJibsMessages();
-        JibsWriter out = player.getOutputStream();
-        SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
-        Date stopdate = new Date(Long.valueOf(msecs));
-        String s = sdf.format(stopdate);
+		return true;
+	}
 
-        if (bRestart) {
-            // m_jibs_shutdown_restart=jIBS will shutdown in %0 minutes and
-            // restart.
-            Object[] obj = new Object[] { s };
-            s = jibsMessages.convert("m_jibs_shutdown_restart", obj);
-            out.println(s);
-        } else {
-            // m_jibs_shutdown=jIBS will shutdown in %0 minutes.
-            Object[] obj = new Object[] { s };
-            s = jibsMessages.convert("m_jibs_shutdown", obj);
-            out.println(s);
-        }
+	private void shutdown(JibsServer jibsServer, Player player, int msecs,
+			boolean bRestart) {
+		JibsMessages jibsMessages = jibsServer.getJibsMessages();
+		JibsWriter out = player.getOutputStream();
+		SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
+		Date stopdate = new Date(Long.valueOf(msecs));
+		String s = sdf.format(stopdate);
 
-        // Start the shutdown process to shutdown jIBS in msecs time
-        JibsShutdown jibsShutdown = new JibsShutdown(jibsServer, bRestart, msecs);
-        jibsServer.setJibsShutdown(jibsShutdown);
-        jibsShutdown.start();
-    }
+		if (bRestart) {
+			// m_jibs_shutdown_restart=jIBS will shutdown in %0 minutes and
+			// restart.
+			Object[] obj = new Object[] { s };
+			s = jibsMessages.convert("m_jibs_shutdown_restart", obj);
+			out.println(s);
+		} else {
+			// m_jibs_shutdown=jIBS will shutdown in %0 minutes.
+			Object[] obj = new Object[] { s };
+			s = jibsMessages.convert("m_jibs_shutdown", obj);
+			out.println(s);
+		}
+
+		// Start the shutdown process to shutdown jIBS in msecs time
+		JibsShutdown jibsShutdown = new JibsShutdown(jibsServer, bRestart,
+				msecs);
+		jibsServer.setJibsShutdown(jibsShutdown);
+		jibsShutdown.start();
+	}
 }

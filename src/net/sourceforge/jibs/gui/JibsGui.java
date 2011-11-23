@@ -1,7 +1,5 @@
 package net.sourceforge.jibs.gui;
 
-import java.sql.Date;
-
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -75,11 +73,14 @@ public class JibsGui extends FormPanel {
 			column.setPreferredWidth(widhts[i]);
 		}
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-		table.getColumnModel().getColumn(JibsColumn.Name.ordinal()).setCellRenderer( centerRenderer );
-		table.getColumnModel().getColumn(JibsColumn.Rating.ordinal()).setCellRenderer( centerRenderer );
-		table.getColumnModel().getColumn(JibsColumn.Experience.ordinal()).setCellRenderer( centerRenderer );
-		
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		table.getColumnModel().getColumn(JibsColumn.Name.ordinal())
+				.setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(JibsColumn.Rating.ordinal())
+				.setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(JibsColumn.Experience.ordinal())
+				.setCellRenderer(centerRenderer);
+
 		// ease adding actions later on
 		btnInfo = (JButton) getButton("btnInfo");
 		btnExit = (JButton) getButton("btnExit");

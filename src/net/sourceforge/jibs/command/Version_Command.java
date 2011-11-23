@@ -18,15 +18,17 @@ public class Version_Command implements JibsCommand {
 	public boolean execute(Server server, Player player, String strArgs,
 			String[] args) {
 		try {
-			StringBuilder version  = new StringBuilder();
+			StringBuilder version = new StringBuilder();
 			JibsWriter out = player.getOutputStream();
-			version.append(server.getConfiguration().getResource("aboutVersion"));
-			version.append(" ("+System.getProperty("os.name")+")");
-			InputStream resourceAsStream = Resources.getResourceAsStream("net/sourceforge/jibs/util/JibsConstants.properties");
+			version.append(server.getConfiguration()
+					.getResource("aboutVersion"));
+			version.append(" (" + System.getProperty("os.name") + ")");
+			InputStream resourceAsStream = Resources
+					.getResourceAsStream("net/sourceforge/jibs/util/JibsConstants.properties");
 			Properties props = new Properties();
 			props.load(resourceAsStream);
-			version.append(" "+(String) props.get("jibsDateBuild"));
-			out.println("** Version "+version);
+			version.append(" " + (String) props.get("jibsDateBuild"));
+			out.println("** Version " + version);
 		} catch (IOException e) {
 			logger.warn(e);
 		}

@@ -1,14 +1,9 @@
 package net.sourceforge.jibs.command;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.StringTokenizer;
 
-import net.sourceforge.jibs.server.JibsServer;
 import net.sourceforge.jibs.server.Player;
 import net.sourceforge.jibs.server.Server;
-import net.sourceforge.jibs.util.JibsWriter;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 

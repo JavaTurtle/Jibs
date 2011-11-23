@@ -9,7 +9,6 @@ import javax.swing.JOptionPane;
 
 import net.sourceforge.jibs.server.JibsServer;
 import net.sourceforge.jibs.server.Player;
-import net.sourceforge.jibs.server.Server;
 
 import org.apache.log4j.Logger;
 

@@ -1,11 +1,9 @@
 package util;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.Socket;
-import java.util.Properties;
 
 import net.sourceforge.jibs.gui.JibsMessages;
 import net.sourceforge.jibs.server.ClientWorker;

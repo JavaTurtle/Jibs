@@ -19,7 +19,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import net.sourceforge.jibs.backgammon.JibsRandom;
@@ -139,8 +138,10 @@ public class JibsServer {
 
 		if (jibsServer.useSwing()) {
 			jibsServer.getJibsFrame().setLocation(0, 0);
-			jibsServer.getJibsFrame().setTitle("jIBS_"+
-					jibsServer.getConfiguration().getResource("aboutVersion"));
+			jibsServer.getJibsFrame().setTitle(
+					"jIBS_"
+							+ jibsServer.getConfiguration().getResource(
+									"aboutVersion"));
 
 			URL imgURL = ClassLoader.getSystemResource("images/jibs_thumb.gif");
 			ImageIcon image = new ImageIcon(imgURL);
@@ -303,12 +304,7 @@ public class JibsServer {
 	private void initGUIComponents() {
 		try {
 			UIManager
-			.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-			LookAndFeelInfo[] installedLookAndFeels = UIManager
-			.getInstalledLookAndFeels();
-			for (LookAndFeelInfo lookAndFeelInfo : installedLookAndFeels) {
-				System.out.println(lookAndFeelInfo.getClassName());
-			}
+					.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (ClassNotFoundException e) {
 			logException(e);
 		} catch (InstantiationException e) {
@@ -322,9 +318,9 @@ public class JibsServer {
 		infoAction = new InfoAction(jibsFrame, server, "Info", createImageIcon(
 				"images/info.gif", ""), "", KeyStroke.getKeyStroke(
 				KeyEvent.VK_I, KeyEvent.ALT_MASK));
-		runAction = new RunAction(this, "Start", createImageIcon("images/run.gif",
-				""), "", KeyStroke.getKeyStroke(KeyEvent.VK_S,
-				KeyEvent.ALT_MASK));
+		runAction = new RunAction(this, "Start", createImageIcon(
+				"images/run.gif", ""), "", KeyStroke.getKeyStroke(
+				KeyEvent.VK_S, KeyEvent.ALT_MASK));
 		stopAction = new StopAction(this, "Stop", createImageIcon(
 				"images/stop.gif", ""), "", KeyStroke.getKeyStroke(
 				KeyEvent.VK_H, KeyEvent.ALT_MASK));

@@ -240,8 +240,8 @@ public class Player {
 			out.println("");
 			// out.println("1 aleucht 1320159195 free-249-110.mediaworksit.net");
 			if (!curPlayer.getName().equalsIgnoreCase(getName())) {
-				String omsg = ClipConstants.CLIP_LOGIN + " " + getName()
-						+ " " + msg;
+				String omsg = ClipConstants.CLIP_LOGIN + " " + getName() + " "
+						+ msg;
 				curPlayer.getOutputStream().println(omsg);
 			}
 		}

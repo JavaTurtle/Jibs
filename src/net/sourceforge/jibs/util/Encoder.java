@@ -26,8 +26,9 @@ public class Encoder {
 		String x = new BigInteger(1, md.digest()).toString(16);
 		return x;
 	}
+
 	public static void main(String[] args) {
-		System.out.println("alice:"+Encoder.encrypt("alicealice", "MD5"));
-		System.out.println("bob:"+Encoder.encrypt("bobbob", "MD5"));		
+		System.out.println("alice:" + Encoder.encrypt("alicealice", "MD5"));
+		System.out.println("bob:" + Encoder.encrypt("bobbob", "MD5"));
 	}
 }

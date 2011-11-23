@@ -4,8 +4,8 @@ import net.sourceforge.jibs.server.Player;
 import net.sourceforge.jibs.server.Server;
 
 public class Cls_Command implements JibsCommand {
-    public boolean execute(Server server, Player player,
-                           String strArgs, String[] args) {
-        return true;
-    }
+	public boolean execute(Server server, Player player, String strArgs,
+			String[] args) {
+		return true;
+	}
 }

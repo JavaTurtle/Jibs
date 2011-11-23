@@ -1,9 +1,11 @@
 package command;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 
@@ -60,7 +62,7 @@ public class CreateUser {
 		assertEquals("cleucht", newPlayer.getName());
 		String result = byteArrayOutputStream.toString();
 		assertNotNull(result);
-		assertTrue(result.indexOf("You are registered.")>=0);
+		assertTrue(result.indexOf("You are registered.") >= 0);
 	}
 
 	@Test
@@ -76,7 +78,8 @@ public class CreateUser {
 		assertNull(newPlayer);
 		String result = byteArrayOutputStream.toString();
 		assertNotNull(result);
-		assertTrue(result.endsWith("** Please use another name. 'alice' is already used by someone else.\r\n"));
+		assertTrue(result
+				.endsWith("** Please use another name. 'alice' is already used by someone else.\r\n"));
 	}
 
 	@Test
@@ -89,10 +92,11 @@ public class CreateUser {
 				jibsWriter);
 		Player newPlayer = newUser.createNewUser(jibsServer, server, null, "",
 				null, false);
-		assertNull(newPlayer);		
+		assertNull(newPlayer);
 		String result = byteArrayOutputStream.toString();
 		assertNotNull(result);
-		assertTrue(result.endsWith("Minimal password length is 4 characters.\r\n"));
+		assertTrue(result
+				.endsWith("Minimal password length is 4 characters.\r\n"));
 	}
 
 	@Test
@@ -105,10 +109,11 @@ public class CreateUser {
 				jibsWriter);
 		Player newPlayer = newUser.createNewUser(jibsServer, server, null, "",
 				null, false);
-		assertNull(newPlayer);		
+		assertNull(newPlayer);
 		String result = byteArrayOutputStream.toString();
 		assertNotNull(result);
-		assertTrue(result.endsWith("** Your name may only contain letters and the unserscore character _ .\r\n"));
+		assertTrue(result
+				.endsWith("** Your name may only contain letters and the unserscore character _ .\r\n"));
 	}
 
 	@Test
@@ -121,9 +126,10 @@ public class CreateUser {
 				jibsWriter);
 		Player newPlayer = newUser.createNewUser(jibsServer, server, null, "",
 				null, false);
-		assertNull(newPlayer);		
+		assertNull(newPlayer);
 		String result = byteArrayOutputStream.toString();
 		assertNotNull(result);
-		assertTrue(result.endsWith("** The two passwords were not identical. Please give them again.\r\n"));
+		assertTrue(result
+				.endsWith("** The two passwords were not identical. Please give them again.\r\n"));
 	}
 }

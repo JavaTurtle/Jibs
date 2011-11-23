@@ -1,4 +1,5 @@
 package command;
+
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
@@ -30,7 +31,8 @@ public class Exit {
 	@Before
 	public void setup() {
 		testServer = JibsFactory.createTestServer("conf/jibs.properties");
-		testClient = JibsFactory.createTestClient("conf/jibs.properties", testServer.server);
+		testClient = JibsFactory.createTestClient("conf/jibs.properties",
+				testServer.server);
 		byteArrayOutputStream = testClient.byteArrayOutputStream;
 		jibsWriter = testClient.jibsWriter;
 		server = testServer.server;

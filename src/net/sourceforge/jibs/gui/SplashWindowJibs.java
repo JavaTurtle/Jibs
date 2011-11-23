@@ -15,34 +15,34 @@ import javax.swing.JWindow;
 import net.sourceforge.jibs.server.JibsServer;
 
 public class SplashWindowJibs extends JWindow {
-    private static final long serialVersionUID = -8877839601052661726L;
-    @SuppressWarnings("unused")
-    private JibsServer jibsServer;
+	private static final long serialVersionUID = -8877839601052661726L;
+	@SuppressWarnings("unused")
+	private JibsServer jibsServer;
 
-    public SplashWindowJibs(JibsServer jibsServer, String filename, Frame f) {
-        super(f);
+	public SplashWindowJibs(JibsServer jibsServer, String filename, Frame f) {
+		super(f);
 
-        this.jibsServer = jibsServer;
+		this.jibsServer = jibsServer;
 
-        URL imgUrl = ClassLoader.getSystemResource(filename);
-        JLabel l = new JLabel(new ImageIcon(imgUrl));
+		URL imgUrl = ClassLoader.getSystemResource(filename);
+		JLabel l = new JLabel(new ImageIcon(imgUrl));
 
-        getContentPane().add(l, BorderLayout.CENTER);
-        pack();
+		getContentPane().add(l, BorderLayout.CENTER);
+		pack();
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        Dimension labelSize = l.getPreferredSize();
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		Dimension labelSize = l.getPreferredSize();
 
-        setLocation((screenSize.width / 2) - (labelSize.width / 2),
-                    (screenSize.height / 2) - (labelSize.height / 2));
+		setLocation((screenSize.width / 2) - (labelSize.width / 2),
+				(screenSize.height / 2) - (labelSize.height / 2));
 
-        addMouseListener(new MouseAdapter() {
-                public void mousePressed(MouseEvent e) {
-                    setVisible(false);
-                    dispose();
-                }
-            });
+		addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				setVisible(false);
+				dispose();
+			}
+		});
 
-        setVisible(true);
-    }
+		setVisible(true);
+	}
 }

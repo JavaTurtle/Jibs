@@ -14,66 +14,64 @@ import net.sourceforge.jibs.util.ResignQuestion;
  * The Accept command.
  */
 public class Accept_Command implements JibsCommand {
-    public boolean execute(Server server, Player player,
-                           String strArgs, String[] args) {
-        JibsMessages jibsMessages = server.getJibsMessages();
-        JibsGame game = player.getGame();
-        JibsQuestion question = player.getQuestion();
-        JibsWriter out = player.getOutputStream();
-        BackgammonBoard board = game.getBackgammonBoard();
-        Player opponent = board.getOpponent(player);
-        JibsWriter out2 = opponent.getOutputStream();
+	public boolean execute(Server server, Player player, String strArgs,
+			String[] args) {
+		JibsMessages jibsMessages = server.getJibsMessages();
+		JibsGame game = player.getGame();
+		JibsQuestion question = player.getQuestion();
+		JibsWriter out = player.getOutputStream();
+		BackgammonBoard board = game.getBackgammonBoard();
+		Player opponent = board.getOpponent(player);
+		JibsWriter out2 = opponent.getOutputStream();
 
-        if (question instanceof ResignQuestion) {
-            BackgammonBoard bgBoard1 = null;
-            ResignQuestion resignQuestion = (ResignQuestion) question;
-            int points = resignQuestion.getResignMode();
+		if (question instanceof ResignQuestion) {
+			BackgammonBoard bgBoard1 = null;
+			ResignQuestion resignQuestion = (ResignQuestion) question;
+			int points = resignQuestion.getResignMode();
 
-            bgBoard1 = game.getBackgammonBoard();
+			bgBoard1 = game.getBackgammonBoard();
 
-            if (board.isPlayerX(player)) {
-                game.winGameX(game, bgBoard1, points);
-            } else {
-                game.winGameO(game, bgBoard1, points);
-            }
-        }
+			if (board.isPlayerX(player)) {
+				game.winGameX(game, bgBoard1, points);
+			} else {
+				game.winGameO(game, bgBoard1, points);
+			}
+		}
 
-        if (question instanceof DoubleQuestion) {
-            DoubleQuestion doubleQuestion = (DoubleQuestion) question;
+		if (question instanceof DoubleQuestion) {
+			DoubleQuestion doubleQuestion = (DoubleQuestion) question;
 
-            // m_accept_double=You accept the double. The cube shows %0.
-            Object[] obj = { Integer.valueOf(doubleQuestion.getCubeNew()) };
-            String msg = jibsMessages.convert("m_accept_double", obj);
+			// m_accept_double=You accept the double. The cube shows %0.
+			Object[] obj = { Integer.valueOf(doubleQuestion.getCubeNew()) };
+			String msg = jibsMessages.convert("m_accept_double", obj);
 
-            out.println(msg);
-            // m_accept_double_opponent=%0 accepts the double. The cube shows
-            // %1.
-            obj = new Object[] {
-                      player.getName(),
-                      Integer.valueOf(doubleQuestion.getCubeNew())
-                  };
-            msg = jibsMessages.convert("m_accept_double_opponent", obj);
-            out2.println(msg);
+			out.println(msg);
+			// m_accept_double_opponent=%0 accepts the double. The cube shows
+			// %1.
+			obj = new Object[] { player.getName(),
+					Integer.valueOf(doubleQuestion.getCubeNew()) };
+			msg = jibsMessages.convert("m_accept_double_opponent", obj);
+			out2.println(msg);
 
-            board.setCubeNumber(doubleQuestion.getCubeNew());
+			board.setCubeNumber(doubleQuestion.getCubeNew());
 
-            switch (board.getTurn()) {
-            case -1: // X accepts double from O
-                board.setMayDouble2(0); // No
-                board.setMayDouble1(1);
-                opponent.getClientWorker().executeCmd("roll");
+			switch (board.getTurn()) {
+			case -1: // X accepts double from O
+				board.setMayDouble2(0); // No
+				board.setMayDouble1(1);
+				opponent.getClientWorker().executeCmd("roll");
 
-                break;
+				break;
 
-            case 1: // O acepts double from X
-                board.setMayDouble1(0);
-                board.setMayDouble2(1);
-                opponent.getClientWorker().executeCmd("roll");
+			case 1: // O acepts double from X
+				board.setMayDouble1(0);
+				board.setMayDouble2(1);
+				opponent.getClientWorker().executeCmd("roll");
 
-                break;
-            }
-        }
+				break;
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 }
