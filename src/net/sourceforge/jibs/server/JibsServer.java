@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.net.ServerSocket;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -75,6 +79,7 @@ import net.sourceforge.jibs.util.JibsShutdown;
 import net.sourceforge.jibs.util.JibsStackTrace;
 
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.log4j.Logger;
@@ -496,6 +501,17 @@ public class JibsServer {
 					server.setRuns(false);
 					getServerThread().join();
 					server.closeAllClients();
+					SqlSession session = sqlMapper.openSession();
+					Connection connection = session.getConnection();
+					try {
+						Statement st = connection.createStatement();
+				        st.execute("SHUTDOWN");
+				        setSqlSessionFactory(null);
+					} catch (SQLException e) {
+						logger.warn(e);
+					} finally {
+						session.close();
+					}
 					bServerRuns = false;
 				}
 			} catch (IOException e) {
@@ -514,6 +530,10 @@ public class JibsServer {
 		String e1 = JibsStackTrace.getCustomStackTrace(e);
 		JibsTextArea.log(this, e1, true);
 		logger.warn(e);
+	}
+	
+	public void setSqlSessionFactory(SqlSessionFactory factory) {
+		sqlMapper = factory;
 	}
 
 	public SqlSessionFactory getSqlSessionFactory() {
