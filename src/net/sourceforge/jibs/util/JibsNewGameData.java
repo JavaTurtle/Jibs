@@ -61,6 +61,7 @@ public class JibsNewGameData {
 	public void setDie2Value(int die2Value) {
 		this.die2Value = die2Value;
 	}
+
 	public void startGame(JibsServer jibsServer, JibsNewGameData jngd,
 			JibsGame game, Player player1, Player player2, int length,
 			int turn, JibsMatch matchVersion, int mayDouble1, int mayDouble2) {

@@ -368,16 +368,14 @@ public class JibsGame {
 			opBoard.setCanMove(0);
 			String outBoard = opBoard.outBoard("You", turn, 0, 0, dice1,
 					dice2); // O
-//			String q = "board:You:bob:2:0:0:0:-2:0:0:0:0:5:0:3:0:0:0:-5:5:0:0:0:-3:0:-5:0:0:0:0:2:0:-1:0:0:3:1:1:1:1:0:1:-1:0:25:0:0:0:0:0:0:0:0";
-			//outO.println(outBoard);
-player.setLastBoard(outBoard);
+			String q = "board:You:bob:2:0:0:0:-2:0:0:0:0:5:0:3:0:0:0:-5:5:0:0:0:-3:0:-5:0:0:0:0:2:0:-1:0:0:3:1:1:1:1:0:1:-1:0:25:0:0:0:0:0:0:0:0";
+			outO.println(q);
 			board.getPlayerO().show2WatcherBoard(opBoard,
 					board.getPlayerO().getName(), 0, 0, dice1, dice2);
 			nrMoves = nrChances.calcPossibleMovesX(turn, dice1, dice2);
 			board.setCanMove(nrMoves);
 			outBoard = board.outBoard("You", turn, dice1, dice2, 0, 0); // X
 			//outX.println(outBoard);
-opponent.setLastBoard(outBoard);
 			board.getPlayerX().show2WatcherBoard(board,
 					board.getPlayerX().getName(), dice1, dice2, 0, 0);
 
@@ -414,7 +412,7 @@ opponent.setLastBoard(outBoard);
 			board.setCanMove(nrMoves);
 			opBoard = board.switch2O();
 			outBoard = opBoard.outBoard("You", turn, dice1, dice2, 0, 0); // O
-			//outO.println(outBoard);
+			outO.println(outBoard);
 			board.getPlayerO().show2WatcherBoard(opBoard,
 					board.getPlayerO().getName(), dice1, dice2, 0, 0);
 

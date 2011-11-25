@@ -1,6 +1,8 @@
 --------------------------------------------------------------------------------
 v0.5.4:
-jUnit-Tests started for some commands
+jUnit-Tests for some commands
+hsqldb shutdown when server stopped
+Board handling compliant to fibs docs
 	
 --------------------------------------------------------------------------------
 v0.5.3:2006-11-25

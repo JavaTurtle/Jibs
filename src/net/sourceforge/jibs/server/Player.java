@@ -76,8 +76,6 @@ public class Player {
 
 	private boolean isInputStreamClosed;
 
-	public String lastBoard;
-
 	// ~ Constructors
 	// -----------------------------------------------------------
 	public Player() {
@@ -866,9 +864,5 @@ public class Player {
 
 	public boolean isInputStreamClosed() {
 		return isInputStreamClosed;
-	}
-
-	public void setLastBoard(String outBoard) {
-		lastBoard = outBoard;
 	}
 }

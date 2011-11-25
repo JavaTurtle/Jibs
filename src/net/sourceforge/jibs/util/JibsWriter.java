@@ -17,7 +17,8 @@ public class JibsWriter {
 
 	public void println(String msg) {
 		try {
-			outputStream.write(msg.getBytes());
+			if (msg != null)
+				outputStream.write(msg.getBytes());
 			outputStream.write(lineSeparator.getBytes());
 		} catch (IOException e) {
 			logger.warn(e);
