@@ -55,7 +55,7 @@ public class Reject_Command implements JibsCommand {
 					opponent.getOutputStream().println(msg);
 				}
 
-				if (board.isPlayerX(player)) {
+				if (game.isPlayerX(player)) {
 					game.winGameO(game, board, points);
 				} else {
 					game.winGameX(game, board, points);

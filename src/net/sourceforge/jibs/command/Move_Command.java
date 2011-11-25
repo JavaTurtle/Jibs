@@ -129,7 +129,7 @@ public class Move_Command implements JibsCommand {
 				switch (board.getTurn()) {
 				case 1:
 
-					if (board.isPlayerX(opponent)) {
+					if (game.isPlayerX(opponent)) {
 						maydouble = game.getBackgammonBoard().getMayDouble1();
 						opponentOut = out1;
 					} else {
@@ -141,7 +141,7 @@ public class Move_Command implements JibsCommand {
 
 				case -1:
 
-					if (board.isPlayerX(opponent)) {
+					if (game.isPlayerX(opponent)) {
 						maydouble = game.getBackgammonBoard().getMayDouble1();
 						opponentOut = out1;
 					} else {

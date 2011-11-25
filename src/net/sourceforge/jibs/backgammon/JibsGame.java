@@ -368,14 +368,14 @@ public class JibsGame {
 			opBoard.setCanMove(0);
 			String outBoard = opBoard.outBoard("You", turn, 0, 0, dice1,
 					dice2); // O
-			String q = "board:You:bob:2:0:0:0:-2:0:0:0:0:5:0:3:0:0:0:-5:5:0:0:0:-3:0:-5:0:0:0:0:2:0:-1:0:0:3:1:1:1:1:0:1:-1:0:25:0:0:0:0:0:0:0:0";
-			outO.println(q);
+//			String q = "board:You:bob:2:0:0:0:-2:0:0:0:0:5:0:3:0:0:0:-5:5:0:0:0:-3:0:-5:0:0:0:0:2:0:-1:0:0:3:1:1:1:1:0:1:-1:0:25:0:0:0:0:0:0:0:0";
+			outO.println(outBoard);
 			board.getPlayerO().show2WatcherBoard(opBoard,
 					board.getPlayerO().getName(), 0, 0, dice1, dice2);
 			nrMoves = nrChances.calcPossibleMovesX(turn, dice1, dice2);
 			board.setCanMove(nrMoves);
 			outBoard = board.outBoard("You", turn, dice1, dice2, 0, 0); // X
-			//outX.println(outBoard);
+			outX.println(outBoard);
 			board.getPlayerX().show2WatcherBoard(board,
 					board.getPlayerX().getName(), dice1, dice2, 0, 0);
 
@@ -405,13 +405,13 @@ public class JibsGame {
 		case 1:
 			nrMoves = nrChances.calcPossibleMovesO(turn, dice1, dice2);
 			board.setCanMove(0);
-			outBoard = board.outBoard("You", turn, 0, 0, dice1, dice2); // X
-			//outX.println(outBoard);
+			outBoard = board.outBoard("You", turn, 0, 0, dice1, dice2); 
+			outX.println(outBoard);
 			board.getPlayerX().show2WatcherBoard(board,
 					board.getPlayerX().getName(), 0, 0, dice1, dice2);
 			board.setCanMove(nrMoves);
 			opBoard = board.switch2O();
-			outBoard = opBoard.outBoard("You", turn, dice1, dice2, 0, 0); // O
+			outBoard = opBoard.outBoard("You", turn, dice1, dice2, 0, 0);
 			outO.println(outBoard);
 			board.getPlayerO().show2WatcherBoard(opBoard,
 					board.getPlayerO().getName(), dice1, dice2, 0, 0);
@@ -1022,11 +1022,24 @@ public class JibsGame {
 		return this.col;
 	}
 
-	public Player getPlayerA() {
+	public Player getPlayerX() {
 		return playerX;
 	}
 
-	public Player getPlayerB() {
+	public Player getPlayerO() {
 		return playerO;
+	}
+	
+	/**
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public boolean isPlayerX(Player player) {
+		if (playerX.getName().equals(player.getName())) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

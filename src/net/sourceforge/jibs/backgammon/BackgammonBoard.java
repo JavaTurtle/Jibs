@@ -1074,19 +1074,6 @@ public class BackgammonBoard {
 
 	/**
 	 * 
-	 * @param player
-	 * @return
-	 */
-	public boolean isPlayerX(Player player) {
-		if (player.getName().equals(this.playerX.getName())) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * 
 	 * @return
 	 */
 	public boolean isEnded() {
@@ -1186,22 +1173,22 @@ public class BackgammonBoard {
 		BackgammonBoard opBoard = new BackgammonBoard(this);
 		opBoard.setPlayer1Name(getPlayer2Name());
 		opBoard.setPlayer2Name(getPlayer1Name());
-		opBoard.setDirection(-1);
-		opBoard.setColor(1);
-		opBoard.setPlayerXdie1Value(opponentDie1Value);
-		opBoard.setPlayerXdie2Value(opponentDie2Value);
-		opBoard.setPlayerOdie1Value(playerDie1Value);
-		opBoard.setPlayerOdie2Value(playerDie2Value);
-		opBoard.setOnBar1(getOnBar2());
-		opBoard.setOnBar2(getOnBar1());
-		opBoard.setOnHome1(getOnHome2());
-		opBoard.setOnHome2(getOnHome1());
-		opBoard.setBar(getHome());
-		opBoard.setHome(getBar());
-		opBoard.setPlayer1Got(getPlayer2Got());
-		opBoard.setPlayer2Got(getPlayer1Got());
-		opBoard.setMayDouble1(getMayDouble2());
-		opBoard.setMayDouble2(getMayDouble1());
+		//opBoard.setDirection(-1);
+		//opBoard.setColor(1);
+//		opBoard.setPlayerXdie1Value(opponentDie1Value);
+//		opBoard.setPlayerXdie2Value(opponentDie2Value);
+//		opBoard.setPlayerOdie1Value(playerDie1Value);
+//		opBoard.setPlayerOdie2Value(playerDie2Value);
+//		opBoard.setOnBar1(getOnBar2());
+//		opBoard.setOnBar2(getOnBar1());
+//		opBoard.setOnHome1(getOnHome2());
+//		opBoard.setOnHome2(getOnHome1());
+//		opBoard.setBar(getHome());
+//		opBoard.setHome(getBar());
+//		opBoard.setPlayer1Got(getPlayer2Got());
+//		opBoard.setPlayer2Got(getPlayer1Got());
+//		opBoard.setMayDouble1(getMayDouble2());
+//		opBoard.setMayDouble2(getMayDouble1());
 
 		return opBoard;
 	}

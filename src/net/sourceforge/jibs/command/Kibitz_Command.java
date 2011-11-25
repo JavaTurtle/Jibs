@@ -26,7 +26,7 @@ public class Kibitz_Command implements JibsCommand {
 			JibsWriter out1 = player1.getOutputStream();
 			JibsWriter out2 = player2.getOutputStream();
 
-			if (board.isPlayerX(player)) {
+			if (game.isPlayerX(player)) {
 				out1.println(ClipConstants.CLIP_YOU_KIBITZ + " " + strArgs);
 				out2.println(ClipConstants.CLIP_KIBITZES + " "
 						+ player.getName() + " " + strArgs);

@@ -19,20 +19,20 @@ public class Board_Command implements JibsCommand {
 			BackgammonBoard board = game.getBackgammonBoard();
 			int turn = board.getTurn();
 
-			if (board.getTurn()==-1) {
-				String outBoard = board.outBoard("You", turn, board.getPlayerXdie1Value(),
+			if (turn == -1) {
+				String outBoard = board.outBoard("You", turn,
+						board.getPlayerXdie1Value(),
 						board.getPlayerXdie2Value(),
 						board.getPlayerOdie1Value(),
 						board.getPlayerOdie2Value());
 				out.println(outBoard);
 			} else {
-				BackgammonBoard opBoard = board.switch2O();
-				board.setColor(1);
+				board.setCanMove(0);
 				String outBoard = board.outBoard("You", turn,
-						opBoard.getPlayerOdie1Value(),
-						opBoard.getPlayerOdie2Value(),
-						opBoard.getPlayerXdie1Value(),
-						opBoard.getPlayerXdie2Value());
+						board.getPlayerOdie1Value(),
+						board.getPlayerOdie2Value(),
+						board.getPlayerXdie1Value(),
+						board.getPlayerXdie2Value());
 				out.println(outBoard);
 			}
 		}

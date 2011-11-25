@@ -31,7 +31,7 @@ public class Accept_Command implements JibsCommand {
 
 			bgBoard1 = game.getBackgammonBoard();
 
-			if (board.isPlayerX(player)) {
+			if (game.isPlayerX(player)) {
 				game.winGameX(game, bgBoard1, points);
 			} else {
 				game.winGameO(game, bgBoard1, points);

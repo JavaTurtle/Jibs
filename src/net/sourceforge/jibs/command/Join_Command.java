@@ -90,7 +90,7 @@ public class Join_Command implements JibsCommand {
 								board.getMatchVersion(), board.getMatchlength());
 
 						JibsNewGameData jibsNewGameData = jibsNewGameData(
-								game.getPlayerA(), game.getPlayerB());
+								game.getPlayerX(), game.getPlayerO());
 						player.getGame()
 								.getBackgammonBoard()
 								.setPlayerXdie1Value(
