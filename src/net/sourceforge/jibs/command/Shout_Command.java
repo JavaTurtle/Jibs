@@ -1,6 +1,6 @@
 package net.sourceforge.jibs.command;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import net.sourceforge.jibs.server.Player;
 import net.sourceforge.jibs.server.Server;
@@ -14,14 +14,12 @@ public class Shout_Command implements JibsCommand {
 	public boolean execute(Server server, Player player, String strArgs,
 			String[] args) {
 		String playerName = player.getName();
-		HashMap allClients = server.getAllClients();
+		Map<String, Player> allClients = server.getAllClients();
 		JibsWriter out = player.getOutputStream();
 
 		out.println(ClipConstants.CLIP_YOU_SHOUT + " " + strArgs);
 
-		for (Object obj : allClients.values()) {
-			Player clientPlayer = (Player) obj;
-
+		for (Player clientPlayer: allClients.values()) {
 			if (!clientPlayer.getName().equals(player.getName())) {
 				if (clientPlayer.checkToggle("silent")) {
 					JibsWriter clientOut = clientPlayer.getOutputStream();

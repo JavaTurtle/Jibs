@@ -3,7 +3,6 @@ package net.sourceforge.jibs.gui;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,9 +21,6 @@ public class JibsMessages {
 		try {
 			Reader messageReader = Resources.getResourceAsReader(filename);
 			logger.info("Reading message file (" + filename + ")");
-			InputStream systemResourceAsStream = ClassLoader
-					.getSystemResourceAsStream(filename);
-			System.out.println("Axel2:" + systemResourceAsStream);
 			buffer = new BufferedReader(messageReader);
 
 			messageMap = new HashMap<String, String>();

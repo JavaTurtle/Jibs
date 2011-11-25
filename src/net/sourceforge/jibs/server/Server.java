@@ -169,12 +169,12 @@ public class Server implements Runnable {
 	}
 
 	public Player getPlayer(String string) {
-		HashMap map = getAllClients();
-		Set set = map.entrySet();
-		Iterator iter = set.iterator();
+		Map<String, Player> map = getAllClients();
+		Set<Entry<String, Player>> set = map.entrySet();
+		Iterator<Entry<String, Player>> iter = set.iterator();
 
 		while (iter.hasNext()) {
-			Entry entry = (Entry) iter.next();
+			Entry<String, Player> entry = iter.next();
 			Player curPlayer = (Player) entry.getValue();
 
 			if (curPlayer.getName().equals(string)) {
@@ -186,13 +186,13 @@ public class Server implements Runnable {
 	}
 
 	public Collection<Player> getAwayPlayer() {
-		HashMap map = getAllClients();
-		Set set = map.entrySet();
-		Iterator iter = set.iterator();
+		HashMap<String, Player> map = getAllClients();
+		Set<Entry<String, Player>> set = map.entrySet();
+		Iterator<Entry<String, Player>> iter = set.iterator();
 		Collection<Player> list = new ArrayList<Player>();
 
 		while (iter.hasNext()) {
-			Entry entry = (Entry) iter.next();
+			Entry<String, Player> entry = iter.next();
 			Player curPlayer = (Player) entry.getValue();
 
 			if (curPlayer.checkToggle("away")) {
@@ -243,19 +243,18 @@ public class Server implements Runnable {
 		this.jibsServer = jibsServer;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void closeAllClients() {
-		Map<String, Player> omap = (Map) getAllClients().clone();
-		Map map = Collections.synchronizedMap(omap);
+		Map<String, Player> omap = getAllClients();
+		Map<String, Player> map = Collections.synchronizedMap(omap);
 
 		synchronized (map) {
-			Set set = map.entrySet();
-			Iterator iter = set.iterator();
+			Set<Entry<String, Player>> set = map.entrySet();
+			Iterator<Entry<String, Player>> iter = set.iterator();
 			Exit_Command exitCommand = new Exit_Command();
 			Leave_Command leaveCommand = new Leave_Command();
 
 			while (iter.hasNext()) {
-				Entry entry = (Entry) iter.next();
+				Entry<String, Player> entry = iter.next();
 				Player curPlayer = (Player) entry.getValue();
 				leaveCommand.saveGamePanic(this, curPlayer.getGame());
 				exitCommand.displayLogoff(
@@ -280,13 +279,12 @@ public class Server implements Runnable {
 	}
 
 	public Player isPlayerOnline(Player player) {
-		boolean retCode = false;
-		HashMap map = getAllClients();
-		Set set = map.entrySet();
-		Iterator iter = set.iterator();
+		Map<String, Player> map = getAllClients();
+		Set<Entry<String, Player>> set = map.entrySet();
+		Iterator<Entry<String, Player>> iter = set.iterator();
 
 		while (iter.hasNext()) {
-			Entry entry = (Entry) iter.next();
+			Entry<String, Player> entry = iter.next();
 			Player curPlayer = (Player) entry.getValue();
 
 			if (curPlayer.getName().equals(player.getName())) {

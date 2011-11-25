@@ -11,7 +11,6 @@ import java.io.StringReader;
 
 import net.sourceforge.jibs.command.Login_Command;
 import net.sourceforge.jibs.command.NewUser_Command;
-import net.sourceforge.jibs.server.ClientWorker;
 import net.sourceforge.jibs.server.JibsServer;
 import net.sourceforge.jibs.server.Player;
 import net.sourceforge.jibs.server.Server;
@@ -33,8 +32,6 @@ public class CreateUser {
 	private JibsWriter jibsWriter;
 	private JibsServer jibsServer;
 	private Server server;
-	private ClientWorker clientWorker;
-
 	@Before
 	public void setup() {
 		testServer = JibsFactory.createTestServer("conf/jibs.properties");
@@ -44,7 +41,6 @@ public class CreateUser {
 		jibsWriter = testClient.jibsWriter;
 		jibsServer = testServer.jibsServer;
 		server = testServer.server;
-		clientWorker = testClient.clientWorker;
 		sqlMapper = testServer.sqlMapper;
 	}
 

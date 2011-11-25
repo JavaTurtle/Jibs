@@ -26,6 +26,7 @@ public class Ratings_Command implements JibsCommand {
 				.getSqlSessionFactory();
 		SqlSession sqlSession = sqlSessionFactory.openSession(true);
 		try {
+			@SuppressWarnings("unchecked")
 			List<Player> list = sqlSession.selectList("Player.readAllPlayer",
 					null);
 

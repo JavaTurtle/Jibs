@@ -355,7 +355,7 @@ public class JibsGame {
 
 	public int calcPossibleMoves(JibsGame game, Player player,
 			boolean isFirstMove, int turn, MoveChances nrChances,
-			JibsWriter out1, JibsWriter out2, BackgammonBoard board, int dice1,
+			JibsWriter outX, JibsWriter outO, BackgammonBoard board, int dice1,
 			int dice2) {
 		Object[] obj = null;
 		String msg = null;
@@ -369,14 +369,15 @@ public class JibsGame {
 			String outBoard = opBoard.outBoard("You", turn, 0, 0, dice1,
 					dice2); // O
 //			String q = "board:You:bob:2:0:0:0:-2:0:0:0:0:5:0:3:0:0:0:-5:5:0:0:0:-3:0:-5:0:0:0:0:2:0:-1:0:0:3:1:1:1:1:0:1:-1:0:25:0:0:0:0:0:0:0:0";
-			out2.println(outBoard);
-
+			//outO.println(outBoard);
+player.setLastBoard(outBoard);
 			board.getPlayerO().show2WatcherBoard(opBoard,
 					board.getPlayerO().getName(), 0, 0, dice1, dice2);
 			nrMoves = nrChances.calcPossibleMovesX(turn, dice1, dice2);
 			board.setCanMove(nrMoves);
 			outBoard = board.outBoard("You", turn, dice1, dice2, 0, 0); // X
-			out1.println(outBoard);
+			//outX.println(outBoard);
+opponent.setLastBoard(outBoard);
 			board.getPlayerX().show2WatcherBoard(board,
 					board.getPlayerX().getName(), dice1, dice2, 0, 0);
 
@@ -407,13 +408,13 @@ public class JibsGame {
 			nrMoves = nrChances.calcPossibleMovesO(turn, dice1, dice2);
 			board.setCanMove(0);
 			outBoard = board.outBoard("You", turn, 0, 0, dice1, dice2); // X
-			out1.println(outBoard);
+			//outX.println(outBoard);
 			board.getPlayerX().show2WatcherBoard(board,
 					board.getPlayerX().getName(), 0, 0, dice1, dice2);
 			board.setCanMove(nrMoves);
 			opBoard = board.switch2O();
 			outBoard = opBoard.outBoard("You", turn, dice1, dice2, 0, 0); // O
-			out2.println(outBoard);
+			//outO.println(outBoard);
 			board.getPlayerO().show2WatcherBoard(opBoard,
 					board.getPlayerO().getName(), dice1, dice2, 0, 0);
 
@@ -423,17 +424,17 @@ public class JibsGame {
 					obj = new Object[] { Integer.valueOf(nrMoves) };
 					msg = jibsServer.getJibsMessages().convert("m_please_move",
 							obj);
-					out2.println(msg);
+					outO.println(msg);
 				} else {
 					// m_you_cant_move=You can't move.
 					msg = jibsServer.getJibsMessages().convert(
 							"m_you_cant_move");
-					out2.println(msg);
+					outO.println(msg);
 					// m_other_cant_move=%0 can't move.
 					obj = new Object[] { board.getPlayerO().getName() };
 					msg = jibsServer.getJibsMessages().convert(
 							"m_other_cant_move", obj);
-					out1.println(msg);
+					outX.println(msg);
 				}
 			}
 
@@ -647,8 +648,8 @@ public class JibsGame {
 
 	public void startGame(int startTurn, int dice1, int dice2,
 			int player1Points, int player2Points, int mayDouble1, int mayDouble2) {
-		JibsWriter out1 = board.getPlayerX().getOutputStream();
-		JibsWriter out2 = board.getPlayerO().getOutputStream();
+		JibsWriter outX = board.getPlayerX().getOutputStream();
+		JibsWriter outO = board.getPlayerO().getOutputStream();
 		Player opponent = board.getOpponent(board.getPlayerX());
 
 		board.setMayDouble1(mayDouble1);
@@ -666,13 +667,13 @@ public class JibsGame {
 		switch (board.getTurn()) {
 		case -1:
 			nrMoves = calcPossibleMoves(this, board.getPlayerO(), true,
-					board.getTurn(), nrChances, out1, out2, board, dice1, dice2);
+					board.getTurn(), nrChances, outX, outO, board, dice1, dice2);
 
 			if (nrMoves > 0) {
 				String nextCmd1 = checkForcedMove(board.getPlayerO(), board,
-						nrMoves, out2);
+						nrMoves, outO);
 				String nextCmd2 = checkGreedy(board.getPlayerO(), board,
-						nrMoves, out2);
+						nrMoves, outO);
 				String nextCmd = null;
 
 				if (nextCmd1 != null) {
@@ -696,13 +697,13 @@ public class JibsGame {
 
 		case 1:
 			nrMoves = calcPossibleMoves(this, board.getPlayerO(), true,
-					board.getTurn(), nrChances, out1, out2, board, dice1, dice2);
+					board.getTurn(), nrChances, outX, outO, board, dice1, dice2);
 
 			if (nrMoves > 0) {
 				String nextCmd1 = checkForcedMove(board.getPlayerX(), board,
-						nrMoves, out1);
+						nrMoves, outX);
 				String nextCmd2 = checkGreedy(board.getPlayerX(), board,
-						nrMoves, out1);
+						nrMoves, outX);
 				String nextCmd = null;
 
 				if (nextCmd1 != null) {

@@ -1,6 +1,6 @@
 package net.sourceforge.jibs.command;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import net.sourceforge.jibs.server.Player;
 import net.sourceforge.jibs.server.Server;
@@ -15,10 +15,9 @@ public class Who_Command implements JibsCommand {
 	// --------------------------------------------------------------------------------------------------------------------
 	public boolean execute(Server server, Player player, String strArgs,
 			String[] args) {
-		HashMap allClients = server.getAllClients();
+		Map<String, Player> allClients = server.getAllClients();
 		JibsWriter out = player.getOutputStream();
-		for (Object obj : allClients.values()) {
-			Player aPlayer = (Player) obj;
+		for (Player aPlayer : allClients.values()) {
 			JibsWriter aout = aPlayer.getOutputStream();
 			StringBuilder builder = new StringBuilder();
 			builder.append(ClipConstants.CLIP_WHO_INFO + " ");

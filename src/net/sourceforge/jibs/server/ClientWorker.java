@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.swing.SwingUtilities;
@@ -68,8 +69,8 @@ public class ClientWorker implements Runnable {
 	public static Player getPlayer(JibsServer jibsServer, Player player,
 			String name) {
 		Server server = jibsServer.getServer();
-		HashMap allClients = server.getAllClients();
-		Iterator iter = allClients.values().iterator();
+		Map<String, Player> allClients = server.getAllClients();
+		Iterator<Player> iter = allClients.values().iterator();
 
 		while (iter.hasNext()) {
 			Player possibleInvitee = (Player) iter.next();
@@ -83,8 +84,8 @@ public class ClientWorker implements Runnable {
 	}
 
 	public static Player getPlayer(Server server, String name) {
-		HashMap allClients = server.getAllClients();
-		Iterator iter = allClients.values().iterator();
+		Map<String, Player> allClients = server.getAllClients();
+		Iterator<Player> iter = allClients.values().iterator();
 
 		while (iter.hasNext()) {
 			Player obj = (Player) iter.next();

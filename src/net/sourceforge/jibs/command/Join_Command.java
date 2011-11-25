@@ -103,13 +103,13 @@ public class Join_Command implements JibsCommand {
 								.setJoinPlayer1(null);
 						player.getGame().getBackgammonBoard()
 								.setJoinPlayer2(null);
-						player.startGame(server.getJibsServer(),
-								jibsNewGameData, game, player.getGame()
-										.getBackgammonBoard().getPlayerX(),
-								player.getGame().getBackgammonBoard()
-										.getPlayerO(), matchlength,
-								jibsNewGameData.getTurn(), matchVersion,
-								board.getMayDouble1(), board.getMayDouble2());
+//						player.startGame(server.getJibsServer(),
+//								jibsNewGameData, game, player.getGame()
+//										.getBackgammonBoard().getPlayerX(),
+//								player.getGame().getBackgammonBoard()
+//										.getPlayerO(), matchlength,
+//								jibsNewGameData.getTurn(), matchVersion,
+//								board.getMayDouble1(), board.getMayDouble2());
 					}
 				}
 			}
@@ -206,7 +206,7 @@ public class Join_Command implements JibsCommand {
 					msg = jibsMessages.convert("m_start_match", obj);
 					JibsTextArea.log(server.getJibsServer(), msg, true);
 
-					jibsNewGameData.getPlayerX().startGame(
+					jibsNewGameData.startGame(
 							server.getJibsServer(), jibsNewGameData, game,
 							jibsNewGameData.getPlayerX(),
 							jibsNewGameData.getPlayerO(), matchlength,
@@ -289,13 +289,13 @@ public class Join_Command implements JibsCommand {
 		}
 	}
 
-	private JibsNewGameData determineStartPlayer(Player player1, Player player2) {
+	private JibsNewGameData determineStartPlayer(Player playerX, Player playerO) {
 		JibsMessages jibsMessages = server.getJibsMessages();
 
-		JibsWriter out1 = player1.getOutputStream();
-		JibsWriter out2 = player2.getOutputStream();
-		String playerName = player1.getName();
-		String oppplayerName = player2.getName();
+		JibsWriter outX = playerX.getOutputStream();
+		JibsWriter outO = playerO.getOutputStream();
+		String playerName = playerX.getName();
+		String oppplayerName = playerO.getName();
 		String msg = null;
 		Object[] obj = null;
 
@@ -304,49 +304,49 @@ public class Join_Command implements JibsCommand {
 		do {
 			playerXdie1Value = Die.roll(server.getJibsServer().getJibsRandom());
 			playerXdie2Value = Die.roll(server.getJibsServer().getJibsRandom());
-			playerXdie1Value = 1; // joining Player
-			playerXdie2Value = 3; // inviting Player
+			playerXdie1Value = 3; // joining Player
+			playerXdie2Value = 1; // inviting Player
 
 			// m_both_roll=%0 rolled %1, %2 rolled %3
 			obj = new Object[] { "You", playerXdie1Value, oppplayerName,
 					playerXdie2Value };
 			msg = jibsMessages.convert("m_both_roll", obj);
-			out1.println(msg);
+			outX.println(msg);
 			// m_both_roll=%0 rolled %1, %2 rolled %3
-			obj = new Object[] { player1.getName(), playerXdie1Value,
+			obj = new Object[] { playerX.getName(), playerXdie1Value,
 					oppplayerName, playerXdie2Value };
-			player1.informWatcher("m_both_roll", obj, true);
-			player2.informWatcher("m_both_roll", obj, true);
+			playerX.informWatcher("m_both_roll", obj, true);
+			playerO.informWatcher("m_both_roll", obj, true);
 			// m_both_roll=%0 rolled %1, %2 rolled %3
 			obj = new Object[] { "You", playerXdie2Value, playerName,
 					playerXdie1Value };
 			msg = jibsMessages.convert("m_both_roll", obj);
-			out2.println(msg);
+			outO.println(msg);
 		} while (playerXdie1Value == playerXdie2Value);
 
 		if (playerXdie1Value > playerXdie2Value) {
 			// m_your_turn=It's your turn to move.
 			msg = jibsMessages.convert("m_your_turn");
-			out1.println(msg);
+			outX.println(msg);
 			// m_makes_first_move=%0 makes the first move.
 			obj = new Object[] { playerName };
 			msg = jibsMessages.convert("m_makes_first_move", obj);
-			out2.println(msg);
-			player2.informWatcher("m_makes_first_move", obj, true);
-			player1.informWatcher("m_makes_first_move", obj, true);
-			return new JibsNewGameData(player1, player2, -1, playerXdie1Value,
+			outO.println(msg);
+			playerO.informWatcher("m_makes_first_move", obj, true);
+			playerX.informWatcher("m_makes_first_move", obj, true);
+			return new JibsNewGameData(playerX, playerO, -1, playerXdie1Value,
 					playerXdie2Value);
 		} else {
 			// m_your_turn=It's your turn to move.
 			msg = jibsMessages.convert("m_your_turn");
-			out2.println(msg);
+			outO.println(msg);
 			// m_makes_first_move=%0 makes the first move.
 			obj = new Object[] { oppplayerName, };
 			msg = jibsMessages.convert("m_makes_first_move", obj);
-			out1.println(msg);
-			player1.informWatcher("m_makes_first_move", obj, true);
-			player2.informWatcher("m_makes_first_move", obj, true);
-			return new JibsNewGameData(player2, player1, -1, playerXdie1Value,
+			outX.println(msg);
+			playerX.informWatcher("m_makes_first_move", obj, true);
+			playerO.informWatcher("m_makes_first_move", obj, true);
+			return new JibsNewGameData(playerO, playerX, -1, playerXdie1Value,
 					playerXdie2Value);
 		}
 	}

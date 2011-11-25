@@ -14,13 +14,11 @@ import java.util.TimeZone;
 
 import net.sourceforge.jibs.backgammon.BackgammonBoard;
 import net.sourceforge.jibs.backgammon.JibsGame;
-import net.sourceforge.jibs.backgammon.JibsMatch;
 import net.sourceforge.jibs.gui.JibsMessages;
 import net.sourceforge.jibs.gui.JibsTextArea;
 import net.sourceforge.jibs.util.ClipConstants;
 import net.sourceforge.jibs.util.Encoder;
 import net.sourceforge.jibs.util.JibsConvert;
-import net.sourceforge.jibs.util.JibsNewGameData;
 import net.sourceforge.jibs.util.JibsSet;
 import net.sourceforge.jibs.util.JibsToggle;
 import net.sourceforge.jibs.util.JibsWriter;
@@ -78,6 +76,8 @@ public class Player {
 
 	private boolean isInputStreamClosed;
 
+	public String lastBoard;
+
 	// ~ Constructors
 	// -----------------------------------------------------------
 	public Player() {
@@ -127,15 +127,6 @@ public class Player {
 
 	public JibsGame getGame() {
 		return cur_Game;
-	}
-
-	public void startGame(JibsServer jibsServer, JibsNewGameData jngd,
-			JibsGame game, Player player1, Player player2, int length,
-			int turn, JibsMatch matchVersion, int mayDouble1, int mayDouble2) {
-		BackgammonBoard board = game.getBackgammonBoard();
-		game.startGame(turn, board.getPlayerXdie1Value(),
-				board.getPlayerXdie2Value(), board.getPlayerXPoints(),
-				board.getPlayerOPoints(), mayDouble1, mayDouble2);
 	}
 
 	public boolean canCLIP() {
@@ -230,15 +221,14 @@ public class Player {
 		JibsTextArea.log(jibsServer, msg, true);
 
 		// player.informPlayers(msg, null);
-		Map map = jibsServer.getServer().getAllClients();
-		Set set = map.entrySet();
-		Iterator iter = set.iterator();
+		Map<String, Player> map = jibsServer.getServer().getAllClients();
+		Set<Entry<String, Player>> set = map.entrySet();
+		Iterator<Entry<String, Player>> iter = set.iterator();
 
 		while (iter.hasNext()) {
-			Entry entry = (Entry) iter.next();
-			Player curPlayer = (Player) entry.getValue();
+			Entry<String, Player> entry = iter.next();
+			Player curPlayer = entry.getValue();
 			out.println("");
-			// out.println("1 aleucht 1320159195 free-249-110.mediaworksit.net");
 			if (!curPlayer.getName().equalsIgnoreCase(getName())) {
 				String omsg = ClipConstants.CLIP_LOGIN + " " + getName() + " "
 						+ msg;
@@ -280,12 +270,12 @@ public class Player {
 
 	public void informPlayers(String msg, Player outsider) {
 		// send msg to all other player's except outsider
-		Map map = server.getAllClients();
-		Set set = map.entrySet();
-		Iterator iter = set.iterator();
+		Map<String, Player> map = server.getAllClients();
+		Set<Entry<String, Player>> set = map.entrySet();
+		Iterator<Entry<String, Player>> iter = set.iterator();
 
 		while (iter.hasNext()) {
-			Entry entry = (Entry) iter.next();
+			Entry<String, Player> entry = iter.next();
 			Player curPlayer = (Player) entry.getValue();
 
 			if (outsider == null) {
@@ -485,12 +475,12 @@ public class Player {
 	}
 
 	public void informToggleChange() {
-		Map map = server.getAllClients();
-		Set set = map.entrySet();
-		Iterator iter = set.iterator();
+		Map<String, Player> map = getServer().getAllClients();
+		Set<Entry<String, Player>> set = map.entrySet();
+		Iterator<Entry<String, Player>> iter = set.iterator();
 
 		while (iter.hasNext()) {
-			Entry entry = (Entry) iter.next();
+			Entry<String, Player> entry = iter.next();
 			Player curPlayer = (Player) entry.getValue();
 			JibsWriter out = curPlayer.getOutputStream();
 			StringBuilder builder = new StringBuilder();
@@ -603,16 +593,17 @@ public class Player {
 	public void show2WatcherBoard(BackgammonBoard board, String name, int i,
 			int j, int k, int l) {
 		if (watcher != null) {
-			Set set = watcher.entrySet();
-			Iterator iter = set.iterator();
+			Set<Entry<String, Player>> set = watcher.entrySet();
+			Iterator<Entry<String, Player>> iter = set.iterator();
 
 			while (iter.hasNext()) {
-				Entry entry = (Entry) iter.next();
+				Entry<String, Player> entry = iter.next();
 				Player curPlayer = (Player) entry.getValue();
 
 				if (curPlayer != null) {
 					JibsWriter out = curPlayer.getOutputStream();
-					String outBoard = board.outBoard(name, board.getTurn(), i, j, k, l);
+					String outBoard = board.outBoard(name, board.getTurn(), i,
+							j, k, l);
 					out.println(outBoard);
 				}
 			}
@@ -630,11 +621,11 @@ public class Player {
 	public void show2WatcherMove(String msg) {
 		try {
 			if (watcher != null) {
-				Set set = watcher.entrySet();
-				Iterator iter = set.iterator();
+				Set<Entry<String, Player>> set = watcher.entrySet();
+				Iterator<Entry<String, Player>> iter = set.iterator();
 
 				while (iter.hasNext()) {
-					Entry entry = (Entry) iter.next();
+					Entry<String, Player> entry = iter.next();
 					Player curPlayer = (Player) entry.getValue();
 
 					if (curPlayer != null) {
@@ -650,11 +641,11 @@ public class Player {
 
 	public void show2WatcherRoll(String msg) {
 		if (watcher != null) {
-			Set set = watcher.entrySet();
-			Iterator iter = set.iterator();
+			Set<Entry<String, Player>> set = watcher.entrySet();
+			Iterator<Entry<String, Player>> iter = set.iterator();
 
 			while (iter.hasNext()) {
-				Entry entry = (Entry) iter.next();
+				Entry<String, Player> entry = iter.next();
 				Player curPlayer = (Player) entry.getValue();
 
 				if (curPlayer != null) {
@@ -679,11 +670,11 @@ public class Player {
 		String msg = null;
 
 		if (watcher != null) {
-			Set set = watcher.entrySet();
-			Iterator iter = set.iterator();
+			Set<Entry<String, Player>> set = watcher.entrySet();
+			Iterator<Entry<String, Player>> iter = set.iterator();
 
 			while (iter.hasNext()) {
-				Entry entry = (Entry) iter.next();
+				Entry<String, Player> entry = iter.next();
 				String name = (String) entry.getKey();
 
 				if (name.equals(player.getName())) {
@@ -709,11 +700,11 @@ public class Player {
 		int heard = 0;
 
 		if (watcher != null) {
-			Set set = watcher.entrySet();
-			Iterator iter = set.iterator();
+			Set<Entry<String, Player>> set = watcher.entrySet();
+			Iterator<Entry<String, Player>> iter = set.iterator();
 
 			while (iter.hasNext()) {
-				Entry entry = (Entry) iter.next();
+				Entry<String, Player> entry = iter.next();
 				Player wPlayer = (Player) entry.getValue();
 				JibsWriter wOut = wPlayer.getOutputStream();
 
@@ -875,5 +866,9 @@ public class Player {
 
 	public boolean isInputStreamClosed() {
 		return isInputStreamClosed;
+	}
+
+	public void setLastBoard(String outBoard) {
+		lastBoard = outBoard;
 	}
 }

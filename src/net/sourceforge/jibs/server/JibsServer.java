@@ -7,7 +7,6 @@ import java.io.Reader;
 import java.net.ServerSocket;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
@@ -163,12 +162,12 @@ public class JibsServer {
 		String sCmd = strCmd.toLowerCase();
 		JibsCommand cmd = null;
 
-		Iterator cmdIterator = allCmds.keySet().iterator();
+		Iterator<String> cmdIterator = allCmds.keySet().iterator();
 
 		int matches = 0;
 
 		while (cmdIterator.hasNext()) {
-			String cmdString = (String) cmdIterator.next();
+			String cmdString = cmdIterator.next();
 
 			if (cmdString.startsWith(sCmd)) {
 				cmd = (JibsCommand) allCmds.get(cmdString);

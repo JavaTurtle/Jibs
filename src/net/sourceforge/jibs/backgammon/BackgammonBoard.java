@@ -17,33 +17,41 @@ public class BackgammonBoard {
 	private JibsServer jibsServer;
 	private Player playerX;
 	private Player playerO;
-	private int playerXdie1Value;
-	private int playerXdie2Value;
-	private int playerOdie1Value;
-	private int playerOdie2Value;
-	private int bar;
-	private int[] board;
+	private int playerDie1Value;
+	private int playerDie2Value;
+	private int opponentDie1Value;
+	private int opponentDie2Value;
+	private int bar; // 25 or 0 (see home)
+	private int[] board; // 26 numbers giving the board. Positions 0 and 25
+							// represent the bars for the players (see below).
+							// Positive numbers represent O's pieces negative
+							// numbers represent X's pieces
 	private int canMove;
-	private int color;
-	private int cubeNumber;
-	private int didCrawford;
-	private int direction;
-	private int forcedMove;
-	private int home;
-	private int matchlength;
-	private int mayDouble1;
-	private int mayDouble2;
-	private int onBar1;
-	private int onBar2;
-	private int onHome1;
-	private int onHome2;
-	private int player1Got;
-	private String player1Name;
-	private int player2Got;
-	private String player2Name;
-	private int redoubles;
-	private int turn;
-	private int wasDoubled;
+	private int color; // -1 if you are X, +1 if you are O
+	private int cubeNumber;// the number on the doubling cube
+	private int didCrawford;// don't use this token
+	private int direction; // -1 if you play from position 24 to position 1 +1
+							// if you play from position 1 to position 24
+	private int forcedMove;// don't use this token
+	private int home; // 0 or 25 depending on direction
+	private int matchlength; // match length or 9999 for unlimited matches
+	private int mayDouble1;// 1 if player is allowed to double, 0 otherwise
+	private int mayDouble2;// same for opponent
+	private int onBar1;// number of player's pieces on the bar
+	private int onBar2;// same for opponent
+	private int onHome1;// number of pieces already removed from the board by
+						// player
+	private int onHome2;// same for opponent
+	private int playerGot; // player's points in the match so far
+	private String playerName;
+	private int opponentGot; // opponent's points in the match so far
+	private String opponentName;
+	private int redoubles;// maximum number of instant redoubles in unlimited
+							// matches
+	private int turn; // -1 if it's X's turn, +1 if it's O's turn 0 if the game
+						// is over
+	private int wasDoubled; // 1 if your opponent has just doubled, 0 otherwise
+	// Special data for jIBS
 	private JibsMatch jibsMatchVersion;
 	private Player joinPlayer1;
 	private Player joinPlayer2;
@@ -54,15 +62,15 @@ public class BackgammonBoard {
      *
      */
 	public BackgammonBoard(final BackgammonBoard b2) {
-		this.init(b2.jibsServer, b2.player1Name, b2.player2Name,
+		this.init(b2.jibsServer, b2.playerName, b2.opponentName,
 				b2.matchlength, b2.getMatchVersion());
 		this.jibsServer = b2.jibsServer;
 		this.playerX = b2.playerX;
 		this.playerO = b2.playerO;
-		this.playerXdie1Value = b2.playerXdie1Value;
-		this.playerXdie2Value = b2.playerXdie2Value;
-		this.playerOdie1Value = b2.playerOdie1Value;
-		this.playerOdie2Value = b2.playerOdie2Value;
+		this.playerDie1Value = b2.playerDie1Value;
+		this.playerDie2Value = b2.playerDie2Value;
+		this.opponentDie1Value = b2.opponentDie1Value;
+		this.opponentDie2Value = b2.opponentDie2Value;
 		this.jibsServer = b2.jibsServer;
 		this.bar = b2.bar;
 		this.canMove = b2.canMove;
@@ -79,10 +87,10 @@ public class BackgammonBoard {
 		this.onBar2 = b2.onBar2;
 		this.onHome1 = b2.onHome1;
 		this.onHome2 = b2.onHome2;
-		this.player1Got = b2.player1Got;
-		this.player1Name = b2.player1Name;
-		this.player2Got = b2.player2Got;
-		this.player2Name = b2.player2Name;
+		this.playerGot = b2.playerGot;
+		this.playerName = b2.playerName;
+		this.opponentGot = b2.opponentGot;
+		this.opponentName = b2.opponentName;
 		this.redoubles = b2.redoubles;
 		this.turn = b2.turn;
 		this.wasDoubled = b2.wasDoubled;
@@ -117,21 +125,21 @@ public class BackgammonBoard {
      */
 	public void init(JibsServer jibsServer, String player1Name,
 			String player2Name, int matchlength, JibsMatch matchVersion) {
-		this.player1Name = player1Name;
-		this.player2Name = player2Name;
+		this.playerName = player1Name;
+		this.opponentName = player2Name;
 		this.matchlength = matchlength;
-		this.player1Name = player1Name;
-		this.player2Name = player2Name;
+		this.playerName = player1Name;
+		this.opponentName = player2Name;
 		this.jibsMatchVersion = matchVersion;
 
-		playerXdie1Value = 0;
-		playerXdie2Value = 0;
-		playerOdie1Value = 0;
-		playerOdie2Value = 0;
+		playerDie1Value = 0;
+		playerDie2Value = 0;
+		opponentDie1Value = 0;
+		opponentDie2Value = 0;
 
 		cubeNumber = 1;
-		player1Got = 0;
-		player2Got = 0;
+		playerGot = 0;
+		opponentGot = 0;
 		board = new int[26];
 
 		// standard backgammon board
@@ -334,13 +342,13 @@ public class BackgammonBoard {
 
 		strBoard.append("board:");
 		strBoard.append("You:");
-		strBoard.append(player2Name);
+		strBoard.append(opponentName);
 		strBoard.append(":");
 		strBoard.append(matchlength);
 		strBoard.append(":");
-		strBoard.append(player1Got);
+		strBoard.append(playerGot);
 		strBoard.append(":");
-		strBoard.append(player2Got);
+		strBoard.append(opponentGot);
 
 		for (int i = 0; i < 26; i++) {
 			strBoard.append(":");
@@ -350,13 +358,13 @@ public class BackgammonBoard {
 		strBoard.append(":");
 		strBoard.append(turn);
 		strBoard.append(":");
-		strBoard.append(playerXdie1Value);
+		strBoard.append(playerDie1Value);
 		strBoard.append(":");
-		strBoard.append(playerXdie2Value);
+		strBoard.append(playerDie2Value);
 		strBoard.append(":");
-		strBoard.append(playerOdie1Value);
+		strBoard.append(opponentDie1Value);
 		strBoard.append(":");
-		strBoard.append(playerOdie2Value);
+		strBoard.append(opponentDie2Value);
 		strBoard.append(":");
 		strBoard.append(cubeNumber);
 		strBoard.append(":");
@@ -398,7 +406,7 @@ public class BackgammonBoard {
 	 * @return
 	 */
 	public int getPlayer1Got() {
-		return player1Got;
+		return playerGot;
 	}
 
 	/**
@@ -406,7 +414,7 @@ public class BackgammonBoard {
 	 * @return
 	 */
 	public String getPlayer1Name() {
-		return player1Name;
+		return playerName;
 	}
 
 	/**
@@ -414,7 +422,7 @@ public class BackgammonBoard {
 	 * @return
 	 */
 	public int getPlayer2Got() {
-		return player2Got;
+		return opponentGot;
 	}
 
 	/**
@@ -422,7 +430,7 @@ public class BackgammonBoard {
 	 * @return
 	 */
 	public String getPlayer2Name() {
-		return player2Name;
+		return opponentName;
 	}
 
 	/**
@@ -458,8 +466,8 @@ public class BackgammonBoard {
 	 * @param j
 	 * @param k
 	 */
-	public String outBoard(String name, int turn, int dice1,
-			int dice2, int j, int k) {
+	public String outBoard(String name, int turn, int dice1, int dice2, int j,
+			int k) {
 		try {
 			Player player = getPlayerX();
 			JibsSet jibsSet = player.getJibsSet();
@@ -502,9 +510,9 @@ public class BackgammonBoard {
 		bf.append(newline);
 		bf.append("+-1--2--3--4--5--6-------7--8--9-10-11-12-+");
 		bf.append(" o:");
-		bf.append(player2Name);
+		bf.append(opponentName);
 		bf.append(" - score: ");
-		bf.append(player2Got);
+		bf.append(opponentGot);
 
 		for (lines = 1; lines <= 5; lines++) {
 			bf.append(newline);
@@ -616,9 +624,9 @@ public class BackgammonBoard {
 		bf.append(newline);
 		bf.append("+24-23-22-21-20-19------18-17-16-15-14-13-+");
 		bf.append(" x:");
-		bf.append(player1Name);
+		bf.append(playerName);
 		bf.append(" - score: ");
-		bf.append(player1Got);
+		bf.append(playerGot);
 		bf.append(newline);
 		bf.append("BAR: O:");
 		bf.append(onBar2);
@@ -665,9 +673,9 @@ public class BackgammonBoard {
 		}
 
 		strBoard.append(":");
-		strBoard.append(player1Got);
+		strBoard.append(playerGot);
 		strBoard.append(":");
-		strBoard.append(player2Got);
+		strBoard.append(opponentGot);
 
 		for (int i = 0; i < 26; i++) {
 			strBoard.append(":");
@@ -932,7 +940,7 @@ public class BackgammonBoard {
 	 * @param player1Got
 	 */
 	public void setPlayer1Got(int player1Got) {
-		this.player1Got = player1Got;
+		this.playerGot = player1Got;
 	}
 
 	/**
@@ -940,7 +948,7 @@ public class BackgammonBoard {
 	 * @param player1Name
 	 */
 	public void setPlayer1Name(String player1Name) {
-		this.player1Name = player1Name;
+		this.playerName = player1Name;
 	}
 
 	/**
@@ -948,7 +956,7 @@ public class BackgammonBoard {
 	 * @param player2Got
 	 */
 	public void setPlayer2Got(int player2Got) {
-		this.player2Got = player2Got;
+		this.opponentGot = player2Got;
 	}
 
 	/**
@@ -956,7 +964,7 @@ public class BackgammonBoard {
 	 * @param player2Name
 	 */
 	public void setPlayer2Name(String player2Name) {
-		this.player2Name = player2Name;
+		this.opponentName = player2Name;
 	}
 
 	/**
@@ -1053,7 +1061,7 @@ public class BackgammonBoard {
 	 * @return
 	 */
 	public int getPlayerXPoints() {
-		return player1Got;
+		return playerGot;
 	}
 
 	/**
@@ -1061,7 +1069,7 @@ public class BackgammonBoard {
 	 * @return
 	 */
 	public int getPlayerOPoints() {
-		return player2Got;
+		return opponentGot;
 	}
 
 	/**
@@ -1159,7 +1167,7 @@ public class BackgammonBoard {
 	 * @param i
 	 */
 	public void setPlayerXPoints(int i) {
-		player1Got = i;
+		playerGot = i;
 	}
 
 	/**
@@ -1167,7 +1175,7 @@ public class BackgammonBoard {
 	 * @param i
 	 */
 	public void setPlayerOPoints(int i) {
-		player2Got = i;
+		opponentGot = i;
 	}
 
 	/**
@@ -1180,10 +1188,10 @@ public class BackgammonBoard {
 		opBoard.setPlayer2Name(getPlayer1Name());
 		opBoard.setDirection(-1);
 		opBoard.setColor(1);
-		opBoard.setPlayerXdie1Value(playerOdie1Value);
-		opBoard.setPlayerXdie2Value(playerOdie2Value);
-		opBoard.setPlayerOdie1Value(playerXdie1Value);
-		opBoard.setPlayerOdie2Value(playerXdie2Value);
+		opBoard.setPlayerXdie1Value(opponentDie1Value);
+		opBoard.setPlayerXdie2Value(opponentDie2Value);
+		opBoard.setPlayerOdie1Value(playerDie1Value);
+		opBoard.setPlayerOdie2Value(playerDie2Value);
 		opBoard.setOnBar1(getOnBar2());
 		opBoard.setOnBar2(getOnBar1());
 		opBoard.setOnHome1(getOnHome2());
@@ -1199,35 +1207,35 @@ public class BackgammonBoard {
 	}
 
 	public int getPlayerXdie1Value() {
-		return playerXdie1Value;
+		return playerDie1Value;
 	}
 
 	public void setPlayerXdie1Value(int playerXdie1Value) {
-		this.playerXdie1Value = playerXdie1Value;
+		this.playerDie1Value = playerXdie1Value;
 	}
 
 	public int getPlayerXdie2Value() {
-		return playerXdie2Value;
+		return playerDie2Value;
 	}
 
 	public void setPlayerXdie2Value(int playerXdie2Value) {
-		this.playerXdie2Value = playerXdie2Value;
+		this.playerDie2Value = playerXdie2Value;
 	}
 
 	public int getPlayerOdie1Value() {
-		return playerOdie1Value;
+		return opponentDie1Value;
 	}
 
 	public void setPlayerOdie1Value(int playerOdie1Value) {
-		this.playerOdie1Value = playerOdie1Value;
+		this.opponentDie1Value = playerOdie1Value;
 	}
 
 	public int getPlayerOdie2Value() {
-		return playerOdie2Value;
+		return opponentDie2Value;
 	}
 
 	public void setPlayerOdie2Value(int playerOdie2Value) {
-		this.playerOdie2Value = playerOdie2Value;
+		this.opponentDie2Value = playerOdie2Value;
 	}
 
 	public void setEnded(boolean isEnded) {
@@ -1241,7 +1249,7 @@ public class BackgammonBoard {
 
 	@Override
 	public String toString() {
-		return outBoard_3(player1Name, turn, playerXdie1Value,
-				playerXdie2Value, playerOdie1Value, playerOdie2Value);
+		return outBoard_3(playerName, turn, playerDie1Value, playerDie2Value,
+				opponentDie1Value, opponentDie2Value);
 	}
 }

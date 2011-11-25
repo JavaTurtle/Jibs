@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public class JibsCollection {
-	public static boolean checkMove(Collection col, PossibleMove pMove,
+	public static boolean checkMove(Collection<PossibleMove> col, PossibleMove pMove,
 			BackgammonBoard board) {
 		boolean retCode = true;
 
@@ -24,7 +24,7 @@ public class JibsCollection {
 			}
 		}
 
-		Iterator iter = col.iterator();
+		Iterator<PossibleMove> iter = col.iterator();
 		BackgammonBoard board2 = null;
 		BackgammonBoard helpBoard2 = new BackgammonBoard(board);
 

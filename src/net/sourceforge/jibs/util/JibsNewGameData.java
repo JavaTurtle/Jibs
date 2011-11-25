@@ -1,5 +1,9 @@
 package net.sourceforge.jibs.util;
 
+import net.sourceforge.jibs.backgammon.BackgammonBoard;
+import net.sourceforge.jibs.backgammon.JibsGame;
+import net.sourceforge.jibs.backgammon.JibsMatch;
+import net.sourceforge.jibs.server.JibsServer;
 import net.sourceforge.jibs.server.Player;
 
 public class JibsNewGameData {
@@ -57,4 +61,13 @@ public class JibsNewGameData {
 	public void setDie2Value(int die2Value) {
 		this.die2Value = die2Value;
 	}
+	public void startGame(JibsServer jibsServer, JibsNewGameData jngd,
+			JibsGame game, Player player1, Player player2, int length,
+			int turn, JibsMatch matchVersion, int mayDouble1, int mayDouble2) {
+		BackgammonBoard board = game.getBackgammonBoard();
+		game.startGame(turn, board.getPlayerXdie1Value(),
+				board.getPlayerXdie2Value(), board.getPlayerXPoints(),
+				board.getPlayerOPoints(), mayDouble1, mayDouble2);
+	}
+
 }
