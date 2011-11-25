@@ -3,3 +3,4 @@ docs
 logs
 /build
 /javadoc
+/database/hsqldb/**
