@@ -20,15 +20,14 @@ public class Board_Command implements JibsCommand {
 			int turn = board.getTurn();
 
 			if (turn == -1) {
-				String outBoard = board.outBoard("You", turn,
+				String outBoard = board.outBoard(player.getName(), turn,
 						board.getPlayerXdie1Value(),
 						board.getPlayerXdie2Value(),
 						board.getPlayerOdie1Value(),
 						board.getPlayerOdie2Value());
 				out.println(outBoard);
 			} else {
-				board.setCanMove(0);
-				String outBoard = board.outBoard("You", turn,
+				String outBoard = board.outBoard(player.getName(), turn,
 						board.getPlayerOdie1Value(),
 						board.getPlayerOdie2Value(),
 						board.getPlayerXdie1Value(),

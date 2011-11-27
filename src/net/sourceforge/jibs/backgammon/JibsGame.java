@@ -404,16 +404,18 @@ public class JibsGame {
 
 		case 1:
 			nrMoves = nrChances.calcPossibleMovesO(turn, dice1, dice2);
+			board.setDirection(1);
 			board.setCanMove(0);
-			outBoard = board.outBoard("You", turn, 0, 0, dice1, dice2); 
+			outBoard = board.outBoard(player.getName(), turn, 0, 0, dice1, dice2); 
 			outX.println(outBoard);
 			board.getPlayerX().show2WatcherBoard(board,
 					board.getPlayerX().getName(), 0, 0, dice1, dice2);
 			board.setCanMove(nrMoves);
-			opBoard = board.switch2O();
-			outBoard = opBoard.outBoard("You", turn, dice1, dice2, 0, 0);
+			board.setColor(1);
+			board.setDirection(-1);
+			outBoard = board.outBoard(opponent.getName(), turn, dice1, dice2, 0, 0);
 			outO.println(outBoard);
-			board.getPlayerO().show2WatcherBoard(opBoard,
+			board.getPlayerO().show2WatcherBoard(board,
 					board.getPlayerO().getName(), dice1, dice2, 0, 0);
 
 			if (!isFirstMove) {

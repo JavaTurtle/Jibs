@@ -661,9 +661,9 @@ public class BackgammonBoard {
 		StringBuffer strBoard = new StringBuffer();
 
 		strBoard.append("board:");
-		strBoard.append(name);
+		strBoard.append("You");
 		strBoard.append(":");
-		strBoard.append(getPlayer2Name());
+		strBoard.append(name);
 		strBoard.append(":");
 
 		if (getMatchVersion().getVersion() == JibsMatch.nPointMatch) {
