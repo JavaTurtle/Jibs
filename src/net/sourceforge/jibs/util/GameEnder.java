@@ -14,7 +14,7 @@ public class GameEnder extends Thread {
 		this.jibsServer = jibsServer;
 	}
 
-	public void run() {
+	public void endGame() {
 		try {
 			Thread.sleep(200);
 			playerX.endGame(playerO);

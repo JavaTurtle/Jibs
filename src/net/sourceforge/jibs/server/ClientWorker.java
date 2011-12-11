@@ -6,7 +6,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -35,6 +34,7 @@ public class ClientWorker implements Runnable {
 	private long inActiveMillis = 0;
 	private JibsTimer inactiveTimer;
 	private JibsServer jibsServer;
+	private Thread workerThread;
 	private Thread jibsThread;
 	private String lastCmd;
 	private Date now_Cmd;
@@ -48,6 +48,27 @@ public class ClientWorker implements Runnable {
 
 	// Constructor
 	public ClientWorker() {
+	}
+
+	public synchronized void start() {
+		if (workerThread == null) {
+			workerThread = new Thread(this);
+			workerThread.start();
+		}
+	}
+
+	public synchronized void stop() {
+		runs = false;
+	}
+
+	public void join() {
+		try {
+			if (workerThread != null) {
+				workerThread.join();
+			}
+		} catch (InterruptedException e) {
+			logger.warn(e);
+		}
 	}
 
 	public ClientWorker(JibsConfiguration configuration,
@@ -101,7 +122,7 @@ public class ClientWorker implements Runnable {
 	public void connectPlayer(Player player) {
 		this.player = player;
 
-		HashMap<String, Player> allClients = getServer().getAllClients();
+		Map<String, Player> allClients = getServer().getAllClients();
 
 		allClients.put(player.getName(), player);
 
@@ -120,7 +141,7 @@ public class ClientWorker implements Runnable {
 		this.player = player;
 		player.setLast_logout_date(new Timestamp(new Date().getTime()));
 
-		HashMap<String, Player> allClients = getServer().getAllClients();
+		Map<String, Player> allClients = getServer().getAllClients();
 		allClients.remove(player.getName());
 		updateDB(sqlSessionFactory, player, "Player.updateLogout");
 
@@ -135,6 +156,8 @@ public class ClientWorker implements Runnable {
 	}
 
 	public boolean executeCmd(String strCmd) {
+		if (strCmd == null)
+			return true;
 		if (player != null) {
 			logger.info(player.getName() + ":" + strCmd);
 		} else {
@@ -250,6 +273,10 @@ public class ClientWorker implements Runnable {
 		return socket;
 	}
 
+	public void stopRunning() {
+		runs = false;
+	}
+
 	public void run() {
 		String strCmd = null;
 		boolean bStopLogin = false;
@@ -347,6 +374,11 @@ public class ClientWorker implements Runnable {
 				}
 			}
 		} // while
+		try {
+			socket.close();
+		} catch (IOException e) {
+			logger.warn(e);
+		}
 	}
 
 	private void updateLogin(SqlSessionFactory sqlSessionFactory, Player player) {
@@ -416,4 +448,5 @@ public class ClientWorker implements Runnable {
 		player.setEmail(newadr);
 		return updateDB(sqlSessionFactory, player, "Player.updateMail");
 	}
+
 }

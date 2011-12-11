@@ -21,29 +21,24 @@ public class Roll_Command implements JibsCommand {
 			BackgammonBoard board = game.getBackgammonBoard();
 			Player opponent = board.getOpponent(player);
 			int turn = board.getTurn();
-			Player player1 = null;
-			Player player2 = null;
-			JibsWriter out1 = null;
-			JibsWriter out2 = null;
+			Player playerX = board.getPlayerX();
+			Player playerO = board.getPlayerO();
+			JibsWriter outX = playerX.getOutputStream();
+			JibsWriter outO = playerO.getOutputStream();
 			int nrMoves = -1;
 
 			switch (turn) {
 			case 1: // O
-				player1 = board.getPlayerX();
-				player2 = board.getPlayerO();
-				out1 = player1.getOutputStream();
-				out2 = player2.getOutputStream();
-				nrMoves = game.rollO(out1, out2, player2, board, turn);
+				nrMoves = game.rollO(outX, outO, playerO, board, turn);
 
 				if (nrMoves <= 0) {
 					board.setTurn(-board.getTurn());
-					board.clearDie();
 					opponent.getClientWorker().executeCmd("roll");
 				} else {
-					String nextCmd1 = game.checkForcedMove(player2, board,
-							nrMoves, out2);
-					String nextCmd2 = game.checkGreedy(player2, board, nrMoves,
-							out2);
+					String nextCmd1 = game.checkForcedMove(playerO, board,
+							outO);
+					String nextCmd2 = game.checkGreedy(playerO, board, nrMoves,
+							outO);
 					String nextCmd = null;
 
 					if (nextCmd1 != null) {
@@ -53,28 +48,23 @@ public class Roll_Command implements JibsCommand {
 					if ((nextCmd == null) && (nextCmd2 != null)) {
 						nextCmd = nextCmd2;
 					}
-
-					player2.getClientWorker().executeCmd(nextCmd);
+					
+					playerO.getClientWorker().executeCmd(nextCmd);
 				}
 
 				break;
 
 			case -1: // X
-				player1 = board.getPlayerX();
-				player2 = board.getPlayerO();
-				out1 = player1.getOutputStream();
-				out2 = player2.getOutputStream();
-				nrMoves = game.rollX(out1, out2, player1, board, turn);
+				nrMoves = game.rollX(outX, outO, playerX, board, turn);
 
 				if (nrMoves <= 0) {
 					board.setTurn(-board.getTurn());
-					board.clearDie();
 					opponent.getClientWorker().executeCmd("roll");
 				} else {
-					String nextCmd1 = game.checkForcedMove(player1, board,
-							nrMoves, out1);
-					String nextCmd2 = game.checkGreedy(player1, board, nrMoves,
-							out1);
+					String nextCmd1 = game.checkForcedMove(playerX, board,
+							outX);
+					String nextCmd2 = game.checkGreedy(playerX, board, nrMoves,
+							outX);
 					String nextCmd = null;
 
 					if (nextCmd1 != null) {
@@ -85,7 +75,7 @@ public class Roll_Command implements JibsCommand {
 						nextCmd = nextCmd2;
 					}
 
-					player1.getClientWorker().executeCmd(nextCmd);
+					playerX.getClientWorker().executeCmd(nextCmd);
 				}
 
 				break;

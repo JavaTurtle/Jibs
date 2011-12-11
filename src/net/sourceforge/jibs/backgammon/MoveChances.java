@@ -16,8 +16,6 @@ public class MoveChances {
 	}
 
 	public int calcPossibleMovesO(int turn, int dice1, int dice2) {
-		// Player is playing 'X' with direction +1 (home=25, bar=0)
-		// Opponent is playing 'O' with direction -1 (home=0, bar=25)
 		int d1 = Math.max(dice1, dice2);
 		int d2 = Math.min(dice1, dice2);
 

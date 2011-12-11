@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.sourceforge.jibs.command.Exit_Command;
 import net.sourceforge.jibs.command.Leave_Command;
@@ -34,7 +35,7 @@ public class Server implements Runnable {
 	private ServerSocket serverSocket;
 	private JibsMessages jibsMessages;
 	private JibsConfiguration jibsConfiguration;
-	private HashMap<String, Player> allClients;
+	private Map<String, Player> allClients;
 	private JibsServer jibsServer;
 	private boolean runs;
 
@@ -55,7 +56,7 @@ public class Server implements Runnable {
 		this.jibsMessages = jibsMessages;
 		this.jibsServer = server;
 		this.serverSocket = serverSocket;
-		allClients = new HashMap<String, Player>();
+		allClients = new ConcurrentHashMap<String, Player>();
 		runs = true;
 	}
 
@@ -63,7 +64,7 @@ public class Server implements Runnable {
 		return jibsServer;
 	}
 
-	public HashMap<String, Player> getAllClients() {
+	public Map<String, Player> getAllClients() {
 		return allClients;
 	}
 
@@ -111,14 +112,6 @@ public class Server implements Runnable {
 			jibsServer.logException(e);
 		} catch (IOException e) {
 			jibsServer.logException(e);
-		} finally {
-			// try {
-			// if (inp != null) {
-			// inp.close();
-			// }
-			// } catch (IOException e) {
-			// jibsServer.logException(e);
-			// }
 		}
 	}
 
@@ -153,8 +146,7 @@ public class Server implements Runnable {
 				if (bLogin) {
 					ClientWorker w = new ClientWorker(jibsConfiguration,
 							jibsMessages, this, client, in, out);
-					Thread t = new Thread(w);
-					t.start();
+					w.start();
 				}
 			} catch (IOException e) {
 				boolean doLog = e.getMessage().equalsIgnoreCase(
@@ -186,7 +178,7 @@ public class Server implements Runnable {
 	}
 
 	public Collection<Player> getAwayPlayer() {
-		HashMap<String, Player> map = getAllClients();
+		Map<String, Player> map = getAllClients();
 		Set<Entry<String, Player>> set = map.entrySet();
 		Iterator<Entry<String, Player>> iter = set.iterator();
 		Collection<Player> list = new ArrayList<Player>();
@@ -243,7 +235,7 @@ public class Server implements Runnable {
 		this.jibsServer = jibsServer;
 	}
 
-	public void closeAllClients() {
+	public void leaveAllClients() {
 		Map<String, Player> omap = getAllClients();
 		Map<String, Player> map = Collections.synchronizedMap(omap);
 
@@ -264,15 +256,7 @@ public class Server implements Runnable {
 				ClientWorker cw = curPlayer.getClientWorker();
 
 				if (cw != null) {
-					cw.disConnectPlayer(jibsServer.getSqlSessionFactory(),
-							curPlayer);
 					cw.stopWatchThread();
-
-					try {
-						cw.getSocket().close();
-					} catch (IOException e) {
-						jibsServer.logException(e);
-					}
 				}
 			}
 		}
@@ -301,6 +285,34 @@ public class Server implements Runnable {
 
 	public void setConfiguration(JibsConfiguration jibsConfiguration) {
 		this.jibsConfiguration = jibsConfiguration;
+	}
+
+	public void closeAllClients() {
+		Map<String, Player> map = getAllClients();
+
+		synchronized (map) {
+			Set<Entry<String, Player>> set = map.entrySet();
+			Iterator<Entry<String, Player>> iter = set.iterator();
+
+			while (iter.hasNext()) {
+				Entry<String, Player> entry = iter.next();
+				Player curPlayer = (Player) entry.getValue();
+				ClientWorker clientWorker = curPlayer.getClientWorker();
+				if (clientWorker != null) {
+					clientWorker.stop();
+					clientWorker.disConnectPlayer(jibsServer.getSqlSessionFactory(),
+							curPlayer);
+					Socket socket = clientWorker.getSocket();
+					try {
+						socket.getInputStream().close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					clientWorker.join();
+				}
+			}
+		}
 	}
 
 }

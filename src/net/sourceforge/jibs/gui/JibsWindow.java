@@ -21,7 +21,7 @@ public class JibsWindow implements WindowListener, ActionListener {
 	}
 
 	public void windowClosing(WindowEvent e) {
-		jibsServer.stopServerMenuItemActionPerformed(null);
+		jibsServer.stopServerMenuItemActionPerformed(true, true);
 		logger.info("Server exited.");
 		System.exit(0);
 	}

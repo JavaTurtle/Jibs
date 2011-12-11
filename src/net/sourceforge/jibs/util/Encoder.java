@@ -28,6 +28,7 @@ public class Encoder {
 	}
 
 	public static void main(String[] args) {
+		System.out.println("admin:" + Encoder.encrypt("admin", "MD5"));
 		System.out.println("alice:" + Encoder.encrypt("alicealice", "MD5"));
 		System.out.println("bob:" + Encoder.encrypt("bobbob", "MD5"));
 	}

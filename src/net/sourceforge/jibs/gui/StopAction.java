@@ -22,6 +22,6 @@ public class StopAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		jibsServer.stopServerMenuItemActionPerformed(e);
+		jibsServer.stopServerMenuItemActionPerformed(true, false);
 	}
 }

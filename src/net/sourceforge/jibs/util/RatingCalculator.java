@@ -2,13 +2,14 @@ package net.sourceforge.jibs.util;
 
 public class RatingCalculator {
 	public static void main(String[] args) {
-		double ratingChange = RatingCalculator.ratingChange(true, 1, 0, 1500.0,
-				0, 1500.0);
-		System.out.println(ratingChange);
+		RatingChange ratingChange = RatingCalculator.ratingChange(true, 1, 247,
+				1580.14, 42, 1918.64);
+		System.out.println(ratingChange.getRatingA());
+		System.out.println(ratingChange.getRatingB());
 	}
 
-	public static double ratingChange(boolean aWin, int length, double expA,
-			double ratingA, double expB, double ratingB) {
+	public static RatingChange ratingChange(boolean aWin, int length,
+			double expA, double ratingA, double expB, double ratingB) {
 		double d;
 		double p;
 		double p_upset;
@@ -16,14 +17,13 @@ public class RatingCalculator {
 		double k_b;
 		double variationA;
 		double variationB;
+		RatingChange change = new RatingChange();
 
-		// experience_A += length ;
-		// experience_B += length ;
 		d = Math.abs(ratingA - ratingB);
 		p_upset = 1 / (Math
 				.pow(10.0, ((d * Math.sqrt((double) length)) / 2000)) + 1);
-		k_a = Math.max(1, (-expA / 100) + 5);
-		k_b = Math.max(1, -expB / 100 + 5);
+		k_a = Math.max(1, (-expA / 400) + 2);
+		k_b = Math.max(1, -expB / 400 + 2);
 
 		if (ratingA <= ratingB) {
 			if (aWin) {
@@ -47,13 +47,9 @@ public class RatingCalculator {
 			}
 		}
 
-		variationA = Math.floor((variationA * 100) + 0.5) / 100.0;
-		variationB = Math.floor((variationB * 100) + 0.5) / 100.0;
+		change.setRatingA(Math.floor(((variationA) * 100) + 0.5) / 100.0);
+		change.setRatingB(Math.floor((( variationB) * 100) + 0.5) / 100.0);
+		return change;
 
-		if (aWin) {
-			return (variationA);
-		} else {
-			return (variationB);
-		}
 	}
 }

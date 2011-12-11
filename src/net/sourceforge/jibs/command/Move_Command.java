@@ -20,86 +20,79 @@ public class Move_Command implements JibsCommand {
 
 		if (game != null) {
 			BackgammonBoard board = game.getBackgammonBoard();
-			Player player1 = board.getPlayerX();
-			Player player2 = board.getPlayerO();
+			Player playerX = board.getPlayerX();
+			Player playerO = board.getPlayerO();
 			Player opponent = board.getOpponent(player);
 			BackgammonBoard bgBoard = game.getBackgammonBoard();
-			BackgammonBoard opBoard;
-			JibsWriter out1 = player1.getOutputStream();
-			JibsWriter out2 = player2.getOutputStream();
+			JibsWriter outX = playerX.getOutputStream();
+			JibsWriter outO = playerO.getOutputStream();
 			MoveBackgammon move;
 			BackgammonBoard movedBoard = null;
 			int turn = board.getTurn();
 			strArgs = strArgs.trim();
 
 			switch (turn) {
-			case 1:
+			case 1:// O's turn
 				move = new MoveBackgammon(bgBoard);
 
-				if (move.checkMove(player2, strArgs, bgBoard.getCanMove())) {
+				if (move.checkMove(playerO, strArgs, bgBoard.getCanMove())) {
 					movedBoard = move.placeMoveO(strArgs);
+					movedBoard.setTurn(-1); // Change turn
+					movedBoard.flip();
 					game.setBackgammonBoard(movedBoard);
-					opBoard = movedBoard.switch2O();
-					String outBoard = opBoard.outBoard("You", -turn, 0, 0, 0, 0);
-					out2.println(outBoard);
-					player2.show2WatcherBoard(opBoard, player2.getName(), 0, 0,
-							0, 0);
+					String outBoard = movedBoard.outBoard("You", playerX.getName(),
+							-1, 1);
+					outO.println(outBoard);
 
 					// m_both_move=%0 moves %1.
-					Object[] obj = new Object[] { player2.getName(), strArgs };
+					Object[] obj = new Object[] { playerO.getName(), strArgs };
 					msg = jibsMessages.convert("m_both_move", obj);
-					out1.println(msg);
-					player1.show2WatcherMove(msg);
-					player2.show2WatcherMove(msg);
-					outBoard = movedBoard.outBoard("You", -turn, 0, 0, 0, 0);
-					out1.println(outBoard);
-					player1.show2WatcherBoard(movedBoard, player1.getName(), 0,
-							0, 0, 0);
+					outX.println(msg);
+					movedBoard.flip();
+					outBoard = movedBoard.outBoard("You", playerO.getName(),
+							1, -1);
+					outX.println(outBoard);
 				}
 
 				break;
 
-			case -1:
+			case -1:// X's turn
 				move = new MoveBackgammon(bgBoard);
 
-				if (move.checkMove(player1, strArgs, bgBoard.getCanMove())) {
+				if (move.checkMove(playerX, strArgs, bgBoard.getCanMove())) {
 					movedBoard = move.placeMoveX(strArgs);
+					movedBoard.setTurn(1); // Change turn
+					movedBoard.flip();
 					game.setBackgammonBoard(movedBoard);
-					String outBoard = movedBoard.outBoard("You", -turn, 0, 0, 0, 0);
-					out1.println(outBoard);
-					player1.show2WatcherBoard(movedBoard, player1.getName(), 0,
-							0, 0, 0);
+					String outBoard = movedBoard.outBoard("You", playerX.getName(),
+							-1, 1);
+					outO.println(outBoard);
 
 					// m_both_move=%0 moves %1.
-					Object[] obj = new Object[] { player1.getName(), strArgs };
+					Object[] obj = new Object[] { playerX.getName(), strArgs };
 					msg = jibsMessages.convert("m_both_move", obj);
-					out2.println(msg);
-					player1.show2WatcherMove(msg);
-					player2.show2WatcherMove(msg);
-					opBoard = movedBoard.switch2O();
-					outBoard = opBoard.outBoard("You", -turn, 0, 0, 0, 0);
-					out2.println(outBoard);
-					player1.show2WatcherBoard(opBoard, player1.getName(), 0, 0,
-							0, 0);
+					outO.println(msg);
+					movedBoard.flip();
+					outBoard = movedBoard.outBoard("You",
+							playerO.getName(), 1, -1);
+					outX.println(outBoard);
 				}
 
 				break;
 			}
 
-			board = game.getBackgammonBoard();
-
 			// won?
 			bgBoard = game.getBackgammonBoard();
 
 			if (bgBoard.getOnHome1() >= 15) {
-				// Player1 has won !
+				// PlayerX has won !
 				game.winGameX(game, bgBoard, -1);
 
 				return true;
 			}
 
 			if (bgBoard.getOnHome2() >= 15) {
-				// Player2 has won !
+				// PlayerO has won !
 				game.winGameO(game, bgBoard, -1);
 
 				return true;
@@ -107,46 +100,28 @@ public class Move_Command implements JibsCommand {
 
 			JibsWriter opponentOut = null;
 
-			switch (board.getTurn()) {
-			case 1:
-				board.setPlayerOdie1Value(0);
-				board.setPlayerOdie2Value(0);
-
-				break;
-
-			case -1:
-				board.setPlayerXdie1Value(0);
-				board.setPlayerXdie2Value(0);
-
-				break;
-			}
-
-			board.setTurn(-board.getTurn());
-
 			if (!opponent.checkToggle("double")) {
 				int maydouble = 0;
 
 				switch (board.getTurn()) {
-				case 1:
-
+				case 1: // O's turn
 					if (game.isPlayerX(opponent)) {
 						maydouble = game.getBackgammonBoard().getMayDouble1();
-						opponentOut = out1;
+						opponentOut = outX;
 					} else {
 						maydouble = game.getBackgammonBoard().getMayDouble2();
-						opponentOut = out2;
+						opponentOut = outO;
 					}
 
 					break;
 
-				case -1:
-
+				case -1:// X's turn
 					if (game.isPlayerX(opponent)) {
 						maydouble = game.getBackgammonBoard().getMayDouble1();
-						opponentOut = out1;
+						opponentOut = outX;
 					} else {
 						maydouble = game.getBackgammonBoard().getMayDouble2();
-						opponentOut = out2;
+						opponentOut = outO;
 					}
 
 					break;
@@ -160,8 +135,6 @@ public class Move_Command implements JibsCommand {
 					opponent.getClientWorker().executeCmd("roll");
 				}
 			} else {
-				board.setPlayerXdie1Value(0);
-				board.setPlayerXdie2Value(0);
 				opponent.getClientWorker().executeCmd("roll");
 			}
 		}

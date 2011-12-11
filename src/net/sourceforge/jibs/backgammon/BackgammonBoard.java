@@ -17,16 +17,16 @@ public class BackgammonBoard {
 	private JibsServer jibsServer;
 	private Player playerX;
 	private Player playerO;
-	private int playerDie1Value;
-	private int playerDie2Value;
-	private int opponentDie1Value;
-	private int opponentDie2Value;
+	private int dice1;
+	private int dice2;
+	private int dice3;
+	private int dice4;
 	private int bar; // 25 or 0 (see home)
 	private int[] board; // 26 numbers giving the board. Positions 0 and 25
 							// represent the bars for the players (see below).
 							// Positive numbers represent O's pieces negative
 							// numbers represent X's pieces
-	private int canMove;
+	private int canMove; // number of pieces you can move
 	private int color; // -1 if you are X, +1 if you are O
 	private int cubeNumber;// the number on the doubling cube
 	private int didCrawford;// don't use this token
@@ -67,10 +67,8 @@ public class BackgammonBoard {
 		this.jibsServer = b2.jibsServer;
 		this.playerX = b2.playerX;
 		this.playerO = b2.playerO;
-		this.playerDie1Value = b2.playerDie1Value;
-		this.playerDie2Value = b2.playerDie2Value;
-		this.opponentDie1Value = b2.opponentDie1Value;
-		this.opponentDie2Value = b2.opponentDie2Value;
+		this.dice1 = b2.dice1;
+		this.dice2 = b2.dice2;
 		this.jibsServer = b2.jibsServer;
 		this.bar = b2.bar;
 		this.canMove = b2.canMove;
@@ -132,10 +130,10 @@ public class BackgammonBoard {
 		this.opponentName = player2Name;
 		this.jibsMatchVersion = matchVersion;
 
-		playerDie1Value = 0;
-		playerDie2Value = 0;
-		opponentDie1Value = 0;
-		opponentDie2Value = 0;
+		dice1 = 0;
+		dice2 = 0;
+		dice3 = 0;
+		dice4 = 0;
 
 		cubeNumber = 1;
 		playerGot = 0;
@@ -155,15 +153,14 @@ public class BackgammonBoard {
 		board[12] = -5;
 		board[17] = -3;
 		board[19] = -5;
-
 		forcedMove = 0;
 		didCrawford = 0;
 		redoubles = 0;
 		mayDouble1 = 1;
 		mayDouble2 = 1;
 		wasDoubled = 0;
-		color = -1;
-		direction = 1;
+		color = -1;// you are X
+		direction = 1; // you play from position 1 to position 24
 		home = 25;
 		bar = 0;
 
@@ -358,13 +355,13 @@ public class BackgammonBoard {
 		strBoard.append(":");
 		strBoard.append(turn);
 		strBoard.append(":");
-		strBoard.append(playerDie1Value);
+		strBoard.append(dice1);
 		strBoard.append(":");
-		strBoard.append(playerDie2Value);
+		strBoard.append(dice2);
 		strBoard.append(":");
-		strBoard.append(opponentDie1Value);
+		strBoard.append(dice3);
 		strBoard.append(":");
-		strBoard.append(opponentDie2Value);
+		strBoard.append(dice4);
 		strBoard.append(":");
 		strBoard.append(cubeNumber);
 		strBoard.append(":");
@@ -466,8 +463,7 @@ public class BackgammonBoard {
 	 * @param j
 	 * @param k
 	 */
-	public String outBoard(String name, int turn, int dice1, int dice2, int j,
-			int k) {
+	public String outBoard(String name, String name2, int direction, int color) {
 		try {
 			Player player = getPlayerX();
 			JibsSet jibsSet = player.getJibsSet();
@@ -478,11 +474,11 @@ public class BackgammonBoard {
 			case 1:
 			default:
 			case 2:
-				outBoard = outBoard_2(turn, dice1, dice2, j, k);
+				outBoard = outBoard_2(direction);
 				break;
 
 			case 3:
-				outBoard = outBoard_3(name, turn, dice1, dice2, j, k);
+				outBoard = outBoard_3(name, name2, direction, color);
 				break;
 			}
 			return outBoard;
@@ -501,8 +497,7 @@ public class BackgammonBoard {
 	 * @param dice21
 	 * @param dice22
 	 */
-	public String outBoard_2(int turn, int dice11, int dice12, int dice21,
-			int dice22) {
+	public String outBoard_2(int turn) {
 		int lines;
 		int i;
 		StringBuffer bf = new StringBuffer();
@@ -639,8 +634,8 @@ public class BackgammonBoard {
 		bf.append("   Cube: ");
 		bf.append(cubeNumber);
 
-		if (dice11 > 0) {
-			bf.append("   You rolled " + dice11 + " and " + dice12 + ".");
+		if (dice1 > 0) {
+			bf.append("   You rolled " + dice1 + " and " + dice2 + ".");
 		}
 
 		return bf.toString();
@@ -656,14 +651,14 @@ public class BackgammonBoard {
 	 * @param dice22
 	 * @return
 	 */
-	public String outBoard_3(String name, int turn, int dice11, int dice12,
-			int dice21, int dice22) {
+	public String outBoard_3(String name1, String name2, int direction,
+			int color) {
 		StringBuffer strBoard = new StringBuffer();
 
 		strBoard.append("board:");
-		strBoard.append("You");
+		strBoard.append(name1);
 		strBoard.append(":");
-		strBoard.append(name);
+		strBoard.append(name2);
 		strBoard.append(":");
 
 		if (getMatchVersion().getVersion() == JibsMatch.nPointMatch) {
@@ -685,13 +680,13 @@ public class BackgammonBoard {
 		strBoard.append(":");
 		strBoard.append(turn);
 		strBoard.append(":");
-		strBoard.append(dice11);
+		strBoard.append(dice1);
 		strBoard.append(":");
-		strBoard.append(dice12);
+		strBoard.append(dice2);
 		strBoard.append(":");
-		strBoard.append(dice21);
+		strBoard.append(dice3);
 		strBoard.append(":");
-		strBoard.append(dice22);
+		strBoard.append(dice4);
 		strBoard.append(":");
 		strBoard.append(cubeNumber);
 		strBoard.append(":");
@@ -734,12 +729,16 @@ public class BackgammonBoard {
 	 * @return
 	 */
 	public BackgammonBoard placeMoveO(Move mv) {
+		// Positive numbers represent O's pieces
+		// negative numbers represent X's pieces
+		// O direction 1..24 bar= 0 home=25
+		// X direction 24..1 bar=25 home=0
 		BackgammonBoard helpBoard = new BackgammonBoard(this);
 		int source = mv.source;
 		int destination = mv.destination;
 
-		if (source == 25) { // moving from bar
-			helpBoard.board[0]--;
+		if (source == 25) { // moving from O bar
+			helpBoard.board[25]--;
 			helpBoard.onBar2--;
 		} else {
 			helpBoard.board[source]--;
@@ -749,16 +748,18 @@ public class BackgammonBoard {
 			// bearing off
 			helpBoard.onHome2++;
 		} else {
-			helpBoard.board[destination]++;
-
-			if (helpBoard.board[destination] == 0) {
+			if ((destination >= 1) && (destination <= 24)) {
 				helpBoard.board[destination]++;
-				helpBoard.board[0]++;
-				helpBoard.onBar1++;
-			}
 
-			if (destination <= 0) {
-				helpBoard.onHome2++;
+				if (helpBoard.board[destination] == 0) {
+					helpBoard.board[destination]++;
+					helpBoard.board[0]++; // X bar
+					helpBoard.onBar1++;
+				}
+
+				if (destination <= 0) {
+					helpBoard.onHome2++;
+				}
 			}
 		}
 
@@ -774,11 +775,15 @@ public class BackgammonBoard {
 	 * @return A modified backgammon board where the move has been placed on.
 	 */
 	public BackgammonBoard placeMoveX(Move mv) {
+		// Positive numbers represent O's pieces
+		// negative numbers represent X's pieces
+		// O direction 1..24 bar= 0 home=25
+		// X direction 24..1 bar=25 home=0
 		BackgammonBoard helpBoard = new BackgammonBoard(this);
 		int source = mv.source;
 		int destination = mv.destination;
 
-		if (source == bar) { // moving from bar
+		if (source == 0) { // moving from X bar
 			helpBoard.board[0]--;
 			helpBoard.onBar1--;
 		} else {
@@ -794,7 +799,7 @@ public class BackgammonBoard {
 
 				if (helpBoard.board[destination] == 0) {
 					helpBoard.board[destination]--;
-					helpBoard.board[25]++;
+					helpBoard.board[25]++; // O bar
 					helpBoard.onBar2++;
 				}
 			}
@@ -1165,78 +1170,58 @@ public class BackgammonBoard {
 		opponentGot = i;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
-	public BackgammonBoard switch2O() {
-		BackgammonBoard opBoard = new BackgammonBoard(this);
-		opBoard.setPlayer1Name(getPlayer2Name());
-		opBoard.setPlayer2Name(getPlayer1Name());
-		//opBoard.setDirection(-1);
-		//opBoard.setColor(1);
-//		opBoard.setPlayerXdie1Value(opponentDie1Value);
-//		opBoard.setPlayerXdie2Value(opponentDie2Value);
-//		opBoard.setPlayerOdie1Value(playerDie1Value);
-//		opBoard.setPlayerOdie2Value(playerDie2Value);
-//		opBoard.setOnBar1(getOnBar2());
-//		opBoard.setOnBar2(getOnBar1());
-//		opBoard.setOnHome1(getOnHome2());
-//		opBoard.setOnHome2(getOnHome1());
-//		opBoard.setBar(getHome());
-//		opBoard.setHome(getBar());
-//		opBoard.setPlayer1Got(getPlayer2Got());
-//		opBoard.setPlayer2Got(getPlayer1Got());
-//		opBoard.setMayDouble1(getMayDouble2());
-//		opBoard.setMayDouble2(getMayDouble1());
-
-		return opBoard;
+	public int getDice1() {
+		return dice1;
 	}
 
-	public int getPlayerXdie1Value() {
-		return playerDie1Value;
+	public void setDice1(int dice1) {
+		this.dice1 = dice1;
 	}
 
-	public void setPlayerXdie1Value(int playerXdie1Value) {
-		this.playerDie1Value = playerXdie1Value;
+	public int getDice2() {
+		return dice2;
 	}
 
-	public int getPlayerXdie2Value() {
-		return playerDie2Value;
+	public void setDice2(int dice2) {
+		this.dice2 = dice2;
 	}
 
-	public void setPlayerXdie2Value(int playerXdie2Value) {
-		this.playerDie2Value = playerXdie2Value;
+	public int getDice3() {
+		return dice3;
 	}
 
-	public int getPlayerOdie1Value() {
-		return opponentDie1Value;
+	public void setDice3(int dice3) {
+		this.dice3 = dice3;
 	}
 
-	public void setPlayerOdie1Value(int playerOdie1Value) {
-		this.opponentDie1Value = playerOdie1Value;
+	public int getDice4() {
+		return dice4;
 	}
 
-	public int getPlayerOdie2Value() {
-		return opponentDie2Value;
-	}
-
-	public void setPlayerOdie2Value(int playerOdie2Value) {
-		this.opponentDie2Value = playerOdie2Value;
+	public void setDice4(int dice4) {
+		this.dice4 = dice4;
 	}
 
 	public void setEnded(boolean isEnded) {
 		this.isEnded = isEnded;
 	}
 
-	public void clearDie() {
-		setPlayerXdie1Value(0);
-		setPlayerXdie2Value(0);
+	public void flip() {
+		int dummy = onBar1;
+		onBar1 = onBar2;
+		onBar2 = dummy;
+		dummy = board[0];
+		board[0] = board[25];
+		board[25] = dummy;
+		dummy = onHome1;
+		onHome1 = onHome2;
+		onHome2 = dummy;
+		dummy = dice1;
+		dice1 = dice3;
+		dice3 = dummy;
+		dummy = dice2;
+		dice2 = dice4;
+		dice4 = dummy;
 	}
 
-	@Override
-	public String toString() {
-		return outBoard_3(playerName, turn, playerDie1Value, playerDie2Value,
-				opponentDie1Value, opponentDie2Value);
-	}
 }

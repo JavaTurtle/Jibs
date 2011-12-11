@@ -84,7 +84,10 @@ public class MoveBackgammon {
 				break;
 			}
 		} // while
-
+		setBoard.setDice1(0);
+		setBoard.setDice2(0);
+		setBoard.setDice3(0);
+		setBoard.setDice4(0);
 		return setBoard;
 	}
 
@@ -133,7 +136,11 @@ public class MoveBackgammon {
 				break;
 			}
 		} // while
-
+		setBoard.setColor(0);
+		setBoard.setDice1(0);
+		setBoard.setDice2(0);
+		setBoard.setDice3(0);
+		setBoard.setDice4(0);
 		return setBoard;
 	}
 }

@@ -52,16 +52,16 @@ public class Watch_Command implements JibsCommand {
 				switch (board.getTurn()) {
 				case 1: // O
 
-					int d1 = board.getPlayerXdie1Value();
-					int d2 = board.getPlayerXdie2Value();
+					int d1 = board.getDice1();
+					int d2 = board.getDice2();
 					player.show2WatcherBoard(board, player.getName(), 0, 0, d1,
 							d2);
 
 					break;
 
 				case -1:
-					d1 = board.getPlayerXdie1Value();
-					d2 = board.getPlayerXdie2Value();
+					d1 = board.getDice1();
+					d2 = board.getDice2();
 					playingPlayer.show2WatcherBoard(board,
 							playingPlayer.getName(), d1, d2, 0, 0);
 

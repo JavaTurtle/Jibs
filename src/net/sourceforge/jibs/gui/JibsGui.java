@@ -48,7 +48,6 @@ public class JibsGui extends FormPanel {
 		FormAccessor status = getFormAccessor("status");
 		txtPlayer = status.getTextField("player");
 		lblTime = status.getLabel("time");
-
 		// switch the JTable into proper format
 		JTable table = getTable("jibsTable");
 		table.setAutoCreateRowSorter(true);

@@ -216,7 +216,6 @@ public class JibsServer {
 					configuration.getResource("MessageFile"));
 
 			portno = Integer.parseInt(configuration.getResource("Port"));
-			serverSocket = new ServerSocket(portno);
 			allCmds = new HashMap<String, JibsCommand>();
 
 			// register all commands
@@ -294,13 +293,7 @@ public class JibsServer {
 			allCmds.put("whois", new Whois_Command());
 
 			jibsRandom = new JibsRandom();
-			server = new Server(configuration, jibsMessages, this,
-					serverSocket, portno);
-
-			serverThread = new Thread(server);
 		} catch (NumberFormatException e) {
-			logger.warn(e);
-		} catch (IOException e) {
 			logger.warn(e);
 		}
 	}
@@ -414,6 +407,9 @@ public class JibsServer {
 			if (useSwing()) {
 				jibsUserPanel.readAllPlayers();
 			}
+			serverSocket = new ServerSocket(portno);
+			server = new Server(configuration, jibsMessages, this,
+					serverSocket, portno);
 			serverThread = new Thread(server);
 			serverThread.start();
 
@@ -444,85 +440,75 @@ public class JibsServer {
 		}
 	}
 
-	public void stopServerMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+	public void stopServerMenuItemActionPerformed(boolean bStop, boolean bExit) {
 		if (runs()) {
-			boolean bStop = false;
 
 			try {
 				Server server = getServer();
 				int onlinePlayer = server.getAllClients().size();
 
-				if (evt != null) {
-					if (onlinePlayer > 0) {
-						String warnExit = configuration.getResource("warnExit");
-						Boolean bWarn = Boolean.valueOf(warnExit);
+				if (onlinePlayer > 0) {
+					String warnExit = configuration.getResource("warnExit");
+					Boolean bWarn = Boolean.valueOf(warnExit);
 
-						if (bWarn) {
-							String msg;
+					if (bWarn) {
+						String msg;
 
-							if (onlinePlayer > 1) {
-								msg = "There are still "
-										+ onlinePlayer
-										+ " players online.\n"
-										+ "When you continue these players will be disconnected without warning.\n"
-										+ "They might consider this to be rude behaviour.\n"
-										+ "\n" + "Do you want to continue?";
-							} else {
-								msg = "There is still one player online.\n"
-										+ "When you continue this player will be disconnected without warning.\n"
-										+ "He/She might consider this to be rude behaviour.\n"
-										+ "\n" + "Do you want to continue?";
-							}
-
-							if (useSwing()) {
-								int option = JOptionPane.showConfirmDialog(
-										getJibsFrame(), msg, "Exit",
-										JOptionPane.YES_NO_OPTION);
-
-								if (option == JOptionPane.YES_OPTION) {
-									bStop = true;
-								}
-							} else {
-								bStop = true;
-							}
+						if (onlinePlayer > 1) {
+							msg = "There are still "
+									+ onlinePlayer
+									+ " players online.\n"
+									+ "When you continue these players will be disconnected without warning.\n"
+									+ "They might consider this to be rude behaviour.\n"
+									+ "\n" + "Do you want to continue?";
 						} else {
-							bStop = true;
+							msg = "There is still one player online.\n"
+									+ "When you continue this player will be disconnected without warning.\n"
+									+ "He/She might consider this to be rude behaviour.\n"
+									+ "\n" + "Do you want to continue?";
 						}
-					} else {
-						bStop = true;
-					}
-				} else {
-					bStop = true;
-				}
 
+						if (useSwing()) {
+							int option = JOptionPane.showConfirmDialog(
+									getJibsFrame(), msg, "Exit",
+									JOptionPane.YES_NO_OPTION);
+
+							if (option == JOptionPane.NO_OPTION) {
+								bStop = false;
+							}
+						} 
+					} 
+				} 
 				if (bStop) {
 					server.getServerSocket().close();
 					server.setRuns(false);
 					getServerThread().join();
-					server.closeAllClients();
+					server.leaveAllClients();
 					SqlSession session = sqlMapper.openSession();
 					Connection connection = session.getConnection();
 					try {
 						Statement st = connection.createStatement();
-				        st.execute("SHUTDOWN");
-				        setSqlSessionFactory(null);
+						st.execute("SHUTDOWN");
+						setSqlSessionFactory(null);
 					} catch (SQLException e) {
 						logger.warn(e);
 					} finally {
 						session.close();
 					}
 					bServerRuns = false;
+					server.closeAllClients();
+					runAction.setEnabled(true);
+					stopAction.setEnabled(false);
+					JibsTextArea.log(this, "Server stopped.", true);
 				}
 			} catch (IOException e) {
 				logException(e);
 			} catch (InterruptedException e) {
 				logException(e);
 			}
-
-			runAction.setEnabled(true);
-			stopAction.setEnabled(false);
-			JibsTextArea.log(this, "Server stopped.", true);
 		}
+		if (bStop && bExit)
+			System.exit(0);
 	}
 
 	public void logException(Exception e) {
@@ -530,7 +516,7 @@ public class JibsServer {
 		JibsTextArea.log(this, e1, true);
 		logger.warn(e);
 	}
-	
+
 	public void setSqlSessionFactory(SqlSessionFactory factory) {
 		sqlMapper = factory;
 	}

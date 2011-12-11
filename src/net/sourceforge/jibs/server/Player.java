@@ -444,16 +444,22 @@ public class Player {
 	}
 
 	public void endGame(Player opponent) {
+		setOpponent(null);
 		JibsWriter out = opponent.getOutputStream();
 		StringBuilder builder = new StringBuilder();
 		builder.append(ClipConstants.CLIP_WHO_INFO + " ");
 		String whoinfo = Player.whoinfo(this);
 		builder.append(whoinfo);
 		out.println(builder.toString());
-		setOpponent(null);
-
+		builder = new StringBuilder();
+		builder.append(ClipConstants.CLIP_WHO_INFO + " ");
 		opponent.setOpponent(null);
-		whoinfo(opponent);
+		whoinfo = Player.whoinfo(opponent);
+		builder.append(whoinfo);
+		out.println(builder.toString());
+		if (canCLIP()) {
+			out.println(ClipConstants.CLIP_WHO_END + " ");
+		}
 	}
 
 	public void setClientProgram(String clientProgram) {
@@ -600,8 +606,8 @@ public class Player {
 
 				if (curPlayer != null) {
 					JibsWriter out = curPlayer.getOutputStream();
-					String outBoard = board.outBoard(name, board.getTurn(), i,
-							j, k, l);
+					Player opponent = board.getOpponent(this);
+					String outBoard = board.outBoard(name, opponent.getName(), 1, 1);
 					out.println(outBoard);
 				}
 			}

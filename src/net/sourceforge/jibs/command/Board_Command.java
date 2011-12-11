@@ -14,26 +14,28 @@ public class Board_Command implements JibsCommand {
 			String[] args) {
 		JibsGame game = player.getGame();
 		JibsWriter out = player.getOutputStream();
-
+boolean didFlip = false;
 		if (game != null) {
 			BackgammonBoard board = game.getBackgammonBoard();
-			int turn = board.getTurn();
-
-			if (turn == -1) {
-				String outBoard = board.outBoard(player.getName(), turn,
-						board.getPlayerXdie1Value(),
-						board.getPlayerXdie2Value(),
-						board.getPlayerOdie1Value(),
-						board.getPlayerOdie2Value());
-				out.println(outBoard);
+			Player opponent = board.getOpponent(player);
+			int direction;
+			int color;
+			String name2;
+			if (game.isPlayerX(player)) {
+				direction = 1;
+				color = -1;
+				name2 = opponent.getName();
 			} else {
-				String outBoard = board.outBoard(player.getName(), turn,
-						board.getPlayerOdie1Value(),
-						board.getPlayerOdie2Value(),
-						board.getPlayerXdie1Value(),
-						board.getPlayerXdie2Value());
-				out.println(outBoard);
+				direction = -1;
+				color = 1;
+				name2 = opponent.getName();
+				board.flip();
+				didFlip = true;
 			}
+			String outBoard = board.outBoard("You", name2, direction, color);
+			out.println(outBoard);
+			if (didFlip)
+				board.flip();
 		}
 
 		return true;

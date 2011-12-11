@@ -22,7 +22,7 @@ public class JibsShutdown extends Thread {
 	public void run() {
 		try {
 			Thread.sleep(delay);
-			jibsServer.stopServerMenuItemActionPerformed(null);
+			jibsServer.stopServerMenuItemActionPerformed(true, true);
 
 			ExitAction exitAction = new ExitAction(jibsServer, "Exit", null,
 					"", null);

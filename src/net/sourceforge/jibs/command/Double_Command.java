@@ -42,8 +42,8 @@ public class Double_Command implements JibsCommand {
 
 						return player.getClientWorker().executeCmd("roll");
 					} else {
-						if ((board.getPlayerOdie1Value() != 0)
-								&& (board.getPlayerOdie2Value() != 0)) {
+						if ((board.getDice1() != 0)
+								&& (board.getDice2() != 0)) {
 							// m_you_double_roll=** You can only double before
 							// you roll the dice.
 							msg = jibsMessages.convert("m_you_double_roll");
@@ -85,8 +85,8 @@ public class Double_Command implements JibsCommand {
 
 						return player.getClientWorker().executeCmd("roll");
 					} else {
-						if ((board.getPlayerXdie1Value() != 0)
-								&& (board.getPlayerXdie2Value() != 0)) {
+						if ((board.getDice1() != 0)
+								&& (board.getDice2() != 0)) {
 							// m_you_double_roll=** You can only double before
 							// you roll the dice.
 							msg = jibsMessages.convert("m_you_double_roll");
