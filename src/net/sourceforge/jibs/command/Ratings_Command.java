@@ -138,10 +138,8 @@ public class Ratings_Command implements JibsCommand {
 
 			if (nameObj.length > 1) {
 				// m_rating_nouser=** Please use only one of the given names
-				// '%0'
-				// and '%1
-				Object[] obj = new Object[] { nameObj[0], nameObj[1] };
-				msg = jibsMessages.convert("m_rating_nouser", obj);
+				// '%0' and '%1'
+				msg = jibsMessages.convert("m_rating_nouser", nameObj[0], nameObj[1]);
 				out.println(msg);
 
 				return true;
@@ -163,9 +161,8 @@ public class Ratings_Command implements JibsCommand {
 
 			if (to < from) {
 				// m_rsting_rangeerror=** invalid range from %0 to %1.
-				Object[] obj = new Object[] { Integer.valueOf(from),
-						Integer.valueOf(to) };
-				msg = jibsMessages.convert("m_rsting_rangeerror", obj);
+				msg = jibsMessages.convert("m_rsting_rangeerror", Integer.valueOf(from),
+						Integer.valueOf(to) );
 				out.println(msg);
 
 				return true;

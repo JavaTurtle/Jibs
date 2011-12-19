@@ -19,7 +19,7 @@ public class Shout_Command implements JibsCommand {
 
 		out.println(ClipConstants.CLIP_YOU_SHOUT + " " + strArgs);
 
-		for (Player clientPlayer: allClients.values()) {
+		for (Player clientPlayer : allClients.values()) {
 			if (!clientPlayer.getName().equals(player.getName())) {
 				if (clientPlayer.checkToggle("silent")) {
 					JibsWriter clientOut = clientPlayer.getOutputStream();

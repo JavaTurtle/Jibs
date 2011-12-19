@@ -21,8 +21,7 @@ public class Set_Command implements JibsCommand {
 		JibsSet jibsSet = player.getJibsSet();
 
 		// m_you_set=Value of '%0' set to %1.
-		Object[] obj = { args[1], args[2] };
-		String msg = jibsMessages.convert("m_you_set", obj);
+		String msg = jibsMessages.convert("m_you_set", args[1], args[2]);
 
 		player.getOutputStream().println(msg);
 		jibsSet.getSetMap().put(args[1], args[2]);

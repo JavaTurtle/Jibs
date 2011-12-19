@@ -29,9 +29,8 @@ public class Leave_Command implements JibsCommand {
 
 			Player opponent = board.getOpponent(player);
 			JibsWriter outOpponent = opponent.getOutputStream();
-			Object[] obj = { player.getName() };
 
-			msg = jibsMessages.convert("m_other_leave", obj);
+			msg = jibsMessages.convert("m_other_leave", player.getName());
 			JibsTextArea.log(server.getJibsServer(), msg, true);
 			outOpponent.println(msg);
 			game.save();

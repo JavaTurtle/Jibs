@@ -40,17 +40,16 @@ public class Move_Command implements JibsCommand {
 					movedBoard.setTurn(-1); // Change turn
 					movedBoard.flip();
 					game.setBackgammonBoard(movedBoard);
-					String outBoard = movedBoard.outBoard("You", playerX.getName(),
-							-1, 1);
+					String outBoard = movedBoard.outBoard("You",
+							playerX.getName(), -1, 1);
 					outO.println(outBoard);
 
 					// m_both_move=%0 moves %1.
-					Object[] obj = new Object[] { playerO.getName(), strArgs };
-					msg = jibsMessages.convert("m_both_move", obj);
+					msg = jibsMessages.convert("m_both_move", playerO.getName(), strArgs);
 					outX.println(msg);
 					movedBoard.flip();
-					outBoard = movedBoard.outBoard("You", playerO.getName(),
-							1, -1);
+					outBoard = movedBoard.outBoard("You", playerO.getName(), 1,
+							-1);
 					outX.println(outBoard);
 				}
 
@@ -64,17 +63,16 @@ public class Move_Command implements JibsCommand {
 					movedBoard.setTurn(1); // Change turn
 					movedBoard.flip();
 					game.setBackgammonBoard(movedBoard);
-					String outBoard = movedBoard.outBoard("You", playerX.getName(),
-							-1, 1);
+					String outBoard = movedBoard.outBoard("You",
+							playerX.getName(), -1, 1);
 					outO.println(outBoard);
 
 					// m_both_move=%0 moves %1.
-					Object[] obj = new Object[] { playerX.getName(), strArgs };
-					msg = jibsMessages.convert("m_both_move", obj);
+					msg = jibsMessages.convert("m_both_move", playerX.getName(), strArgs);
 					outO.println(msg);
 					movedBoard.flip();
-					outBoard = movedBoard.outBoard("You",
-							playerO.getName(), 1, -1);
+					outBoard = movedBoard.outBoard("You", playerO.getName(), 1,
+							-1);
 					outX.println(outBoard);
 				}
 

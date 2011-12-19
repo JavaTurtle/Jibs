@@ -300,13 +300,12 @@ public class Server implements Runnable {
 				ClientWorker clientWorker = curPlayer.getClientWorker();
 				if (clientWorker != null) {
 					clientWorker.stop();
-					clientWorker.disConnectPlayer(jibsServer.getSqlSessionFactory(),
-							curPlayer);
+					clientWorker.disConnectPlayer(
+							jibsServer.getSqlSessionFactory(), curPlayer);
 					Socket socket = clientWorker.getSocket();
 					try {
 						socket.getInputStream().close();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					clientWorker.join();

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -44,8 +45,7 @@ public class JibsMessages {
 							}
 
 							messageMap.put(par, value);
-
-							logger.debug(par + "=" + value);
+//							logger.debug(par + "=" + value);
 						}
 					}
 				}
@@ -69,60 +69,10 @@ public class JibsMessages {
 		return load(string);
 	}
 
-	public synchronized String convert(String string, Object[] parameter) {
+	public synchronized String convert(String string, Object... parameter) {
 		String s = load(string);
-
-		StringBuffer buffer = new StringBuffer();
-		StringBuffer number = null;
-		boolean bNumber = false;
-
-		for (int i = 0; i < s.length(); i++) {
-			if (s.charAt(i) == '%') {
-				number = new StringBuffer();
-				bNumber = true;
-
-				continue;
-			} else {
-				if (bNumber) {
-					if (Character.isDigit(s.charAt(i))) {
-						number.append(s.charAt(i));
-					} else {
-						bNumber = false;
-
-						if (number != null) {
-							int slot = Integer.parseInt(number.toString());
-
-							if ((slot >= 0) && (slot < parameter.length)) {
-								buffer.append(parameter[slot]);
-							} else {
-								buffer.append("%");
-								buffer.append(number);
-							}
-
-							number = null;
-						}
-
-						buffer.append(s.charAt(i));
-					}
-				} else {
-					buffer.append(s.charAt(i));
-					number = null;
-				}
-			}
-		}
-
-		if (number != null) {
-			int slot = Integer.parseInt(number.toString());
-
-			if ((slot >= 0) && (slot < parameter.length)) {
-				buffer.append(parameter[slot]);
-			} else {
-				buffer.append("%");
-				buffer.append(number);
-			}
-		}
-
-		return buffer.toString();
+		String format = MessageFormat.format(s, parameter);
+		return format;
 	}
 
 	private String load(String ident) {
@@ -135,4 +85,9 @@ public class JibsMessages {
 
 		return s;
 	}
+
+	public Map<String, String> getMessageMap() {
+		return messageMap;
+	}
+	
 }

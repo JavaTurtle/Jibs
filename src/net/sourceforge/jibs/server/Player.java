@@ -213,8 +213,7 @@ public class Player {
 		String myDateStr = "-";
 
 		// m_log_in=%0 logs in.
-		Object[] obj = new Object[] { strName };
-		String msg = jibsMessages.convert("m_log_in", obj);
+		String msg = jibsMessages.convert("m_log_in", strName);
 
 		JibsTextArea.log(jibsServer, msg, true);
 
@@ -255,13 +254,11 @@ public class Player {
 			out.println(bf.toString());
 		} else {
 			// m_welcome=Welcome %0.
-			obj = new Object[] { strName };
-			msg = jibsMessages.convert("m_welcome", obj);
+			msg = jibsMessages.convert("m_welcome", strName );
 			out.println(msg);
 
 			// m_you_lastlogin=Your last login was %0 from %1.
-			obj = new Object[] { myDateStr, getLast_login_host() };
-			msg = jibsMessages.convert("m_you_lastlogin", obj);
+			msg = jibsMessages.convert("m_you_lastlogin", myDateStr, getLast_login_host());
 			out.println(msg);
 		}
 	}
@@ -584,12 +581,10 @@ public class Player {
 			watcher.put(player.getName(), player);
 
 			// m_you_watch=You're now watching %0.
-			Object[] obj = new Object[] { getName() };
-			msg = jibsMessages.convert("m_you_watch", obj);
+			msg = jibsMessages.convert("m_you_watch", getName());
 			player.getOutputStream().print(msg);
 			// m_other_watch=%0 is watching you.
-			obj = new Object[] { player.getName() };
-			msg = jibsMessages.convert("m_other_watch", obj);
+			msg = jibsMessages.convert("m_other_watch", player.getName());
 			out.println(msg);
 		}
 	}
@@ -607,7 +602,8 @@ public class Player {
 				if (curPlayer != null) {
 					JibsWriter out = curPlayer.getOutputStream();
 					Player opponent = board.getOpponent(this);
-					String outBoard = board.outBoard(name, opponent.getName(), 1, 1);
+					String outBoard = board.outBoard(name, opponent.getName(),
+							1, 1);
 					out.println(outBoard);
 				}
 			}
@@ -685,13 +681,11 @@ public class Player {
 					iter.remove();
 
 					// m_you_stop_watch=You stop watching %0.
-					Object[] obj = new Object[] { getName() };
-					msg = jibsMessages.convert("m_you_stop_watch", obj);
+					msg = jibsMessages.convert("m_you_stop_watch", getName());
 					out.print(msg);
 
 					// m_other_watch_stop=%0 stops watching you.
-					obj = new Object[] { player.getName() };
-					msg = jibsMessages.convert("m_other_watch_stop", obj);
+					msg = jibsMessages.convert("m_other_watch_stop", player.getName());
 					out.print(msg);
 				}
 			}

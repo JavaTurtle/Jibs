@@ -17,9 +17,8 @@ public class NImplemented_Command implements JibsCommand {
 	public boolean execute(Server server, Player player, String strArgs,
 			String[] args) {
 		// m_not_yet_implemented=** Not yet implemented: '%0'
-		Object[] obj = new Object[] { args[0] + strArgs };
 		String msg = server.getJibsMessages().convert("m_not_yet_implemented",
-				obj);
+				args[0] + strArgs );
 		JibsTextArea.log(server.getJibsServer(), "\"" + player.getName()
 				+ "\": " + msg, false);
 		player.getOutputStream().println(msg);

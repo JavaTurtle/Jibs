@@ -18,7 +18,6 @@ public class Double_Command implements JibsCommand {
 		JibsMessages jibsMessages = server.getJibsMessages();
 		JibsGame game = player.getGame();
 		String msg = null;
-		Object[] obj = null;
 		JibsWriter out = player.getOutputStream();
 
 		if (game != null) {
@@ -42,8 +41,7 @@ public class Double_Command implements JibsCommand {
 
 						return player.getClientWorker().executeCmd("roll");
 					} else {
-						if ((board.getDice1() != 0)
-								&& (board.getDice2() != 0)) {
+						if ((board.getDice1() != 0) && (board.getDice2() != 0)) {
 							// m_you_double_roll=** You can only double before
 							// you roll the dice.
 							msg = jibsMessages.convert("m_you_double_roll");
@@ -54,13 +52,11 @@ public class Double_Command implements JibsCommand {
 
 						// m_you_double=You double. Please wait for %0 to accept
 						// or reject.
-						obj = new Object[] { playerX.getName() };
-						msg = jibsMessages.convert("m_you_double", obj);
+						msg = jibsMessages.convert("m_you_double", playerX.getName());
 						outO.println(msg);
 						// m_opponent_double=%0 doubles. Type 'accept' or
 						// 'reject'.
-						obj = new Object[] { playerO.getName() };
-						msg = jibsMessages.convert("m_opponent_double", obj);
+						msg = jibsMessages.convert("m_opponent_double", playerO.getName());
 						outX.println(msg);
 
 						int cubeNumber = board.getCubeNumber() * 2;
@@ -85,8 +81,7 @@ public class Double_Command implements JibsCommand {
 
 						return player.getClientWorker().executeCmd("roll");
 					} else {
-						if ((board.getDice1() != 0)
-								&& (board.getDice2() != 0)) {
+						if ((board.getDice1() != 0) && (board.getDice2() != 0)) {
 							// m_you_double_roll=** You can only double before
 							// you roll the dice.
 							msg = jibsMessages.convert("m_you_double_roll");
@@ -97,13 +92,11 @@ public class Double_Command implements JibsCommand {
 
 						// m_you_double=You double. Please wait for %0 to accept
 						// or reject.
-						obj = new Object[] { playerO.getName() };
-						msg = jibsMessages.convert("m_you_double", obj);
+						msg = jibsMessages.convert("m_you_double", playerO.getName());
 						outX.println(msg);
 						// m_opponent_double=%0 doubles. Type 'accept' or
 						// 'reject'.
-						obj = new Object[] { playerX.getName() };
-						msg = jibsMessages.convert("m_opponent_double", obj);
+						msg = jibsMessages.convert("m_opponent_double",  playerX.getName());
 						outO.println(msg);
 
 						int cubeNumber = board.getCubeNumber() * 2;

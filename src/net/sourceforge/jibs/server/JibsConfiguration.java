@@ -43,7 +43,6 @@ public class JibsConfiguration {
 						}
 
 						allParameter.put(par, value);
-						logger.debug(par + "=" + value);
 					}
 				}
 			}

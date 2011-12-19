@@ -48,7 +48,7 @@ public class RatingCalculator {
 		}
 
 		change.setRatingA(Math.floor(((variationA) * 100) + 0.5) / 100.0);
-		change.setRatingB(Math.floor((( variationB) * 100) + 0.5) / 100.0);
+		change.setRatingB(Math.floor(((variationB) * 100) + 0.5) / 100.0);
 		return change;
 
 	}

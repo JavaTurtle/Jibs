@@ -360,7 +360,6 @@ public class JibsGame {
 			boolean isFirstMove, int turn, MoveChances nrChances,
 			JibsWriter outX, JibsWriter outO, BackgammonBoard board, int dice1,
 			int dice2) {
-		Object[] obj = null;
 		String msg = null;
 		int nrMoves = 0;
 		Player playerX = game.getPlayerX();
@@ -383,16 +382,14 @@ public class JibsGame {
 			if (!isFirstMove) {
 				if (nrMoves > 0) {
 					// m_please_move=Please move %0 pieces.
-					obj = new Object[] { Integer.valueOf(nrMoves) };
-					msg = jibsMessages.convert("m_please_move", obj);
+					msg = jibsMessages.convert("m_please_move", Integer.valueOf(nrMoves));
 					outX.println(msg);
 				} else {
 					// m_you_cant_move=You can't move.
 					msg = jibsMessages.convert("m_you_cant_move");
 					outX.println(msg);
 					// m_other_cant_move=%0 can't move.
-					obj = new Object[] { playerX.getName() };
-					msg = jibsMessages.convert("m_other_cant_move", obj);
+					msg = jibsMessages.convert("m_other_cant_move", playerX.getName());
 					outO.println(msg);
 				}
 			}
@@ -410,16 +407,14 @@ public class JibsGame {
 			if (!isFirstMove) {
 				if (nrMoves > 0) {
 					// m_please_move=Please move %0 pieces.
-					obj = new Object[] { Integer.valueOf(nrMoves) };
-					msg = jibsMessages.convert("m_please_move", obj);
+					msg = jibsMessages.convert("m_please_move", Integer.valueOf(nrMoves));
 					outO.println(msg);
 				} else {
 					// m_you_cant_move=You can't move.
 					msg = jibsMessages.convert("m_you_cant_move");
 					outO.println(msg);
 					// m_other_cant_move=%0 can't move.
-					obj = new Object[] { playerO.getName() };
-					msg = jibsMessages.convert("m_other_cant_move", obj);
+					msg = jibsMessages.convert("m_other_cant_move", playerO.getName());
 					outX.println(msg);
 				}
 			}
@@ -429,7 +424,8 @@ public class JibsGame {
 		return nrMoves;
 	}
 
-	public String checkForcedMove(Player player, BackgammonBoard bgBoard, JibsWriter out) {
+	public String checkForcedMove(Player player, BackgammonBoard bgBoard,
+			JibsWriter out) {
 		JibsMessages jibsMessages = jibsServer.getJibsMessages();
 
 		if (player.checkToggle("automove")) {
@@ -439,8 +435,7 @@ public class JibsGame {
 				String movString = posMove.conv2MoveString();
 
 				// m_only_move=The only possible move is %0.
-				Object[] obj = new Object[] { movString };
-				String msg = jibsMessages.convert("m_only_move", obj);
+				String msg = jibsMessages.convert("m_only_move", movString);
 				out.println(msg);
 
 				String nextCmd = "m " + movString;
@@ -500,19 +495,14 @@ public class JibsGame {
 
 		if (board.getMatchVersion().getVersion() == JibsMatch.nPointMatch) {
 			// m_resume_match=%0 and %1 are resuming their %2-point match.
-			Object[] obj = { player1.getName(), player2.getName(),
-					Integer.valueOf(resumeData.getMatchlength()) };
 			JibsMessages jibsMessages = jibsServer.getJibsMessages();
-			String msg = jibsMessages.convert("m_resume_match", obj);
+			String msg = jibsMessages.convert("m_resume_match", player1.getName(), player2.getName(),
+					Integer.valueOf(resumeData.getMatchlength()));
 			JibsTextArea.log(jibsServer, msg, true);
 
 			board.getPlayerX().informPlayers(msg, player2);
 		} else {
-			// m_resume_match_unlimited=%0 and %1 are resuming their unlimited
-			// match.
-			Object[] obj = { player1.getName(), player2.getName() };
-			JibsMessages jibsMessages = jibsServer.getJibsMessages();
-			String msg = jibsMessages.convert("m_resume_match_unlimited", obj);
+			String msg = jibsMessages.convert("m_resume_match_unlimited", player1.getName(), player2.getName());
 			JibsTextArea.log(jibsServer, msg, true);
 
 			board.getPlayerX().informPlayers(msg, player2);
@@ -548,12 +538,10 @@ public class JibsGame {
 		board.setDice4(dice12);
 
 		// m_you_roll=You roll %0 and %1.
-		Object[] obj = new Object[] { dice11, dice12 };
-		String msg = jibsServer.getJibsMessages().convert("m_you_roll", obj);
+		String msg = jibsServer.getJibsMessages().convert("m_you_roll", dice11, dice12);
 		player.getOutputStream().println(msg);
 		// m_other_roll=%0 rolls %1 and %2.
-		obj = new Object[] { player.getName(), dice11, dice12 };
-		msg = jibsServer.getJibsMessages().convert("m_other_roll", obj);
+		msg = jibsServer.getJibsMessages().convert("m_other_roll", player.getName(), dice11, dice12);
 		showWatcherRoll(board.getPlayerX(), msg);
 
 		Player tPlayer = board.getOpponent(player);
@@ -576,13 +564,11 @@ public class JibsGame {
 		board.setDice4(0);
 
 		// m_you_roll=You roll %0 and %1.
-		Object[] obj = new Object[] { dice11, dice12 };
-		String msg = jibsServer.getJibsMessages().convert("m_you_roll", obj);
+		String msg = jibsServer.getJibsMessages().convert("m_you_roll", dice11, dice12);
 		player.getOutputStream().println(msg);
 
 		// m_other_roll=%0 rolls %1 and %2.
-		obj = new Object[] { player.getName(), dice11, dice12 };
-		msg = jibsServer.getJibsMessages().convert("m_other_roll", obj);
+		msg = jibsServer.getJibsMessages().convert("m_other_roll", player.getName(), dice11, dice12 );
 		showWatcherRoll(board.getPlayerO(), msg);
 
 		Player tPlayer = board.getOpponent(player);
@@ -626,10 +612,6 @@ public class JibsGame {
 		this.jibsServer = jibsServer;
 	}
 
-	/*
-	 * public void setResumeData(ResumeData resumeData) { this.resumeData =
-	 * resumeData; }
-	 */
 	private void showWatcherRoll(Player player, String msg) {
 		player.show2WatcherRoll(msg);
 	}
@@ -755,16 +737,13 @@ public class JibsGame {
 		switch (winPoints) {
 		case 1:
 			// m_you_win_game=%0 win the game and get 1 point. Congratulation!
-			obj = new Object[] { "You" };
-			msg = jibsMessages.convert("m_you_win_game", obj);
+			msg = jibsMessages.convert("m_you_win_game", "You");
 			outO.println(msg);
 			obj = new Object[] { playerO.getName() };
 			playerO.informWatcher("m_you_win_game", obj, true);
 
 			// m_other_win_game=%0 wins the game and gets 1 point. Sorry.
-			obj = new Object[] { playerO.getName(), Integer.valueOf(1) };
-
-			msg = jibsMessages.convert("m_other_win_game", obj);
+			msg = jibsMessages.convert("m_other_win_game", playerO.getName(), Integer.valueOf(1));
 			outX.println(msg);
 			playerX.informWatcher("m_other_win_game", obj, true);
 
@@ -773,20 +752,23 @@ public class JibsGame {
 		default:
 			// m_you_win_game2=%0 win the game and get %0 points.
 			// Congratulation!
-			obj = new Object[] { Integer.valueOf(winPoints) };
-			msg = jibsMessages.convert("m_you_win_game2", obj);
+			msg = jibsMessages.convert("m_you_win_game2", Integer.valueOf(winPoints));
 			outO.println(msg);
 			obj = new Object[] { playerO.getName(), Integer.valueOf(winPoints) };
 			playerO.informWatcher("m_you_win_game2", obj, true);
 
 			// m_other_win_game2=%0 wins the game and gets %1 points. Sorry.
-			obj = new Object[] { playerO.getName(), Integer.valueOf(winPoints) };
-			msg = jibsMessages.convert("m_other_win_game2", obj);
+			msg = jibsMessages.convert("m_other_win_game2", playerO.getName(), Integer.valueOf(winPoints));
 			outX.println(msg);
 			playerX.informWatcher("m_other_win_game2", obj, true);
 
 			break;
 		}
+		for (int i=1; i<= 24; i++) {
+			if (board.getBoard()[i] > 0)
+				board.getBoard()[i] = 0;
+		}
+		board.setOnHome2(15);
 		board.setTurn(0); // Game ended
 		board.flip();
 		String outBoard = board.outBoard("You", playerX.getName(), -1, 1);
@@ -810,30 +792,24 @@ public class JibsGame {
 			Object[] obj6 = null;
 
 			// m_match_over_all=%0 wins a %1 point match against %2 %3-%4 .
-			obj6 = new Object[] { playerO.getName(),
+			msg = jibsMessages.convert("m_match_over_all", playerO.getName(),
 					Integer.valueOf(board.getMatchlength()), playerX.getName(),
 					Integer.valueOf(board.getPlayerOPoints()),
-					Integer.valueOf(board.getPlayerXPoints()) };
-
-			msg = jibsMessages.convert("m_match_over_all", obj6);
+					Integer.valueOf(board.getPlayerXPoints()) );
 			JibsTextArea.log(jibsServer, msg, true);
 			playerO.informWatcher("m_match_over_all", obj6, true);
 			playerX.informWatcher("m_match_over_all", obj6, true);
 
 			// m_you_win_match=You win the %0 point match %1-%2 .
-			obj6 = new Object[] { Integer.valueOf(board.getMatchlength()),
+			String winMsg = jibsMessages.convert("m_you_win_match", Integer.valueOf(board.getMatchlength()),
 					Integer.valueOf(board.getPlayerOPoints()),
-					Integer.valueOf(board.getPlayerXPoints()) };
-
-			String winMsg = jibsMessages.convert("m_you_win_match", obj6);
+					Integer.valueOf(board.getPlayerXPoints()));
 
 			// m_other_win_match=%0 wins the %1 point match %2-%3 .
-			obj6 = new Object[] { playerO.getName(),
+			String looseMsg = jibsMessages.convert("m_other_win_match", playerO.getName(),
 					Integer.valueOf(board.getMatchlength()),
 					Integer.valueOf(board.getPlayerOPoints()),
-					Integer.valueOf(board.getPlayerXPoints()) };
-
-			String looseMsg = jibsMessages.convert("m_other_win_match", obj6);
+					Integer.valueOf(board.getPlayerXPoints()));
 
 			int expA = board.getPlayerX().getExperience();
 			double ratingA = board.getPlayerX().getRating();
@@ -844,11 +820,13 @@ public class JibsGame {
 			int newExperience = expA + board.getMatchlength();
 
 			ClientWorker.changeRating(jibsServer.getSqlSessionFactory(),
-					board.getPlayerX(), ratingChange.getRatingA(), newExperience);
+					board.getPlayerX(), ratingChange.getRatingA(),
+					newExperience);
 
 			newExperience = expB + board.getMatchlength();
 			ClientWorker.changeRating(jibsServer.getSqlSessionFactory(),
-					board.getPlayerO(), ratingChange.getRatingB(), newExperience);
+					board.getPlayerO(), ratingChange.getRatingB(),
+					newExperience);
 			outO.println(winMsg);
 			outX.println(looseMsg);
 			new GameEnder(jibsServer, playerX, playerO).endGame();
@@ -891,16 +869,14 @@ public class JibsGame {
 		switch (winPoints) {
 		case 1:
 			// m_you_win_game=%0 win the game and get 1 point. Congratulation!
-			obj = new Object[] { "You" };
-			msg = jibsMessages.convert("m_you_win_game", obj);
+			msg = jibsMessages.convert("m_you_win_game", "You" );
 			outX.println(msg);
 			obj = new Object[] { playerX.getName() };
 			playerX.informWatcher("m_you_win_game", obj, true);
 
 			// m_other_win_game=%0 wins the game and gets 1 point. Sorry.
-			obj = new Object[] { playerX.getName(), Integer.valueOf(1) };
 
-			msg = jibsMessages.convert("m_other_win_game", obj);
+			msg = jibsMessages.convert("m_other_win_game", playerX.getName(), Integer.valueOf(1));
 			outO.println(msg);
 			playerO.informWatcher("m_other_win_game", obj, true);
 
@@ -909,15 +885,13 @@ public class JibsGame {
 		default:
 			// m_you_win_game2=%0 win the game and get %0 points.
 			// Congratulation!
-			obj = new Object[] { "You", Integer.valueOf(winPoints) };
-			msg = jibsMessages.convert("m_you_win_game2", obj);
+			msg = jibsMessages.convert("m_you_win_game2", "You", Integer.valueOf(winPoints));
 			outX.println(msg);
 			obj = new Object[] { playerX.getName(), Integer.valueOf(winPoints) };
 			playerX.informWatcher("m_you_win_game2", obj, true);
 
 			// m_other_win_game2=%0 wins the game and gets %1 points. Sorry.
-			obj = new Object[] { playerX.getName(), Integer.valueOf(winPoints) };
-			msg = jibsMessages.convert("m_other_win_game2", obj);
+			msg = jibsMessages.convert("m_other_win_game2", playerX.getName(), Integer.valueOf(winPoints));
 			outO.println(msg);
 			playerO.informWatcher("m_other_win_game2", obj, true);
 
@@ -946,45 +920,41 @@ public class JibsGame {
 			Object[] obj6 = null;
 
 			// m_match_over_all=%0 wins a %1 point match against %2 %3-%4 .
-			obj6 = new Object[] { playerX.getName(),
+			msg = jibsMessages.convert("m_match_over_all", playerX.getName(),
 					Integer.valueOf(board.getMatchlength()), playerO.getName(),
 					Integer.valueOf(board.getPlayer1Got()),
-					Integer.valueOf(board.getPlayer2Got()) };
-
-			msg = jibsMessages.convert("m_match_over_all", obj6);
+					Integer.valueOf(board.getPlayer2Got()));
 			JibsTextArea.log(jibsServer, msg, true);
 			playerX.informWatcher("m_match_over_all", obj6, true);
 			playerO.informWatcher("m_match_over_all", obj6, true);
 
 			// m_you_win_match=You win the %0 point match %1-%2 .
-			obj6 = new Object[] { Integer.valueOf(board.getMatchlength()),
+			String winMsg = jibsMessages.convert("m_you_win_match", Integer.valueOf(board.getMatchlength()),
 					Integer.valueOf(board.getPlayer1Got()),
-					Integer.valueOf(board.getPlayer2Got()) };
-
-			String winMsg = jibsMessages.convert("m_you_win_match", obj6);
+					Integer.valueOf(board.getPlayer2Got()));
 
 			// m_other_win_match=%0 wins the %1 point match %2-%3 .
-			obj6 = new Object[] { playerX.getName(),
+			String looseMsg = jibsMessages.convert("m_other_win_match", playerX.getName(),
 					Integer.valueOf(board.getMatchlength()),
 					Integer.valueOf(board.getPlayer1Got()),
-					Integer.valueOf(board.getPlayer2Got()) };
-
-			String looseMsg = jibsMessages.convert("m_other_win_match", obj6);
+					Integer.valueOf(board.getPlayer2Got()));
 
 			int expA = board.getPlayerX().getExperience();
 			double ratingA = board.getPlayerX().getRating();
 			int expB = board.getPlayerO().getExperience();
 			double ratingB = board.getPlayerO().getRating();
-			RatingChange ratingChange= RatingCalculator.ratingChange(true,
+			RatingChange ratingChange = RatingCalculator.ratingChange(true,
 					board.getMatchlength(), expA, ratingA, expB, ratingB);
 
 			int newExperience = expA + board.getMatchlength();
 			ClientWorker.changeRating(jibsServer.getSqlSessionFactory(),
-					board.getPlayerX(), ratingChange.getRatingA(), newExperience);
+					board.getPlayerX(), ratingChange.getRatingA(),
+					newExperience);
 
 			newExperience = expB + board.getMatchlength();
 			ClientWorker.changeRating(jibsServer.getSqlSessionFactory(),
-					board.getPlayerO(), ratingChange.getRatingB(), newExperience);
+					board.getPlayerO(), ratingChange.getRatingB(),
+					newExperience);
 
 			outX.println(winMsg);
 			outO.println(looseMsg);

@@ -34,17 +34,15 @@ public class Resign_Command implements JibsCommand {
 
 		Player opponentPlayer = player.getOpponent();
 		JibsWriter out2 = opponentPlayer.getOutputStream();
-		Object[] obj = { opponentPlayer.getName(), Integer.valueOf(points) };
 
 		// m_you_resign=You want to resign. %0 will win %1 point.
-		String msg = jibsMessages.convert("m_you_resign", obj);
+		String msg = jibsMessages.convert("m_you_resign",  opponentPlayer.getName(), Integer.valueOf(points));
 
 		out.println(msg);
 
-		obj = new Object[] { player.getName(), Integer.valueOf(points) };
 		// m_other_resign=%0 wants to resign. You will win %1 point. Type
 		// 'accept' or 'reject'.
-		msg = jibsMessages.convert("m_other_resign", obj);
+		msg = jibsMessages.convert("m_other_resign",  player.getName(), Integer.valueOf(points));
 		out2.println(msg);
 		player.informWatcher(msg, null, false);
 		opponentPlayer.informWatcher(msg, null, false);

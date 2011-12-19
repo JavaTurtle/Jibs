@@ -42,15 +42,13 @@ public class Accept_Command implements JibsCommand {
 			DoubleQuestion doubleQuestion = (DoubleQuestion) question;
 
 			// m_accept_double=You accept the double. The cube shows %0.
-			Object[] obj = { Integer.valueOf(doubleQuestion.getCubeNew()) };
-			String msg = jibsMessages.convert("m_accept_double", obj);
+			String msg = jibsMessages.convert("m_accept_double", Integer.valueOf(doubleQuestion.getCubeNew()));
 
 			out.println(msg);
 			// m_accept_double_opponent=%0 accepts the double. The cube shows
 			// %1.
-			obj = new Object[] { player.getName(),
-					Integer.valueOf(doubleQuestion.getCubeNew()) };
-			msg = jibsMessages.convert("m_accept_double_opponent", obj);
+			msg = jibsMessages.convert("m_accept_double_opponent", player.getName(),
+					Integer.valueOf(doubleQuestion.getCubeNew()));
 			out2.println(msg);
 
 			board.setCubeNumber(doubleQuestion.getCubeNew());

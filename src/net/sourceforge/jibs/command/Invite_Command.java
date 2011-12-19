@@ -19,7 +19,6 @@ import net.sourceforge.jibs.util.SavedGameParam;
 public class Invite_Command implements JibsCommand {
 	public boolean execute(Server server, Player player, String strArgs,
 			String[] args) {
-		Object[] obj = null;
 		String msg = null;
 		JibsWriter out = player.getOutputStream();
 		JibsMessages jibsMessages = server.getJibsMessages();
@@ -57,8 +56,7 @@ public class Invite_Command implements JibsCommand {
 		if (invitee != null) {
 			if (!invitee.checkToggle("ready")) {
 				// m_join_refuse=** %0 is refusing games.
-				obj = new Object[] { invitee.getName() };
-				msg = jibsMessages.convert("m_join_refuse", obj);
+				msg = jibsMessages.convert("m_join_refuse", invitee.getName());
 
 				out.println(msg);
 
@@ -68,8 +66,7 @@ public class Invite_Command implements JibsCommand {
 			if (invitee.getOpponent() != null) {
 				// m_invite_already_play=** %0 is already playing with someone
 				// else.
-				obj = new Object[] { invitee.getName() };
-				msg = jibsMessages.convert("m_invite_already_play", obj);
+				msg = jibsMessages.convert("m_invite_already_play", invitee.getName());
 
 				out.println(msg);
 
@@ -85,34 +82,24 @@ public class Invite_Command implements JibsCommand {
 				// is there a game to be resumeable?
 				if (resumeData != null) {
 					// m_you_resume=** You invited %0 to resume a saved match.
-					obj = new Object[] { invitee.getName() };
-					msg = jibsMessages.convert("m_you_resume", obj);
-
+					msg = jibsMessages.convert("m_you_resume", invitee.getName());
 					out.println(msg);
 					// m_other_resume=%0 wants to resume a saved match with you.
-					obj = new Object[] { player.getName() };
-					msg = jibsMessages.convert("m_other_resume", obj);
+					msg = jibsMessages.convert("m_other_resume", player.getName());
 					out_invitee.println(msg);
 					// m_join_accept=Type 'join %0' to accept.
-					obj = new Object[] { player.getName() };
-					msg = jibsMessages.convert("m_join_accept", obj);
+					msg = jibsMessages.convert("m_join_accept", player.getName());
 					out_invitee.println(msg);
 					resumeData.setPlayer1(player);
 					resumeData.setPlayer2(invitee);
-
 					JibsQuestion inviteQuestion = new ResumeQuestion(resumeData);
-
 					player.ask(inviteQuestion);
-
 					return true;
 				} else {
 					// m_no_saved_game=** There's no saved match with %0. Please
 					// give a match length.
-					obj = new Object[] { invitee.getName() };
-					msg = jibsMessages.convert("m_no_saved_game", obj);
-
+					msg = jibsMessages.convert("m_no_saved_game", invitee.getName());
 					out.println(msg);
-
 					return true;
 				}
 			}
@@ -155,15 +142,13 @@ public class Invite_Command implements JibsCommand {
 
 			if (jibsMatch.getVersion() == JibsMatch.nPointMatch) {
 				// m_other_invite=%0 wants to play a %1 point match with you.
-				obj = new Object[] { player.getName(), Integer.valueOf(nMatch) };
-				msg = jibsMessages.convert("m_other_invite", obj);
+				msg = jibsMessages.convert("m_other_invite", player.getName(), Integer.valueOf(nMatch));
 
 				outOpponenent.println(msg);
 			} else {
 				// m_other_invite_unlimited=%0 wants to play an unlimited match
 				// with you.
-				obj = new Object[] { player.getName() };
-				msg = jibsMessages.convert("m_other_invite_unlimited", obj);
+				msg = jibsMessages.convert("m_other_invite_unlimited", player.getName());
 
 				outOpponenent.println(msg);
 			}
@@ -172,9 +157,8 @@ public class Invite_Command implements JibsCommand {
 				if (resumeData.getMatchVersion() == JibsMatch.nPointMatch) {
 					// m_invite_saved_match=WARNING: Don't accept if you want to
 					// continue the saved %0 point match!
-					obj = new Object[] { Integer.valueOf(resumeData
-							.getMatchlength()) };
-					msg = jibsMessages.convert("m_invite_saved_match", obj);
+					msg = jibsMessages.convert("m_invite_saved_match", Integer.valueOf(resumeData
+							.getMatchlength()));
 				} else {
 					// m_invite_saved_match_unlimited=WARNING: Don't accept if
 					// you want to continue the saved unlimited match!
@@ -186,25 +170,21 @@ public class Invite_Command implements JibsCommand {
 			}
 
 			// m_join_accept=Type 'join %0' to accept.
-			obj = new Object[] { player.getName() };
-			msg = jibsMessages.convert("m_join_accept", obj);
+			msg = jibsMessages.convert("m_join_accept", player.getName());
 			outOpponenent.println(msg);
 
 			if (jibsMatch.getVersion() == JibsMatch.nPointMatch) {
 				// m_you_invite=** You invited %0 to a %1 point match.
-				obj = new Object[] { invitee.getName(), Integer.valueOf(nMatch) };
-				msg = jibsMessages.convert("m_you_invite", obj);
+				msg = jibsMessages.convert("m_you_invite", invitee.getName(), Integer.valueOf(nMatch));
 				out.println(msg);
 			} else {
 				// m_invite_unlimited=** You invited %0 to an unlimited match.
-				obj = new Object[] { invitee.getName() };
-				msg = jibsMessages.convert("m_invite_unlimited", obj);
+				msg = jibsMessages.convert("m_invite_unlimited", invitee.getName());
 				out.println(msg);
 			}
 			if (invitee.checkToggle("away")) {
 				// m_other_away=%0 is away: %1
-				obj = new Object[] { invitee.getName(), invitee.getAwayMsg() };
-				msg = jibsMessages.convert("m_other_away", obj);
+				msg = jibsMessages.convert("m_other_away", invitee.getName(), invitee.getAwayMsg());
 
 				out.println(msg);
 
@@ -212,9 +192,7 @@ public class Invite_Command implements JibsCommand {
 			}
 		} else {
 			// m_noone=** There is no one called %0.
-			obj = new Object[] { args[1] };
-			msg = jibsMessages.convert("m_noone", obj);
-
+			msg = jibsMessages.convert("m_noone", args[1]);
 			out.println(msg);
 		}
 		return true;

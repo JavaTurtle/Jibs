@@ -164,7 +164,6 @@ public class BackgammonBoard {
 		home = 25;
 		bar = 0;
 
-		// board[0]=2; // Bar 'X'
 		int totalPlayer1 = board[0];
 		int totalPlayer2 = board[25];
 
@@ -1118,7 +1117,6 @@ public class BackgammonBoard {
 	 * @param b
 	 */
 	public void setPostCrawFord(boolean b) {
-		// TODO Auto-generated method stub
 	}
 
 	/**
@@ -1126,7 +1124,6 @@ public class BackgammonBoard {
 	 * @return
 	 */
 	public boolean isCrawFordGame() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -1222,6 +1219,9 @@ public class BackgammonBoard {
 		dummy = dice2;
 		dice2 = dice4;
 		dice4 = dummy;
+		dummy = playerGot;
+		playerGot = opponentGot;
+		opponentGot = dummy;
 	}
 
 }

@@ -335,10 +335,9 @@ public class ClientWorker implements Runnable {
 					bStopLogin = true;
 					// m_too_many_errors=Too many errors for "%0" trying to
 					// log in:Connection closed
-					Object[] obj = { "Unknown User" };
 
 					String msg = jibsServer.getJibsMessages().convert(
-							"m_too_many_errors", obj);
+							"m_too_many_errors", "Unknown User");
 
 					JibsTextArea.log(jibsServer, msg, true);
 					socketClose();
@@ -353,7 +352,7 @@ public class ClientWorker implements Runnable {
 							if (player != null) {
 								String msg = server.getJibsMessages().convert(
 										"m_drop_connection",
-										new Object[] { player.getName() });
+										player.getName() );
 								JibsTextArea.log(jibsServer, msg, true);
 								disConnectPlayer(
 										jibsServer.getSqlSessionFactory(),

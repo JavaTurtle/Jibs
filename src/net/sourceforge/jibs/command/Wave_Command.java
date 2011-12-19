@@ -23,9 +23,8 @@ public class Wave_Command implements JibsCommand {
 
 		if (wavings == 1) {
 			// m_wave_goodbye=%0 waves goodbye.
-			Object[] obj = new Object[] { player.getName() };
 			String msg = server.getJibsMessages()
-					.convert("m_wave_goodbye", obj);
+					.convert("m_wave_goodbye", player.getName());
 
 			player.informPlayers(msg, null);
 			JibsTextArea.log(server.getJibsServer(), msg, true);
@@ -39,9 +38,8 @@ public class Wave_Command implements JibsCommand {
 			return true;
 		} else {
 			// m_wave_goodbye_again=%0 waves goodbye again.
-			Object[] obj = new Object[] { player.getName() };
 			String msg = server.getJibsMessages().convert(
-					"m_wave_goodbye_again", obj);
+					"m_wave_goodbye_again", player.getName());
 
 			player.informPlayers(msg, null);
 			JibsTextArea.log(server.getJibsServer(), msg, true);

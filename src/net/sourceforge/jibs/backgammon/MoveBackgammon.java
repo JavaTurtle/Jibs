@@ -29,13 +29,11 @@ public class MoveBackgammon {
 
 	@SuppressWarnings("unused")
 	private boolean checkMoveX(Player player, String args, int canMove) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@SuppressWarnings("unused")
 	private boolean checkMoveO(Player player, String args, int canMove) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

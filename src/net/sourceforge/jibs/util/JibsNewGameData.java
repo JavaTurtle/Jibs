@@ -86,8 +86,8 @@ public class JibsNewGameData {
 			JibsGame game, Player player1, Player player2, int length,
 			int turn, JibsMatch matchVersion, int mayDouble1, int mayDouble2) {
 		BackgammonBoard board = game.getBackgammonBoard();
-		game.startGame(turn, board.getDice1(),
-				board.getDice2(), board.getDice3(),board.getDice4(), board.getPlayerXPoints(),
+		game.startGame(turn, board.getDice1(), board.getDice2(),
+				board.getDice3(), board.getDice4(), board.getPlayerXPoints(),
 				board.getPlayerOPoints(), mayDouble1, mayDouble2);
 	}
 

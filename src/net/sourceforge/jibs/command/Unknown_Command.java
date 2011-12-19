@@ -23,8 +23,7 @@ public class Unknown_Command implements JibsCommand {
 	public boolean execute(Server server, Player player, String strArgs,
 			String[] args) {
 		// m_unknown_command=** Unknown command: '%0'
-		Object[] obj = new Object[] { strArgs };
-		String msg = server.getJibsMessages().convert("m_unknown_command", obj);
+		String msg = server.getJibsMessages().convert("m_unknown_command", strArgs);
 
 		JibsTextArea.log(server.getJibsServer(), "\"" + player.getName()
 				+ "\": " + msg, false);

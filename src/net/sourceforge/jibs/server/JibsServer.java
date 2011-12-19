@@ -293,7 +293,13 @@ public class JibsServer {
 			allCmds.put("whois", new Whois_Command());
 
 			jibsRandom = new JibsRandom();
+			serverSocket = new ServerSocket(portno);
+			server = new Server(configuration, jibsMessages, this,
+					serverSocket, portno);
+
 		} catch (NumberFormatException e) {
+			logger.warn(e);
+		} catch (IOException e) {
 			logger.warn(e);
 		}
 	}
@@ -313,19 +319,19 @@ public class JibsServer {
 		}
 		jibsFrame = new JFrame();
 		infoAction = new InfoAction(jibsFrame, server, "Info", createImageIcon(
-				"images/info.gif", ""), "", KeyStroke.getKeyStroke(
+				"images/info.gif", ""), null, KeyStroke.getKeyStroke(
 				KeyEvent.VK_I, KeyEvent.ALT_MASK));
 		runAction = new RunAction(this, "Start", createImageIcon(
-				"images/run.gif", ""), "", KeyStroke.getKeyStroke(
+				"images/run.gif", ""), null, KeyStroke.getKeyStroke(
 				KeyEvent.VK_S, KeyEvent.ALT_MASK));
 		stopAction = new StopAction(this, "Stop", createImageIcon(
-				"images/stop.gif", ""), "", KeyStroke.getKeyStroke(
+				"images/stop.gif", ""), null, KeyStroke.getKeyStroke(
 				KeyEvent.VK_H, KeyEvent.ALT_MASK));
 		exitAction = new ExitAction(this, "Exit", createImageIcon(
-				"images/exit.gif", ""), "", KeyStroke.getKeyStroke(
+				"images/exit.gif", ""), null, KeyStroke.getKeyStroke(
 				KeyEvent.VK_X, KeyEvent.ALT_MASK));
 		reloadAction = new ReloadAction(this, "Reload", createImageIcon(
-				"images/refresh.gif", ""), "", null);
+				"images/refresh.gif", ""), null, null);
 
 		jibsMenuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
@@ -407,9 +413,6 @@ public class JibsServer {
 			if (useSwing()) {
 				jibsUserPanel.readAllPlayers();
 			}
-			serverSocket = new ServerSocket(portno);
-			server = new Server(configuration, jibsMessages, this,
-					serverSocket, portno);
 			serverThread = new Thread(server);
 			serverThread.start();
 
@@ -476,9 +479,9 @@ public class JibsServer {
 							if (option == JOptionPane.NO_OPTION) {
 								bStop = false;
 							}
-						} 
-					} 
-				} 
+						}
+					}
+				}
 				if (bStop) {
 					server.getServerSocket().close();
 					server.setRuns(false);

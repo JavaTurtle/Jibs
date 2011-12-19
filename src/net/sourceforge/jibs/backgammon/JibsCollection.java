@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public class JibsCollection {
-	public static boolean checkMove(Collection<PossibleMove> col, PossibleMove pMove,
-			BackgammonBoard board) {
+	public static boolean checkMove(Collection<PossibleMove> col,
+			PossibleMove pMove, BackgammonBoard board) {
 		boolean retCode = true;
 
 		if (col.size() <= 0) {

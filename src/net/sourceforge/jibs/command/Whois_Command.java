@@ -23,8 +23,7 @@ public class Whois_Command implements JibsCommand {
 				WhoisPlayer.whois(server, out, whoisPlayerDB);
 			} else {
 				// m_noone=** There is no one called %0.
-				Object[] obj = new Object[] { name };
-				msg = jibsMessages.convert("m_noinformation", obj);
+				msg = jibsMessages.convert("m_noinformation", name);
 				out.println(msg);
 
 				return true;

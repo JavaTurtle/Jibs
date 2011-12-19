@@ -87,8 +87,7 @@ public class Exit_Command implements JibsCommand {
 		}
 
 		// m_you_log_out=%0 logs out.
-		Object[] obj = new Object[] { player.getName() };
-		String msg = messages.convert("m_you_log_out", obj);
+		String msg = messages.convert("m_you_log_out", player.getName());
 		JibsTextArea.log(server.getJibsServer(), msg, true);
 
 		return false;

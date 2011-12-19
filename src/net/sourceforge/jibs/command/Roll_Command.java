@@ -35,8 +35,8 @@ public class Roll_Command implements JibsCommand {
 					board.setTurn(-board.getTurn());
 					opponent.getClientWorker().executeCmd("roll");
 				} else {
-					String nextCmd1 = game.checkForcedMove(playerO, board,
-							outO);
+					String nextCmd1 = game
+							.checkForcedMove(playerO, board, outO);
 					String nextCmd2 = game.checkGreedy(playerO, board, nrMoves,
 							outO);
 					String nextCmd = null;
@@ -48,7 +48,7 @@ public class Roll_Command implements JibsCommand {
 					if ((nextCmd == null) && (nextCmd2 != null)) {
 						nextCmd = nextCmd2;
 					}
-					
+
 					playerO.getClientWorker().executeCmd(nextCmd);
 				}
 
@@ -61,8 +61,8 @@ public class Roll_Command implements JibsCommand {
 					board.setTurn(-board.getTurn());
 					opponent.getClientWorker().executeCmd("roll");
 				} else {
-					String nextCmd1 = game.checkForcedMove(playerX, board,
-							outX);
+					String nextCmd1 = game
+							.checkForcedMove(playerX, board, outX);
 					String nextCmd2 = game.checkGreedy(playerX, board, nrMoves,
 							outX);
 					String nextCmd = null;

@@ -16,7 +16,6 @@ public class Watch_Command implements JibsCommand {
 		JibsMessages jibsMessages = server.getJibsMessages();
 		JibsWriter out = player.getOutputStream();
 		String msg = null;
-		Object[] obj = null;
 
 		if (args.length >= 2) {
 			String Name = args[1];
@@ -24,8 +23,7 @@ public class Watch_Command implements JibsCommand {
 
 			if (playingPlayer == null) {
 				// m_noone=** There is no one called %0.
-				obj = new Object[] { args[1] };
-				msg = jibsMessages.convert("m_noone", obj);
+				msg = jibsMessages.convert("m_noone", args[1]);
 				out.println(msg);
 
 				return true;
@@ -39,12 +37,10 @@ public class Watch_Command implements JibsCommand {
 
 			if (game == null) {
 				// m_watch_no_interesting=%0 is not doing anything interesting.
-				obj = new Object[] { playingPlayer.getName() };
-				msg = jibsMessages.convert("m_watch_no_interesting", obj);
+				msg = jibsMessages.convert("m_watch_no_interesting", playingPlayer.getName());
 				out.println(msg);
 				// m_you_watch_not_play=%0 is not playing
-				obj = new Object[] { playingPlayer.getName() };
-				msg = jibsMessages.convert("m_you_watch_not_play", obj);
+				msg = jibsMessages.convert("m_you_watch_not_play", playingPlayer.getName());
 				out.println(msg);
 			} else {
 				BackgammonBoard board = game.getBackgammonBoard();

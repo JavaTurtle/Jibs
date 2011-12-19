@@ -102,12 +102,11 @@ public class VMPanel extends FormPanel {
 			Properties props = Resources
 					.getResourceAsProperties("net/sourceforge/jibs/util/JibsConstants.properties");
 			jibsDateBuild.setText((String) props.get("jibsDateBuild"));
-			java_version.setText(System.getProperty("java.runtime.version"));
+			java_version.setText(System.getProperty("java.version"));
 			java_vm.setText(System.getProperty("java.vm.name"));
-			// java_vm.setFont(java_vm.getFont().deriveFont(Font.PLAIN, 9));
-			java_vm_version.setText(System.getProperty("java.vm.info"));
+			java_vm_version.setText(System.getProperty("java.vm.vendor"));
 			os_system.setText(System.getProperty("os.name"));
-			os_version.setText(System.getProperty("os.version"));
+			os_version.setText(System.getProperty("sun.os.patch.level"));
 			os_arch.setText(System.getProperty("os.arch"));
 			os_processors.setText(Integer.toString(Runtime.getRuntime()
 					.availableProcessors()));

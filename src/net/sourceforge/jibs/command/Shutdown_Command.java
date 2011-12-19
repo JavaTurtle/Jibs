@@ -95,13 +95,11 @@ public class Shutdown_Command implements JibsCommand {
 		if (bRestart) {
 			// m_jibs_shutdown_restart=jIBS will shutdown in %0 minutes and
 			// restart.
-			Object[] obj = new Object[] { s };
-			s = jibsMessages.convert("m_jibs_shutdown_restart", obj);
+			s = jibsMessages.convert("m_jibs_shutdown_restart", s);
 			out.println(s);
 		} else {
 			// m_jibs_shutdown=jIBS will shutdown in %0 minutes.
-			Object[] obj = new Object[] { s };
-			s = jibsMessages.convert("m_jibs_shutdown", obj);
+			s = jibsMessages.convert("m_jibs_shutdown", s);
 			out.println(s);
 		}
 

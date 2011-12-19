@@ -14,7 +14,7 @@ public class Board_Command implements JibsCommand {
 			String[] args) {
 		JibsGame game = player.getGame();
 		JibsWriter out = player.getOutputStream();
-boolean didFlip = false;
+		boolean didFlip = false;
 		if (game != null) {
 			BackgammonBoard board = game.getBackgammonBoard();
 			Player opponent = board.getOpponent(player);

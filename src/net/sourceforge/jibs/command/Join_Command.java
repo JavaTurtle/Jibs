@@ -49,8 +49,7 @@ public class Join_Command implements JibsCommand {
 						// start next game
 						BackgammonBoard nextBoard = null;
 						nextBoard = new BackgammonBoard(server.getJibsServer(),
-								board.getPlayerX().getName(), board
-										.getPlayerO().getName(), matchlength,
+								board.getPlayerX().getName(), board.getPlayerO().getName(), matchlength,
 								matchVersion);
 						nextBoard.setPlayerX(board.getPlayerX());
 						nextBoard.setPlayerO(board.getPlayerO());
@@ -85,12 +84,21 @@ public class Join_Command implements JibsCommand {
 
 						board = nextBoard;
 						game.setBackgammonBoard(board);
+						JibsNewGameData jibsNewGameData = jibsNewGameData(game.getPlayerX(),
+								game.getPlayerO()); 
+						board.setDice1(jibsNewGameData.getDice1());
+						board.setDice2(jibsNewGameData.getDice2());
+						board.setDice3(jibsNewGameData.getDice3());
+						board.setDice4(jibsNewGameData.getDice4());
+						jibsNewGameData.startGame(server.getJibsServer(),
+								jibsNewGameData, game,
+								jibsNewGameData.getPlayerX(),
+								jibsNewGameData.getPlayerO(), matchlength,
+								jibsNewGameData.getTurn(), matchVersion, 1, 1);
 
 						greet(board.getPlayerX(), board.getPlayerO(),
 								board.getMatchVersion(), board.getMatchlength());
 
-						JibsNewGameData jibsNewGameData = jibsNewGameData(
-								game.getPlayerX(), game.getPlayerO());
 						player.getGame().getBackgammonBoard()
 								.setDice1(jibsNewGameData.getDice1());
 						player.getGame().getBackgammonBoard()
@@ -103,13 +111,6 @@ public class Join_Command implements JibsCommand {
 								.setJoinPlayer1(null);
 						player.getGame().getBackgammonBoard()
 								.setJoinPlayer2(null);
-						// player.startGame(server.getJibsServer(),
-						// jibsNewGameData, game, player.getGame()
-						// .getBackgammonBoard().getPlayerX(),
-						// player.getGame().getBackgammonBoard()
-						// .getPlayerO(), matchlength,
-						// jibsNewGameData.getTurn(), matchVersion,
-						// board.getMayDouble1(), board.getMayDouble2());
 					}
 				}
 			}
@@ -137,8 +138,7 @@ public class Join_Command implements JibsCommand {
 
 			if (opponent == null) {
 				// m_join_no_invite=** %0 didn't invite you.
-				Object[] obj = { args[1] };
-				String msg = jibsMessages.convert("m_join_no_invite", obj);
+				String msg = jibsMessages.convert("m_join_no_invite", args[1]);
 				out.println(msg);
 			} else {
 				player.setOpponent(opponent);
@@ -177,8 +177,7 @@ public class Join_Command implements JibsCommand {
 
 					// m_player_joined=** Player %0 has joined you for a %1
 					// point match.
-					Object[] obj = new Object[] { player.getName(), matchlength };
-					String msg = jibsMessages.convert("m_player_joined", obj);
+					String msg = jibsMessages.convert("m_player_joined", player.getName(), matchlength );
 					opponent.getOutputStream().println(msg);
 					greet(player, opponent, matchVersion, matchlength);
 
@@ -202,10 +201,8 @@ public class Join_Command implements JibsCommand {
 							jibsNewGameData.getPlayerX(),
 							jibsNewGameData.getPlayerO());
 					// m_start_match=%0 and %1 start a new %2-point match.
-					obj = new Object[] {
-							jibsNewGameData.getPlayerX().getName(),
-							jibsNewGameData.getPlayerO().getName(), matchlength };
-					msg = jibsMessages.convert("m_start_match", obj);
+					msg = jibsMessages.convert("m_start_match", jibsNewGameData.getPlayerX().getName(),
+							jibsNewGameData.getPlayerO().getName(), matchlength);
 					JibsTextArea.log(server.getJibsServer(), msg, true);
 
 					jibsNewGameData.startGame(server.getJibsServer(),
@@ -230,20 +227,20 @@ public class Join_Command implements JibsCommand {
 
 		// m_start_match_with=Starting a new game with %0.
 		Object[] obj = { oppplayerName };
-		String msg = jibsMessages.convert("m_start_match_with", obj);
+		String msg = jibsMessages.convert("m_start_match_with", oppplayerName);
 		out1.println(msg);
 
 		if (matchVersion.getVersion() == JibsMatch.nPointMatch) {
 			// m_start_match_with=Starting a new game with %0.
-			obj = new Object[] { playerName };
-			msg = jibsMessages.convert("m_start_match_with", obj);
+			msg = jibsMessages.convert("m_start_match_with", playerName);
 			out2.println(msg);
 
 			// m_start_match=%0 and %1 start a new %2-point match.
 			oppplayerName = player2.getName();
 			obj = new Object[] { playerName, oppplayerName,
 					Integer.valueOf(matchlength) };
-			msg = jibsMessages.convert("m_start_match", obj);
+			msg = jibsMessages.convert("m_start_match", playerName, oppplayerName,
+					Integer.valueOf(matchlength));
 			player1.informPlayers(msg, player2);
 			// message needs to be sent also to both watcher lists
 			player1.informWatcher("m_start_match", obj, true);
@@ -251,13 +248,11 @@ public class Join_Command implements JibsCommand {
 		} else {
 			// m_you_play_unlimited=** You are now playing an unlimited match
 			// with %1
-			obj = new Object[] { playerName };
-			msg = jibsMessages.convert("m_you_play_unlimited", obj);
+			msg = jibsMessages.convert("m_you_play_unlimited", playerName);
 			out2.println(msg);
 			// m_start_match_unlimited=%0 and %1 start an unlimited match.
 			oppplayerName = player2.getName();
-			obj = new Object[] { playerName, oppplayerName };
-			msg = jibsMessages.convert("m_start_match_unlimited", obj);
+			msg = jibsMessages.convert("m_start_match_unlimited", playerName, oppplayerName);
 			player1.informPlayers(msg, player2);
 		}
 	}
@@ -310,20 +305,18 @@ public class Join_Command implements JibsCommand {
 		do {
 			dice1 = Die.roll(server.getJibsServer().getJibsRandom());
 			dice2 = Die.roll(server.getJibsServer().getJibsRandom());
-//			dice1 = 5; // joining Player
-//			dice2 = 4; // inviting Player
+			// dice1 = 5; // joining Player
+			// dice2 = 4; // inviting Player
 
 			// m_both_roll=%0 rolled %1, %2 rolled %3
-			obj = new Object[] { "You", dice1, playerNameO, dice2 };
-			msg = jibsMessages.convert("m_both_roll", obj);
+			msg = jibsMessages.convert("m_both_roll", "You", dice1, playerNameO, dice2);
 			outX.println(msg);
 			// m_both_roll=%0 rolled %1, %2 rolled %3
 			obj = new Object[] { playerX.getName(), dice1, playerNameO, dice2 };
 			playerX.informWatcher("m_both_roll", obj, true);
 			playerO.informWatcher("m_both_roll", obj, true);
 			// m_both_roll=%0 rolled %1, %2 rolled %3
-			obj = new Object[] { "You", dice2, playerNameX, dice1 };
-			msg = jibsMessages.convert("m_both_roll", obj);
+			msg = jibsMessages.convert("m_both_roll", "You", dice2, playerNameX, dice1);
 			outO.println(msg);
 		} while (dice1 == dice2);
 
@@ -332,8 +325,7 @@ public class Join_Command implements JibsCommand {
 			msg = jibsMessages.convert("m_your_turn");
 			outX.println(msg);
 			// m_makes_first_move=%0 makes the first move.
-			obj = new Object[] { playerNameX };
-			msg = jibsMessages.convert("m_makes_first_move", obj);
+			msg = jibsMessages.convert("m_makes_first_move", playerNameX);
 			outO.println(msg);
 			playerO.informWatcher("m_makes_first_move", obj, true);
 			playerX.informWatcher("m_makes_first_move", obj, true);
@@ -345,8 +337,7 @@ public class Join_Command implements JibsCommand {
 			msg = jibsMessages.convert("m_your_turn");
 			outO.println(msg);
 			// m_makes_first_move=%0 makes the first move.
-			obj = new Object[] { playerNameO, };
-			msg = jibsMessages.convert("m_makes_first_move", obj);
+			msg = jibsMessages.convert("m_makes_first_move", playerNameO);
 			outX.println(msg);
 			playerX.informWatcher("m_makes_first_move", obj, true);
 			playerO.informWatcher("m_makes_first_move", obj, true);

@@ -20,7 +20,6 @@ public class Reject_Command implements JibsCommand {
 		JibsGame game = player.getGame();
 		BackgammonBoard board = null;
 		String msg = null;
-		Object[] obj = null;
 		JibsQuestion question = player.getQuestion();
 		JibsWriter out = player.getOutputStream();
 		Player opponent = null;
@@ -34,24 +33,20 @@ public class Reject_Command implements JibsCommand {
 				int points = doubleQuestion.getCubeOld();
 
 				if (points == 1) {
-					obj = new Object[] { opponent.getName() };
 					// m_you_giveup_1=You give up. %0 wins 1 point.
-					msg = jibsMessages.convert("m_you_giveup_1", obj);
+					msg = jibsMessages.convert("m_you_giveup_1", opponent.getName());
 					out.println(msg);
 					// m_other_giveup1=%0 gives up. You win 1 point.
-					obj = new Object[] { player.getName() };
-					msg = jibsMessages.convert("m_other_giveup1", obj);
+					msg = jibsMessages.convert("m_other_giveup1", player.getName());
 					opponent.getOutputStream().println(msg);
 				} else {
-					obj = new Object[] { opponent.getName(),
-							Integer.valueOf(points) };
 					// m_you_giveup_1=You give up. %0 wins %1 points.
-					msg = jibsMessages.convert("m_you_giveup_2", obj);
+					msg = jibsMessages.convert("m_you_giveup_2", opponent.getName(),
+							Integer.valueOf(points));
 					out.println(msg);
 					// m_other_giveup2=%0 gives up. You win %1 points.
-					obj = new Object[] { player.getName(),
-							Integer.valueOf(points) };
-					msg = jibsMessages.convert("m_other_giveup2", obj);
+					msg = jibsMessages.convert("m_other_giveup2", player.getName(),
+							Integer.valueOf(points));
 					opponent.getOutputStream().println(msg);
 				}
 
@@ -67,8 +62,7 @@ public class Reject_Command implements JibsCommand {
 				msg = jibsMessages.convert("m_you_reject");
 				out.println(msg);
 				// m_other_reject=%0 rejects. The game continues.
-				obj = new Object[] { player.getName() };
-				msg = jibsMessages.convert("m_other_reject", obj);
+				msg = jibsMessages.convert("m_other_reject", player.getName());
 				opponent.getOutputStream().println(msg);
 			}
 		} else {

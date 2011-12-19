@@ -324,8 +324,7 @@ public class Toggle_Command implements JibsCommand {
 			default:
 
 				// m_toggle_unknown** Don't know how to toggle %0
-				Object[] obj = new Object[] { key };
-				msg = jibsMessages.convert("m_toggle_unknown", obj);
+				msg = jibsMessages.convert("m_toggle_unknown", key);
 				out.println(msg);
 
 				break;

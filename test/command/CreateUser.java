@@ -8,9 +8,12 @@ import static org.junit.Assert.assertTrue;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
+import java.util.Map;
+import java.util.Set;
 
 import net.sourceforge.jibs.command.Login_Command;
 import net.sourceforge.jibs.command.NewUser_Command;
+import net.sourceforge.jibs.gui.JibsMessages;
 import net.sourceforge.jibs.server.JibsServer;
 import net.sourceforge.jibs.server.Player;
 import net.sourceforge.jibs.server.Server;
@@ -43,6 +46,17 @@ public class CreateUser {
 		server = testServer.server;
 		sqlMapper = testServer.sqlMapper;
 	}
+//	@Test
+//	public void testMsg() {
+//		JibsMessages jibsMessages = testClient.jibsMessages;
+//		Map<String, String> messageMap = jibsMessages.getMessageMap();
+//		Set<String> keySet = messageMap.keySet();
+//		for (String key : keySet) {
+//			String id = messageMap.get(key);
+//			String convert = jibsMessages.convert(key, 17,18,19,20);
+//			System.out.println(key+":"+convert);
+//		}
+//	}
 
 	@Test
 	public void createNewUser() {

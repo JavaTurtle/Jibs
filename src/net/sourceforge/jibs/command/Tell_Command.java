@@ -39,9 +39,7 @@ public class Tell_Command implements JibsCommand {
 						+ destPlayer.getName() + " " + sayText.trim());
 			} else {
 				// m_noone=** There is no one called %0.
-				Object[] obj = new Object[] { args[1] };
-
-				msg = messages.convert("m_noone", obj);
+				msg = messages.convert("m_noone", args[1]);
 				out.println(msg);
 			}
 		}

@@ -155,9 +155,8 @@ public class NewUser_Command {
 			if (sqlCount > 0) {
 				// m_use_another_name=** Please use another name. '%0' is
 				// already used by someone else.
-				Object[] obj = new Object[] { strNewUser };
 				String msg = jibsServer.getJibsMessages().convert(
-						"m_use_another_name", obj);
+						"m_use_another_name", strNewUser);
 				out.println(msg);
 			} else {
 				name.setValid(true);

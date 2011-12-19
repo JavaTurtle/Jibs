@@ -25,13 +25,13 @@ public class JibsTimer implements Runnable {
 			Thread.sleep(millis);
 
 			JibsMessages jm = jibsServer.getJibsMessages();
-			Object[] obj = null;
+			String obj = null;
 			String msg = null;
 
 			if (player != null) {
-				obj = new Object[] { player.getName() };
+				obj = player.getName();
 			} else {
-				obj = new Object[] { "\"<Unknown>\"" };
+				obj =  "\"<Unknown>\"";
 			}
 
 			// m_client_inactive="** Client '%0' was inactive too long.

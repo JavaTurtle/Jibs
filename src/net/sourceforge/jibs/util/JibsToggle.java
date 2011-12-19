@@ -25,7 +25,7 @@ public class JibsToggle {
 				} else {
 					toggleMap.put(maps[i], Boolean.TRUE);
 				}
-				System.out.println(maps[i]+":"+toggleMap.get(maps[i]));
+				System.out.println(maps[i] + ":" + toggleMap.get(maps[i]));
 			}
 		}
 	}
