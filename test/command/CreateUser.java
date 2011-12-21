@@ -8,12 +8,9 @@ import static org.junit.Assert.assertTrue;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
-import java.util.Map;
-import java.util.Set;
 
 import net.sourceforge.jibs.command.Login_Command;
 import net.sourceforge.jibs.command.NewUser_Command;
-import net.sourceforge.jibs.gui.JibsMessages;
 import net.sourceforge.jibs.server.JibsServer;
 import net.sourceforge.jibs.server.Player;
 import net.sourceforge.jibs.server.Server;
