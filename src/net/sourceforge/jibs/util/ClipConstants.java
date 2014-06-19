@@ -1,7 +1,7 @@
 package net.sourceforge.jibs.util;
 
 public class ClipConstants extends Object {
-	public static final String CLIP_WELCOME = "1";
+	public static final String CLIP_WELCOME = "11";
 	public static final String CLIP_OWN_INFO = "2";
 	public static final String CLIP_MOTD_BEGIN = "3";
 	public static final String CLIP_MOTD_END = "4";
